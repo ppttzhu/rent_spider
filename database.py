@@ -43,7 +43,7 @@ class Database:
         self.conn = conn
         self.cursor = conn.cursor()
 
-    def __del__(self):
+    def quit(self):
         logging.info("Disconnecting DB...")
         self.cursor.close()
         self.conn.close()

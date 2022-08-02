@@ -19,3 +19,9 @@ RUN ln -s /usr/local/firefox/firefox /usr/bin/firefox
 RUN yum -y install libXinerama.x86_64 cups-libs dbus-glib
 # for headed browser
 RUN yum -y install Xvfb
+
+# pull code and install dependency
+RUN git clone https://github.com/ppttzhu/rent_spider.git
+RUN python3 -m pip install -r rent_spider/requirements.txt
+RUN python3 -m playwright install firefox
+COPY secrets.cfg rent_spider/secrets.cfg

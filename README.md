@@ -14,6 +14,7 @@ This scrapy framework is built on pythonanywhere.
 7. Pull Amazon Linux image: `docker pull amazonlinux`
 8. Build our docker image: `docker build -t rent_spider .`
 9. Publish docker image to ECR with commands provided by AWS ECR.
+10. Set ECS command to `cd rent_spider; git pull; xvfb-run -- python3 main.py -r -i QLIC SkylineTower`
 
 # Install
 

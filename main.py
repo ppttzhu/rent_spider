@@ -1,5 +1,6 @@
 import importlib
 import logging
+import sys
 import time
 import traceback
 
@@ -38,6 +39,7 @@ def main():
         send_notification_email(new_rooms, removed_rooms, updated_rooms)
     else:
         logging.info("Nothing new to send")
+    database.quit()
 
 
 logging.getLogger("WDM").setLevel(logging.ERROR)
@@ -60,6 +62,6 @@ while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
         logging.error(repr(error))
         traceback.print_exc()
     if c.IS_DEV or c.IS_REMOTE:
-        break
+        sys.exit()
     logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
     time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
