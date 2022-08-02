@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block table %}
+<table id="data" class="table table-striped sortable">
+    <thead>
+        <tr>
+            {% for header in headers %}
+            <th>{{header}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for room in rooms %}
+        <tr>
+            {% for column in columns %}
+            {% if column == 'website_name' %}
+            <td> <a href="{{room['url']}}"> [{{room['priority']}}] {{room['website_name']}} </a> </td>
+            {% elif column not in ['url', 'priority'] %}
+            <td>{{room[column]}}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
