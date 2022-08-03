@@ -3,6 +3,7 @@ import os
 
 IS_REMOTE = None
 IS_DEV = None
+IS_PYTHONANYWHERE = os.environ.get("PYTHONANYWHERE_DOMAIN") is not None
 WEBSITES_TARGETS = None
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))

@@ -14,8 +14,11 @@ from utils.send_mail import send_notification_email
 
 def main():
     with sync_playwright() as play:
-        driver = init_driver()
-        browser = play.firefox.launch(headless=False)
+        driver, browser = None, None
+        if not c.IS_PYTHONANYWHERE:
+            browser = play.firefox.launch(headless=False)
+        if not c.IS_REMOTE:
+            driver = init_driver()
         logging.info("-------------- Start Fetching Task -------------- ")
         all_rooms, succeeded_websites, failed_websites = [], [], []
         logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
@@ -28,8 +31,10 @@ def main():
                 succeeded_websites.append(fetch_controller.website_name)
             else:
                 failed_websites.append(fetch_controller.website_name)
-        driver.quit()
-        browser.close()
+        if driver:
+            driver.quit()
+        if browser:
+            browser.close()
     logging.info(f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}")
     logging.info(f"Failed websites ({len(failed_websites)}): {failed_websites}")
     database = Database()
