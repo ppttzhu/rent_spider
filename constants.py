@@ -3,6 +3,7 @@ import os
 
 IS_REMOTE = None
 IS_DEV = None
+NEED_UPDATE_WEBSITE = None
 IS_PYTHONANYWHERE = os.environ.get("PYTHONANYWHERE_DOMAIN") is not None
 WEBSITES_TARGETS = None
 
@@ -44,6 +45,11 @@ WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS = [
 WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
 
 WEBSITES = [
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/jackson-park-lic",
+        WEBSITE_NAME_COLUMN: "Jackson Park LIC",
+        "class_name": "JacksonPark",
+    },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/qlic-41_42-24-street-long_island_city",
         WEBSITE_NAME_COLUMN: "Long Island City",
@@ -127,6 +133,7 @@ try:
     args = parser.parse_args()
     IS_REMOTE = args.remote
     IS_DEV = args.dev
+    NEED_UPDATE_WEBSITE = args.update
     if args.include:
         WEBSITES_TARGETS = args.include
     elif args.exclude:

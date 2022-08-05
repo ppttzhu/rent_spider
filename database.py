@@ -52,7 +52,7 @@ class Database:
 
     def update(self, cur_rooms, succeeded_websites):
         # TODO: collect statistics
-        if os.environ.get("UPDATE_WEBSITE") == "true":
+        if c.NEED_UPDATE_WEBSITE:
             self.update_website()
         if not succeeded_websites:
             return [], [], []

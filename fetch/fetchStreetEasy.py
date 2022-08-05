@@ -17,13 +17,14 @@ class FetchStreetEasy(Fetch):
         self.page.route(
             re.compile(r"(\.png$)|(\.jpg$)|(\.webp$)|(doubleclick)"), lambda route: route.abort()
         )
+        self.table_class = "nice_table building-pages BuildingUnit-table"
 
     def fetch_web(self):
         html_doc = self.get_html_doc()
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
-        table = soup.find_all("table", {"class": "nice_table building-pages BuildingUnit-table"})
-        rows = table[-1].find_all("tr", {"class": "BuildingUnit-table BuildingUnit-table--row"})
+        table = soup.find_all("table", {"class": self.table_class})
+        rows = table[-1].find("tbody").find_all("tr")
         rooms = []
         for row in rows:
             if "no fee" not in row.text.lower():
@@ -31,7 +32,7 @@ class FetchStreetEasy(Fetch):
             room = row.find_all("td")
             rooms.append(
                 {
-                    "room_number": room[0].text.split(" - ")[0].replace("#", "").replace("\n", ""),
+                    "room_number": room[0].text,
                     "room_type": room[2].text + room[3].text,
                     "room_price": room[1].text.split()[0],
                 }
@@ -43,7 +44,7 @@ class FetchStreetEasy(Fetch):
         sleep_time = randrange(15, 25)
         logging.info(f"Sleep {sleep_time}s to avoid being blocked...")
         sleep(sleep_time)
-        html_doc = self.get_html_doc_room(room["room_number"])
+        html_doc = self.get_html_doc_room(self.get_room_url(room["room_number"]))
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
@@ -59,14 +60,21 @@ class FetchStreetEasy(Fetch):
         self.page.goto(self.url, wait_until="domcontentloaded", timeout=self.timeout * 60 * 1000)
         return self.page.content()
 
-    def get_html_doc_room(self, room_number):
-        logging.info(f"Loading {self.url}/{room_number}...")
+    def get_html_doc_room(self, room_url):
+        logging.info(f"Loading {room_url}...")
         self.page.goto(
-            f"{self.url}/{room_number}",
+            room_url,
             wait_until="domcontentloaded",
             timeout=self.timeout * 60 * 1000,
         )
         return self.page.content()
+
+    def get_room_url(self, room_number):
+        room_number = self.process_room_number(room_number)
+        return f"{self.url}/{room_number}"
+
+    def process_room_number(self, room_number):
+        return room_number.split(" - ")[0].replace("#", "").replace("\n", "")
 
     def process_room_type(self, room_type):
         if "studio" in room_type:
