@@ -15,9 +15,9 @@ from utils.send_mail import send_notification_email
 def main():
     with sync_playwright() as play:
         driver, browser = None, None
-        if not c.IS_PYTHONANYWHERE:
+        if c.PLATFORM != c.Platform.PYTHONANYWHERE:
             browser = play.firefox.launch(headless=False)
-        if not c.IS_REMOTE:
+        if c.PLATFORM != c.Platform.AWS:
             driver = init_driver()
         logging.info("-------------- Start Fetching Task -------------- ")
         all_rooms, succeeded_websites, failed_websites = [], [], []
@@ -54,10 +54,7 @@ logging.basicConfig(
     datefmt="%m/%d/%Y %I:%M:%S",
 )
 
-if c.IS_REMOTE:
-    logging.info("Running on remote mode...")
-if c.IS_DEV:
-    logging.info("Running on dev mode...")
+logging.info(f"Running on {c.PLATFORM} mode...")
 
 start_time = time.time()
 while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
@@ -66,7 +63,7 @@ while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
     except Exception as error:
         logging.error(repr(error))
         traceback.print_exc()
-    if c.IS_DEV or c.IS_REMOTE:
+    if c.PLATFORM != c.Platform.PYTHONANYWHERE:
         sys.exit()
     logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
     time.sleep(c.MINUTES_BETWEEN_FETCH * 60)

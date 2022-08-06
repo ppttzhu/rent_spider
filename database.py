@@ -16,7 +16,7 @@ class Database:
         logging.info("Init DB...")
         config = configparser.ConfigParser()
         config.read(os.path.join(c.ROOT_DIR, "secrets.cfg"))
-        if c.IS_REMOTE:
+        if c.PLATFORM == c.Platform.AWS:
             logging.info("Opening SSH tunnel...")
             tunnel = SSHTunnelForwarder(
                 c.SSH_HOST,
@@ -35,8 +35,8 @@ class Database:
             )
         else:
             conn = MySQLdb.connect(
-                host="127.0.0.1" if c.IS_DEV else c.DATABASE_HOST,
-                user="root" if c.IS_DEV else c.DATABASE_USER,
+                host="127.0.0.1" if c.PLATFORM == c.Platform.DEV else c.DATABASE_HOST,
+                user="root" if c.PLATFORM == c.Platform.DEV else c.DATABASE_USER,
                 passwd=config["database"]["password"],
                 db=c.DATABASE_NAME,
             )
@@ -47,7 +47,7 @@ class Database:
         logging.info("Disconnecting DB...")
         self.cursor.close()
         self.conn.close()
-        if c.IS_REMOTE:
+        if c.PLATFORM == c.Platform.AWS:
             self.tunnel.stop()
 
     def update(self, cur_rooms, succeeded_websites):

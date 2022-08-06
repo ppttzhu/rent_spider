@@ -1,10 +1,16 @@
 import argparse
 import os
+from enum import Enum
 
-IS_REMOTE = None
-IS_DEV = None
+
+class Platform(Enum):
+    AWS = 1
+    PYTHONANYWHERE = 2
+    DEV = 3
+
+
+PLATFORM = None
 NEED_UPDATE_WEBSITE = None
-IS_PYTHONANYWHERE = os.environ.get("PYTHONANYWHERE_DOMAIN") is not None
 WEBSITES_TARGETS = None
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -49,51 +55,79 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/jackson-park-lic",
         WEBSITE_NAME_COLUMN: "Jackson Park LIC",
         "class_name": "JacksonPark",
+        "platform": Platform.AWS,
     },
     {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/qlic-41_42-24-street-long_island_city",
-        WEBSITE_NAME_COLUMN: "Long Island City",
-        "class_name": "QLIC",
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/1-qps",
+        WEBSITE_NAME_COLUMN: "1 QPS",
+        "class_name": "1QPS",
+        "platform": Platform.AWS,
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/skyline-tower",
         WEBSITE_NAME_COLUMN: "Skyline Tower",
         "class_name": "SkylineTower",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/altalic-29_22-northern-boulevard-long_island_city",
+        WEBSITE_NAME_COLUMN: "AltaLIC",
+        "class_name": "Alta",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/qlic-41_42-24-street-long_island_city",
+        WEBSITE_NAME_COLUMN: "QLIC",
+        "class_name": "QLIC",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/star-tower-lic",
+        WEBSITE_NAME_COLUMN: "Star Tower",
+        "class_name": "StarTower",
+        "platform": Platform.AWS,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.351marinjc.com/floorplans",
         WEBSITE_NAME_COLUMN: "351 Marin JC",
         "class_name": "351Marinjc",
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.grovepointe.com/floorplans",
         WEBSITE_NAME_COLUMN: "Grove Pointe",
         "class_name": "Gp",
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.235grand.com/floorplans",
         WEBSITE_NAME_COLUMN: "235 Grand Street",
         "class_name": "235GrandStreet",
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.485marin.com/floorplans",
         WEBSITE_NAME_COLUMN: "485 Marin",
         "class_name": "485Marin",
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.225grandstreet.com/floorplans",
         WEBSITE_NAME_COLUMN: "225 Grand Street",
         "class_name": "225GrandStreet",
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.18park.com/floorplans",
         WEBSITE_NAME_COLUMN: "18 Park",
         "class_name": "18Park",
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://www.journalsquared.com/availabilities",
         WEBSITE_NAME_COLUMN: "Journal Squared",
         "class_name": "Jsq",
+        "platform": Platform.PYTHONANYWHERE,
     },
 ]
 
@@ -102,11 +136,15 @@ WEBSITES_DICT = {
     for index, website in enumerate(WEBSITES)
 }
 
-NOTIFICATION_EMAIL_SUBJECT = "【房源通知-测试】" if IS_DEV else "【房源通知】"
-ERROR_EMAIL_SUBJECT = "【房源抓取出错了-测试】" if IS_DEV else "【房源抓取出错了】"
+NOTIFICATION_EMAIL_SUBJECT = "【房源通知-测试】" if PLATFORM == Platform.DEV else "【房源通知】"
+ERROR_EMAIL_SUBJECT = "【房源抓取出错了-测试】" if PLATFORM == Platform.DEV else "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"
 EMAIL_RECEIVERS_DEV = ["ppttzhu@gmail.com"]
-EMAIL_RECEIVERS = EMAIL_RECEIVERS_DEV if IS_DEV else ["atongmu0577@163.com", "panyuany1@163.com"]
+EMAIL_RECEIVERS = (
+    EMAIL_RECEIVERS_DEV
+    if PLATFORM == Platform.DEV
+    else ["atongmu0577@163.com", "panyuany1@163.com"]
+)
 
 DATABASE_HOST = "ppttzhu.mysql.pythonanywhere-services.com"
 DATABASE_USER = "ppttzhu"
@@ -127,17 +165,27 @@ try:
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--include", nargs="+", help="Websites to include")
     parser.add_argument("-e", "--exclude", nargs="+", help="Websites to exclude")
-    parser.add_argument("-r", "--remote", action="store_true", help="Run in remote prod mode")
-    parser.add_argument("-d", "--dev", action="store_true", help="Run in dev mode")
+    parser.add_argument("-a", "--auto", action="store_true", help="Automatic choose websites")
+    parser.add_argument("-r", "--remote", action="store_true", help="SSH to remote database")
     parser.add_argument("-u", "--update", action="store_true", help="Update website table")
     args = parser.parse_args()
-    IS_REMOTE = args.remote
-    IS_DEV = args.dev
+
+    if os.environ.get("PYTHONANYWHERE_DOMAIN") is not None:
+        PLATFORM = Platform.PYTHONANYWHERE
+    elif args.remote:
+        PLATFORM = Platform.AWS
+    else:
+        PLATFORM = Platform.DEV
+
     NEED_UPDATE_WEBSITE = args.update
+
     if args.include:
         WEBSITES_TARGETS = args.include
     elif args.exclude:
         WEBSITES_TARGETS = list(filter(lambda x: x not in args.exclude, WEBSITES_DICT.keys()))
+    elif args.auto and PLATFORM != Platform.DEV:
+        website_for_platform = list(filter(lambda x: x["platform"] == PLATFORM, WEBSITES))
+        WEBSITES_TARGETS = [w["class_name"] for w in website_for_platform]
     else:
         WEBSITES_TARGETS = WEBSITES_DICT.keys()
 except Exception:
