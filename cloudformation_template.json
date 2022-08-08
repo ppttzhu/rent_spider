@@ -1,0 +1,186 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "VpcId": {
+      "Type": "AWS::EC2::VPC::Id",
+      "Default": "vpc-145a3a6e"
+    },
+    "SubnetId": {
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Default": "subnet-eee2b1c0,subnet-17efbe4b,subnet-d6b2e6b1,subnet-de9799d1,subnet-2549ad68,subnet-25f46f1b"
+    }
+  },
+  "Resources": {
+    "EcsSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ECS Security Group",
+        "VpcId": {
+          "Ref": "VpcId"
+        }
+      }
+    },
+    "EcsSecurityGroupHTTPinbound": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": 80,
+        "ToPort": 80,
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupSSHinbound": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": 22,
+        "ToPort": 22,
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "CloudwatchLogsGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/ecs/",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "RetentionInDays": 14
+      }
+    },
+    "ECSCluster": {
+      "Type": "AWS::ECS::Cluster",
+      "Properties": {
+        "ClusterName": {
+          "Ref": "AWS::StackName"
+        }
+      }
+    },
+    "ECSTaskRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": ["ecs-tasks.amazonaws.com"]
+              },
+              "Action": ["sts:AssumeRole"]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+        ]
+      }
+    },
+    "ECR": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "LifecyclePolicy": {
+          "LifecyclePolicyText": "{\"rules\":[{\"rulePriority\":1,\"description\":\"Expire after 3 images\",\"selection\":{\"tagStatus\":\"any\",\"countType\":\"imageCountMoreThan\",\"countNumber\":3},\"action\":{\"type\":\"expire\"}}]}"
+        },
+        "RepositoryName": { "Ref": "AWS::StackName" }
+      }
+    },
+    "ECSTaskDefinition": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "Cpu": "2048",
+        "Memory": "8192",
+        "Family": { "Ref": "AWS::StackName" },
+        "ExecutionRoleArn": { "Ref": "ECSTaskRole" },
+        "ContainerDefinitions": [
+          {
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "CloudwatchLogsGroup"
+                },
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "ecs"
+              }
+            },
+            "EntryPoint": ["sh", "-c"],
+            "Command": [
+              "cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -a"
+            ],
+            "MemoryReservation": 8192,
+            "Image": { "Fn::GetAtt": ["ECR", "RepositoryUri"] },
+            "Name": { "Ref": "AWS::StackName" }
+          }
+        ],
+        "RequiresCompatibilities": ["FARGATE"],
+        "NetworkMode": "awsvpc",
+        "RuntimePlatform": {
+          "OperatingSystemFamily": "LINUX"
+        }
+      }
+    },
+    "ECSEventRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": ["events.amazonaws.com"]
+              },
+              "Action": ["sts:AssumeRole"]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
+        ]
+      }
+    },
+    "ECSScheduledTask": {
+      "DependsOn": "ECSEventRole",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Description": "Run ECS task twice a tay on 1PM and 7PM EST",
+        "ScheduleExpression": "cron(0 17,23 * * ? *)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Id": {
+              "Ref": "AWS::StackName"
+            },
+            "Arn": { "Fn::GetAtt": ["ECSCluster", "Arn"] },
+            "RoleArn": { "Fn::GetAtt": ["ECSEventRole", "Arn"] },
+            "EcsParameters": {
+              "LaunchType": "FARGATE",
+              "TaskDefinitionArn": {
+                "Ref": "ECSTaskDefinition"
+              },
+              "NetworkConfiguration": {
+                "AwsVpcConfiguration": {
+                  "AssignPublicIp": "ENABLED",
+                  "Subnets": { "Ref": "SubnetId" },
+                  "SecurityGroups": [{ "Ref": "EcsSecurityGroup" }]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

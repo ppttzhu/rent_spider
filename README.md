@@ -1,22 +1,43 @@
-This scrapy framework is built on pythonanywhere.
+This scrapy framework is built on pythonanywhere and AWS.
 
 # Prerequisite
 
-1. Set up pythonanywhere, like mysql and app server.
-2. Create a email sender's gmail account and setup App Password.
-3. Update secrets.cfg. Then run ddl.sql to create tables in database.
-4. For devtest, install mysql server on your local machine.
+1. Set up [pythonanywhere](https://www.pythonanywhere.com/), i.e., mysql and app server.
+2. Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), get credential created, and deploy cloudformation template.
+3. Create a email sender's gmail account and setup App Password.
+4. Update secrets.cfg. Then run ddl.sql to create tables in database.
+5. For devtest, install mysql server on your local machine.
 
-# Docker (for x86_64)
+# AWS setup
 
-5. Install [Docker](https://docs.docker.com/desktop/install/mac-install/)
-6. Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-7. Pull Amazon Linux image: `docker pull amazonlinux`
-8. Build our docker image: `docker build -t rent_spider .`
-9. Publish docker image to ECR with commands provided by AWS ECR.
-10. Set ECS command to `cd rent_spider; git pull; xvfb-run -- python3 main.py -r -i QLIC SkylineTower`
+## Deploy AWS resources
 
-# Install
+```
+aws cloudformation deploy --template ./cloudformation_template.json --stack-name rent-spider --capabilities CAPABILITY_IAM
+```
+
+# Docker setup for AWS ECR (x86_64)
+
+1. Install [Docker](https://docs.docker.com/desktop/install/mac-install/)
+2. Pull Amazon Linux image: `docker pull amazonlinux`
+3. Build our docker image: `docker build -t rent_spider .`
+4. Publish docker image to ECR with commands provided by AWS ECR.
+
+# Test run ECS task (once)
+
+Replace your task revision if needed.
+
+```
+aws ecs run-task\
+	--cluster rent-spider\
+	--launch-type FARGATE\
+	--task-definition rent-spider:3\
+	--network-configuration "awsvpcConfiguration={subnets=[subnet-eee2b1c0],securityGroups=[sg-0dcba158481062d20],assignPublicIp=ENABLED}"
+```
+
+# Local setup
+
+## Pip libraries Install
 
 ```
 pip install -U pip
@@ -24,13 +45,13 @@ pip install -r requirements.txt
 python3 -m playwright install firefox
 ```
 
-# Test Fetch
+## Test Fetch
 
 ```
 python3 main.py
 ```
 
-# Test Web App
+## Test Web App
 
 ```
 export FLASK_APP=flask_app/app.py && export FLASK_ENV=development && python3 -m flask run -p 3000
@@ -38,7 +59,7 @@ export FLASK_APP=flask_app/app.py && export FLASK_ENV=development && python3 -m 
 
 Then go to: http://127.0.0.1:3000/
 
-# Run Unit Test
+## Run Unit Test
 
 ```
 python3 -m unittest
