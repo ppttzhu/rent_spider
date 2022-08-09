@@ -52,6 +52,12 @@ WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_CO
 
 WEBSITES = [
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/steel-haus",
+        WEBSITE_NAME_COLUMN: "Steel Haus",
+        "class_name": "SteelHaus",
+        "platform": Platform.AWS,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/jackson-park-lic",
         WEBSITE_NAME_COLUMN: "Jackson Park LIC",
         "class_name": "JacksonPark",

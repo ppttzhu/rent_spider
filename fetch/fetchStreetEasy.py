@@ -24,6 +24,9 @@ class FetchStreetEasy(Fetch):
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         table = soup.find_all("table", {"class": self.table_class})
+        if not table:
+            logging.info(f"No room available in {self.website_name}, skipping...")
+            return
         rows = table[-1].find("tbody").find_all("tr")
         rooms = []
         for row in rows:
