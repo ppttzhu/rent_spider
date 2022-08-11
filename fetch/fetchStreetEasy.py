@@ -41,12 +41,12 @@ class FetchStreetEasy(Fetch):
                 }
             )
         for room in rooms:
+            sleep_time = randrange(15, 25)
+            logging.info(f"Sleep {sleep_time}s to avoid being blocked...")
+            sleep(sleep_time)
             self.fetch_room_info(room)
 
     def fetch_room_info(self, room):
-        sleep_time = randrange(15, 25)
-        logging.info(f"Sleep {sleep_time}s to avoid being blocked...")
-        sleep(sleep_time)
         html_doc = self.get_html_doc_room(self.get_room_url(room["room_number"]))
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
