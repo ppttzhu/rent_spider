@@ -52,12 +52,6 @@ WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_CO
 
 WEBSITES = [
     {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/22_22-jackson-avenue-long_island_city",
-        WEBSITE_NAME_COLUMN: "5Pointz Opposite",
-        "class_name": "5PointzOpposite",
-        "platform": Platform.AWS,
-    },
-    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/steel-haus",
         WEBSITE_NAME_COLUMN: "Steel Haus",
         "class_name": "SteelHaus",
@@ -97,6 +91,12 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/star-tower-lic",
         WEBSITE_NAME_COLUMN: "Star Tower",
         "class_name": "StarTower",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/22_22-jackson-avenue-long_island_city",
+        WEBSITE_NAME_COLUMN: "22-22 Jackson Ave",
+        "class_name": "JacksonAve",
         "platform": Platform.AWS,
     },
     {

@@ -155,8 +155,8 @@
       "DependsOn": "ECSEventRole",
       "Type": "AWS::Events::Rule",
       "Properties": {
-        "Description": "Run ECS task twice a tay on 1PM and 7PM EST",
-        "ScheduleExpression": "cron(0 17,23 * * ? *)",
+        "Description": "Run ECS task twice a day at noon and 7PM EST",
+        "ScheduleExpression": "cron(0 16,23 * * ? *)",
         "State": "ENABLED",
         "Targets": [
           {

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from fetch.fetchStreetEasy import FetchStreetEasy
 
 
-class Fetch5PointzOpposite(FetchStreetEasy):
+class FetchJacksonAve(FetchStreetEasy):
     def fetch_room_info(self, room):
         html_doc = self.get_html_doc_room(self.get_room_url(room["room_number"]))
         self.check_blocked(html_doc)
