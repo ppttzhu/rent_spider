@@ -58,10 +58,10 @@ WEBSITES = [
         "platform": Platform.AWS,
     },
     {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/jackson-park-lic",
+        WEBSITE_URL_COLUMN: "https://jacksonparklic.com/availability/",
         WEBSITE_NAME_COLUMN: "Jackson Park LIC",
         "class_name": "JacksonPark",
-        "platform": Platform.AWS,
+        "platform": Platform.PYTHONANYWHERE,
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/1-qps",

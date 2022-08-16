@@ -22,6 +22,7 @@ class Fetch:
         self.room_info_tuple_set = set()  # Avoid duplicate value
         self.web_wait = WebDriverWait(self.driver, c.WEB_DRIVER_WAIT_SECOND)
         self.is_fetch_succeeded = True
+        self.playwright_timeout = 5
 
     def fetch(self):
         try:
@@ -62,6 +63,23 @@ class Fetch:
         logging.debug(room)
         self.room_info.append(room)
         self.room_info_tuple_set.add(room_info_tuple)
+
+    def init_page(self):
+        self.page = self.browser.new_page()
+        # don't load image and avoid doubleclick request
+        self.page.route(
+            re.compile(r"(\.png$)|(\.jpg$)|(\.webp$)|(doubleclick)"), lambda route: route.abort()
+        )
+        return self.page
+
+    def get_html_doc(self, url, wait_until="domcontentloaded"):
+        logging.info(f"Loading {url}...")
+        self.page.goto(url, wait_until=wait_until, timeout=self.playwright_timeout * 60 * 1000)
+        return self.page.content()
+
+    def save_html_doc(self, html_doc):
+        with open("./tmp.html", "w", encoding="utf-8") as file:
+            file.write(html_doc)
 
     def process_room_price(self, room_price):
         return room_price.replace("$", "").replace(",", "").replace(".00", "")

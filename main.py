@@ -17,6 +17,8 @@ def main():
         driver, browser = None, None
         if c.PLATFORM != c.Platform.PYTHONANYWHERE:
             browser = play.firefox.launch(headless=False)
+        else:
+            browser = play.chromium.launch(headless=True)
         if c.PLATFORM != c.Platform.AWS:
             driver = init_driver()
         logging.info("-------------- Start Fetching Task -------------- ")

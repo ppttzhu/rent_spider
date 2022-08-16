@@ -1,5 +1,4 @@
 import logging
-import re
 from random import randrange
 from time import sleep
 
@@ -11,16 +10,11 @@ from fetch.fetch import Fetch
 class FetchStreetEasy(Fetch):
     def __init__(self, driver, browser):
         super().__init__(driver, browser)
-        self.page = self.browser.new_page()
-        self.timeout = 5
-        # don't load image and avoid doubleclick request
-        self.page.route(
-            re.compile(r"(\.png$)|(\.jpg$)|(\.webp$)|(doubleclick)"), lambda route: route.abort()
-        )
+        self.init_page()
         self.table_class = "nice_table building-pages BuildingUnit-table"
 
     def fetch_web(self):
-        html_doc = self.get_html_doc()
+        html_doc = self.get_html_doc(self.url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         table = soup.find_all("table", {"class": self.table_class})
@@ -47,7 +41,7 @@ class FetchStreetEasy(Fetch):
             self.fetch_room_info(room)
 
     def fetch_room_info(self, room):
-        html_doc = self.get_html_doc_room(self.get_room_url(room["room_number"]))
+        html_doc = self.get_html_doc(self.get_room_url(room["room_number"]))
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
@@ -57,20 +51,6 @@ class FetchStreetEasy(Fetch):
             move_in_date=move_in_date.text,
             room_price=room["room_price"],
         )
-
-    def get_html_doc(self):
-        logging.info(f"Loading {self.url}...")
-        self.page.goto(self.url, wait_until="domcontentloaded", timeout=self.timeout * 60 * 1000)
-        return self.page.content()
-
-    def get_html_doc_room(self, room_url):
-        logging.info(f"Loading {room_url}...")
-        self.page.goto(
-            room_url,
-            wait_until="domcontentloaded",
-            timeout=self.timeout * 60 * 1000,
-        )
-        return self.page.content()
 
     def get_room_url(self, room_number):
         room_number = self.process_room_number(room_number)

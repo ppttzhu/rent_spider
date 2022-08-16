@@ -5,7 +5,7 @@ from fetch.fetchStreetEasy import FetchStreetEasy
 
 class FetchJacksonAve(FetchStreetEasy):
     def fetch_room_info(self, room):
-        html_doc = self.get_html_doc_room(self.get_room_url(room["room_number"]))
+        html_doc = self.get_html_doc(self.get_room_url(room["room_number"]))
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})

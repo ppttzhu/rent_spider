@@ -7,7 +7,7 @@ from fetch.fetchStreetEasy import FetchStreetEasy
 
 class FetchSteelHaus(FetchStreetEasy):
     def fetch_web(self):
-        html_doc = self.get_html_doc()
+        html_doc = self.get_html_doc(self.url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         table = soup.find_all("table", {"class": self.table_class})

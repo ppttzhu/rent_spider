@@ -51,6 +51,8 @@ python3 -m playwright install firefox
 python3 main.py
 ```
 
+Debug mode: `export DEBUG=pw:api`
+
 ## Test Web App
 
 ```
@@ -73,3 +75,4 @@ python3 -m unittest tests/test_database.py
 - Mysql API guide: https://mysqlclient.readthedocs.io/user_guide.html#mysql-c-api-function-mapping
 - How to setup gmail smtp: https://stackoverflow.com/questions/28421887/django-email-with-smtp-gmail-smtpauthenticationerror-534-application-specific-pa
 - Gmail smtp App password troubleshooting: https://kinsta.com/blog/gmail-smtp-server/
+- Playwright python doc: https://playwright.dev/python/docs/intro
