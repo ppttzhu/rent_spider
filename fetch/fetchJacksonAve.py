@@ -14,7 +14,7 @@ class FetchJacksonAve(FetchStreetEasy):
         )
         room_price = room["room_price"]
         if net_price:
-            room_price = f"N={net_price.text.split()[0]} G={room_price}"
+            room_price = f"{net_price.text.split()[0]} Net {room_price} Gross"
         self.add_room_info(
             room_number=room["room_number"],
             room_type=room["room_type"],

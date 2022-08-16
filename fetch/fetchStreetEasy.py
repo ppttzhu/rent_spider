@@ -57,7 +57,7 @@ class FetchStreetEasy(Fetch):
         return f"{self.url}/{room_number}"
 
     def process_room_number(self, room_number):
-        return room_number.split(" - ")[0].replace("#", "").replace("\n", "")
+        return room_number.split(" - ")[0].replace("#", "").replace("\n", "").replace("-", "")
 
     def process_room_type(self, room_type):
         if "studio" in room_type:
