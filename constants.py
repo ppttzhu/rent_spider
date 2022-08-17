@@ -15,7 +15,7 @@ WEBSITES_TARGETS = None
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-MINUTES_BETWEEN_FETCH = 5
+MINUTES_BETWEEN_FETCH = 7
 TOTAL_DURATION_IN_MINUTES = 55
 WEB_DRIVER_WAIT_SECOND = 10
 
@@ -51,6 +51,12 @@ WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS = [
 WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
 
 WEBSITES = [
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/galerie-condominium",
+        WEBSITE_NAME_COLUMN: "Galerie",
+        "class_name": "Galerie",
+        "platform": Platform.AWS,
+    },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/steel-haus",
         WEBSITE_NAME_COLUMN: "Steel Haus",
