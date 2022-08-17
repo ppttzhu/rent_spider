@@ -42,7 +42,6 @@ def main():
     database = Database()
     new_rooms, removed_rooms, updated_rooms = database.update(all_rooms, succeeded_websites)
     if new_rooms or removed_rooms or updated_rooms:
-        logging.info("Sending email...")
         send_notification_email(new_rooms, removed_rooms, updated_rooms)
     else:
         logging.info("Nothing new to send")

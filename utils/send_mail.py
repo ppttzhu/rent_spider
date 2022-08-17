@@ -1,4 +1,5 @@
 import configparser
+import logging
 import smtplib
 from email.header import Header
 from email.mime.multipart import MIMEMultipart
@@ -53,6 +54,7 @@ def send_email(receivers, receivers_cc, subject, content):
     mimemsg["To"] = ",".join(receivers)
     mimemsg["Subject"] = subject
     mimemsg["Cc"] = ",".join(receivers_cc)
+    logging.info(f'Sending email to {mimemsg["To"]}, cc {mimemsg["Cc"]}...')
     mimemsg.attach(mail_body)
     connection = smtplib.SMTP(host=c.SMTP_HOST, port=c.SMTP_PORT)
     connection.starttls()
