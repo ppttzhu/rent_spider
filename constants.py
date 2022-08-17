@@ -154,15 +154,12 @@ WEBSITES_DICT = {
     for index, website in enumerate(WEBSITES)
 }
 
-NOTIFICATION_EMAIL_SUBJECT = "【房源通知-测试】" if PLATFORM == Platform.DEV else "【房源通知】"
-ERROR_EMAIL_SUBJECT = "【房源抓取出错了-测试】" if PLATFORM == Platform.DEV else "【房源抓取出错了】"
+NOTIFICATION_EMAIL_SUBJECT = "【房源通知】"
+ERROR_EMAIL_SUBJECT = "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"
 EMAIL_RECEIVERS_DEV = ["ppttzhu@gmail.com"]
-EMAIL_RECEIVERS = (
-    EMAIL_RECEIVERS_DEV
-    if PLATFORM == Platform.DEV
-    else ["atongmu0577@163.com", "panyuany1@163.com"]
-)
+EMAIL_RECEIVERS = ["atongmu0577@163.com", "panyuany1@163.com"]
+
 
 DATABASE_HOST = "ppttzhu.mysql.pythonanywhere-services.com"
 DATABASE_USER = "ppttzhu"

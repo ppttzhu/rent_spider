@@ -74,7 +74,12 @@ def send_notification_email(new_rooms, removed_rooms, updated_rooms):
     content += f"""<h3>全部房源:<div><a href="{c.WEB_APP_LINK}">{c.WEB_APP_LINK}</a></div></h3>"""
     content = "<html><body>" + content + "</body></html>"
 
-    send_email(c.EMAIL_RECEIVERS, c.EMAIL_RECEIVERS_DEV, c.NOTIFICATION_EMAIL_SUBJECT, content)
+    send_email(
+        c.EMAIL_RECEIVERS_DEV if c.PLATFORM == c.Platform.DEV else c.EMAIL_RECEIVERS,
+        c.EMAIL_RECEIVERS_DEV,
+        c.NOTIFICATION_EMAIL_SUBJECT,
+        content,
+    )
 
 
 def send_error_email(website_name, error):
