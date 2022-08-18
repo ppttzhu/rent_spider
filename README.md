@@ -65,7 +65,6 @@ Then go to: http://127.0.0.1:3000/
 
 ```
 python3 -m unittest
-python3 -m unittest tests/test_database.py
 ```
 
 # References
