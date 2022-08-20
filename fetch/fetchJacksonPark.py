@@ -1,9 +1,12 @@
+from time import sleep
+
 from fetch.fetch import Fetch
 
 
 class FetchJacksonPark(Fetch):
     def fetch_web(self):
         self.driver.get(self.url)
+        sleep(3)  # sleep because table might not fully loaded
         room_list = self.wait_until_xpath(self.driver, "//div[@class='availibility-box']")
         for room in room_list:
             building_name = self.wait_until_xpath(room, "//div[@class='tower-title ng-binding']")
