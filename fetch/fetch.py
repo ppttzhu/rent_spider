@@ -3,6 +3,8 @@ import re
 import traceback
 
 import constants as c
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from utils.send_mail import send_error_email
 
@@ -64,19 +66,6 @@ class Fetch:
         self.room_info.append(room)
         self.room_info_tuple_set.add(room_info_tuple)
 
-    def init_page(self):
-        self.page = self.browser.new_page()
-        # don't load image and avoid doubleclick request
-        self.page.route(
-            re.compile(r"(\.png$)|(\.jpg$)|(\.webp$)|(doubleclick)"), lambda route: route.abort()
-        )
-        return self.page
-
-    def get_html_doc(self, url, wait_until="domcontentloaded"):
-        logging.info(f"Loading {url}...")
-        self.page.goto(url, wait_until=wait_until, timeout=self.playwright_timeout * 60 * 1000)
-        return self.page.content()
-
     def save_html_doc(self, html_doc):
         with open("./tmp.html", "w", encoding="utf-8") as file:
             file.write(html_doc)
@@ -100,3 +89,24 @@ class Fetch:
         if "Available Now" in move_in_date:
             return "Available Now"
         return move_in_date.replace(" ", "").replace("\n", "")
+
+    # pw
+    def init_page(self):
+        self.page = self.browser.new_page()
+        # don't load image and avoid doubleclick request
+        self.page.route(
+            re.compile(r"(\.png$)|(\.jpg$)|(\.webp$)|(doubleclick)"), lambda route: route.abort()
+        )
+        return self.page
+
+    # pw
+    def get_html_doc(self, url, wait_until="domcontentloaded"):
+        logging.info(f"Loading {url}...")
+        self.page.goto(url, wait_until=wait_until, timeout=self.playwright_timeout * 60 * 1000)
+        return self.page.content()
+
+    # se
+    def wait_until_xpath(self, driver, xpath):
+        waiter = WebDriverWait(driver, c.WEB_DRIVER_WAIT_SECOND)
+        waiter.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        return driver.find_elements(by=By.XPATH, value=xpath)

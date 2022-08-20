@@ -1,23 +1,18 @@
-from bs4 import BeautifulSoup
-
 from fetch.fetch import Fetch
 
 
 class FetchJacksonPark(Fetch):
-    def __init__(self, driver, browser):
-        super().__init__(driver, browser)
-        self.init_page()
-
     def fetch_web(self):
-        html_doc = self.get_html_doc(self.url, "networkidle")
-        soup = BeautifulSoup(html_doc, "html.parser")
-        room_list = soup.find_all("div", {"class": "availibility-box"})
+        self.driver.get(self.url)
+        room_list = self.wait_until_xpath(self.driver, "//div[@class='availibility-box']")
         for room in room_list:
-            building_name = room.find("div", {"class": "tower-title ng-binding"})
-            building_name = building_name.text.replace(" Jackson Park", "JP")
-            room_number = room.find("div", {"class": "box-title ng-binding"})
-            room_number = room_number.text.replace("Residence", "").replace("\n", "")
-            property_detail = room.find_all("div", {"class": "property-details ng-binding"})
+            building_name = self.wait_until_xpath(room, "//div[@class='tower-title ng-binding']")
+            building_name = building_name[0].text.replace(" Jackson Park", "JP")
+            room_number = self.wait_until_xpath(room, "//div[@class='box-title ng-binding']")
+            room_number = room_number[0].text.replace("Residence", "").replace("\n", "")
+            property_detail = self.wait_until_xpath(
+                room, "//div[@class='property-details ng-binding']"
+            )
             self.add_room_info(
                 room_number=f"{room_number} - {building_name}",
                 room_type=property_detail[0].text,
@@ -33,4 +28,5 @@ class FetchJacksonPark(Fetch):
             .replace("Bathroom", "B")
             .replace("\n", "")
             .replace("/", "")
+            .replace(" ", "")
         )
