@@ -24,7 +24,6 @@ class Fetch:
         self.room_info_tuple_set = set()  # Avoid duplicate value
         self.web_wait = WebDriverWait(self.driver, c.WEB_DRIVER_WAIT_SECOND)
         self.is_fetch_succeeded = True
-        self.playwright_timeout = 5
 
     def fetch(self):
         try:
@@ -102,7 +101,7 @@ class Fetch:
     # pw
     def get_html_doc(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
-        self.page.goto(url, wait_until=wait_until, timeout=self.playwright_timeout * 60 * 1000)
+        self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_WAIT_SECOND * 60 * 1000)
         return self.page.content()
 
     # se
