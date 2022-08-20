@@ -1,6 +1,9 @@
+import os
 import sys
 
-sys.path.append("/home/ppttzhu/rent_spider")  # For pythonanywhere module not found error
+root_dir = os.path.join(os.path.dirname(__file__), "../")
+
+sys.path.append(root_dir)  # For module not found error
 
 import constants as c
 from database import Database
@@ -26,3 +29,7 @@ def get_rooms():
     columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
     rooms = database.get_rooms(columns=columns)
     return rooms
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3000)

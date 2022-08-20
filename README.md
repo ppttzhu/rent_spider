@@ -56,7 +56,7 @@ Debug mode: `export DEBUG=pw:api`
 ## Test Web App
 
 ```
-export FLASK_APP=flask_app/app.py && export FLASK_ENV=development && python3 -m flask run -p 3000
+python3 flask_app/app.py
 ```
 
 Then go to: http://127.0.0.1:3000/
