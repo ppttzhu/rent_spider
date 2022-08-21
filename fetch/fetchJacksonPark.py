@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 from fetch.fetch import Fetch
 
@@ -6,7 +8,17 @@ from fetch.fetch import Fetch
 class FetchJacksonPark(Fetch):
     def fetch_web(self):
         self.driver.get(self.url)
-        room_list = self.wait_until_xpath(self.driver, "//div[@class='availibility-box']")
+        results_xpath = "//div[@class='availibility-box']"
+        no_results_xpath = "//h2[contains(text(), 'No results found.')]"
+        self.web_wait.until(
+            EC.any_of(
+                EC.presence_of_element_located((By.XPATH, results_xpath)),
+                EC.presence_of_element_located((By.XPATH, no_results_xpath)),
+            )
+        )
+        if self.driver.find_elements(by=By.XPATH, value=no_results_xpath):
+            return
+        room_list = self.driver.find_elements(by=By.XPATH, value=results_xpath)
         for room in room_list:
             room_soup = BeautifulSoup(room.get_attribute("innerHTML"), "html.parser")
             building_name = room_soup.find("div", {"class": "tower-title ng-binding"})
