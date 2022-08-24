@@ -1,5 +1,5 @@
 from fetch.fetchStreetEasy import FetchStreetEasy
 
 
-class Fetch1QPS(FetchStreetEasy):
+class FetchPearsonCourtSquare(FetchStreetEasy):
     pass

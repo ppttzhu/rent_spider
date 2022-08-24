@@ -82,6 +82,12 @@ WEBSITES = [
         "platform": Platform.AWS,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/watermark-lic",
+        WEBSITE_NAME_COLUMN: "Watermark",
+        "class_name": "Watermark",
+        "platform": Platform.AWS,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/qlic-41_42-24-street-long_island_city",
         WEBSITE_NAME_COLUMN: "QLIC",
         "class_name": "QLIC",
@@ -103,6 +109,12 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/22_22-jackson-avenue-long_island_city",
         WEBSITE_NAME_COLUMN: "22-22 Jackson Ave",
         "class_name": "JacksonAve",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-pearson-court-square",
+        WEBSITE_NAME_COLUMN: "Pearson CourtSquare",
+        "class_name": "PearsonCourtSquare",
         "platform": Platform.AWS,
     },
     {

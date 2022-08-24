@@ -29,6 +29,7 @@ class FetchStreetEasy(Fetch):
             room = row.find_all("td")
             rooms.append(
                 {
+                    "room_href": room[0].find("a", href=True)["href"],
                     "room_number": room[0].text,
                     "room_type": room[2].text + room[3].text,
                     "room_price": room[1].text.split()[0],
@@ -41,7 +42,7 @@ class FetchStreetEasy(Fetch):
             self.fetch_room_info(room)
 
     def fetch_room_info(self, room):
-        html_doc = self.get_html_doc(self.get_room_url(room["room_number"]))
+        html_doc = self.get_html_doc(room["room_href"])
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
@@ -51,10 +52,6 @@ class FetchStreetEasy(Fetch):
             move_in_date=move_in_date.text,
             room_price=room["room_price"],
         )
-
-    def get_room_url(self, room_number):
-        room_number = self.process_room_number(room_number)
-        return f"{self.url}/{room_number}"
 
     def process_room_number(self, room_number):
         return room_number.split(" - ")[0].replace("#", "").replace("\n", "").replace("-", "")
