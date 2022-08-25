@@ -24,3 +24,24 @@
     </tbody>
 </table>
 {% endblock %}
+
+{% block summary_table %}
+<table id="data" class="table table-striped sortable">
+    <thead>
+        <tr>
+            {% for header in summary_headers %}
+            <th>{{header}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, room in summary_rooms.items() %}
+        <tr>
+            <td> <a href="{{room['url']}}"> [{{room['priority']}}] {{name}} </a> </td>
+            <td> {{room['count']}} </td>
+            <td> {{room['frequency']}} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
