@@ -100,6 +100,12 @@ WEBSITES = [
         "platform": Platform.AWS,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/hero-condominium",
+        WEBSITE_NAME_COLUMN: "Hero",
+        "class_name": "Hero",
+        "platform": Platform.AWS,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/galerie-condominium",
         WEBSITE_NAME_COLUMN: "Galerie",
         "class_name": "Galerie",
@@ -109,6 +115,12 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/22_22-jackson-avenue-long_island_city",
         WEBSITE_NAME_COLUMN: "22-22 Jackson Ave",
         "class_name": "JacksonAve",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/aurora-condominium",
+        WEBSITE_NAME_COLUMN: "Aurora",
+        "class_name": "Aurora",
         "platform": Platform.AWS,
     },
     {
