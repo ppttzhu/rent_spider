@@ -94,6 +94,18 @@ WEBSITES = [
         "platform": Platform.AWS,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/luna-lic",
+        WEBSITE_NAME_COLUMN: "Luna",
+        "class_name": "Luna",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/one-lic",
+        WEBSITE_NAME_COLUMN: "One LIC",
+        "class_name": "OneLIC",
+        "platform": Platform.AWS,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/star-tower-lic",
         WEBSITE_NAME_COLUMN: "Star Tower",
         "class_name": "StarTower",
