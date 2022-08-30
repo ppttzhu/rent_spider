@@ -136,6 +136,18 @@ WEBSITES = [
         "platform": Platform.AWS,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/packard-square",
+        WEBSITE_NAME_COLUMN: "Packard Square",
+        "class_name": "PackardSquare",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/packard-square-west",
+        WEBSITE_NAME_COLUMN: "Packard Square West",
+        "class_name": "PackardSquareWest",
+        "platform": Platform.AWS,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-pearson-court-square",
         WEBSITE_NAME_COLUMN: "Pearson CourtSquare",
         "class_name": "PearsonCourtSquare",
