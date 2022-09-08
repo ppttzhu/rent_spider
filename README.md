@@ -56,6 +56,13 @@ Debug mode: `export DEBUG=pw:api`
 ## Test Web App
 
 ```
+mysql -u root -p
+use ppttzhu$default
+```
+
+## Test Web App
+
+```
 python3 flask_app/app.py
 ```
 

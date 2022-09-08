@@ -51,7 +51,6 @@ class Database:
             self.tunnel.stop()
 
     def update(self, cur_rooms, succeeded_websites):
-        # TODO: collect statistics
         if c.NEED_UPDATE_WEBSITE:
             self.update_website()
         if not succeeded_websites:
@@ -60,10 +59,12 @@ class Database:
         new_rooms, removed_rooms, updated_rooms = self.compare_rooms_diff(prev_rooms, cur_rooms)
         for room in new_rooms:
             self.create_room(room)
+            self.create_room_history(room)
         for room in removed_rooms:
             self.delete_room(room)
         for prev_room, cur_room in updated_rooms:
             self.update_room(prev_room, cur_room)
+            self.create_room_history(cur_room)
         logging.info(f"Previous rooms number: {len(prev_rooms)}")
         logging.info(f"Current rooms number: {len(cur_rooms)}")
         logging.info(f"New rooms number: {len(new_rooms)}")
@@ -129,12 +130,39 @@ class Database:
             rooms.append(room)
         return rooms
 
+    def get_room_history(self):
+        columns = c.WEBSITE_ROOM_HISTORY_VIEW_COLUMNS
+        order_by = [c.ROOM_FETCH_DATE_COLUMN]
+        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {",".join(order_by)}"""
+        self.cursor.execute(select_sql)
+        rows = self.cursor.fetchall()
+        rooms = []
+        for row in rows:
+            room = {}
+            for idx, column in enumerate(columns):
+                room[column] = row[idx]
+            rooms.append(room)
+        return rooms
+
     def create_room(self, room):
         columns = c.ROOM_TABLE_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
         values = [room[column] for column in c.ROOM_TABLE_COLUMNS] + [
             datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         ]
         insert_sql = f"""INSERT INTO {c.ROOM_TABLE_NAME} ({",".join(columns)}) VALUES ('{"','".join(values)}')"""
+        try:
+            self.cursor.execute(insert_sql)
+            self.conn.commit()
+        except Exception:
+            logging.error(f"Failed to execute {insert_sql}")
+            raise
+
+    def create_room_history(self, room):
+        columns = c.ROOM_HISTORY_TABLE_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
+        values = [room[column] for column in c.ROOM_HISTORY_TABLE_COLUMNS] + [
+            datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        ]
+        insert_sql = f"""INSERT INTO {c.ROOM_HISTORY_TABLE_NAME} ({",".join(columns)}) VALUES ('{"','".join(values)}')"""
         try:
             self.cursor.execute(insert_sql)
             self.conn.commit()

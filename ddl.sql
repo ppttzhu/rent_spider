@@ -20,3 +20,16 @@ CREATE OR REPLACE VIEW v_website_room AS (
 	SELECT r.*, w.url, w.priority FROM room r
 	NATURAL JOIN website w
 );
+
+CREATE TABLE room_history (
+	website_name VARCHAR(50) NOT NULL,
+	room_type VARCHAR(50) NOT NULL,
+	room_price VARCHAR(50) NOT NULL,
+	fetch_date DATETIME NOT NULL,
+	FOREIGN KEY (website_name) REFERENCES website(website_name) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE VIEW v_website_room_history AS (
+	SELECT r.*, w.url, w.priority FROM room_history r
+	NATURAL JOIN website w
+);

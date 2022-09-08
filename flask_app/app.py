@@ -17,7 +17,7 @@ def index():
     rooms = get_rooms()
     summary_rooms = get_summary_rooms(rooms)
     return render_template(
-        "table.html",
+        "rooms.html",
         title=f"全部房源({len(rooms)})",
         rooms=rooms,
         headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
@@ -25,6 +25,18 @@ def index():
         summary_title=f"房源网站数量汇总({len(c.WEBSITES)})",
         summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], "房源数量", "抓取频率"],
         summary_rooms=summary_rooms,
+    )
+
+
+@app.route("/statistics")
+def statistics_page():
+    room_history = get_room_history()
+    return render_template(
+        "statistics.html",
+        title=f"房源信息统计({len(room_history)})",
+        room_history=room_history,
+        headers=c.ROOM_TABLE_HISTORY_COLUMNS_NAME,
+        columns=c.WEBSITE_ROOM_HISTORY_VIEW_COLUMNS,
     )
 
 
@@ -48,6 +60,11 @@ def get_summary_rooms(rooms):
     for room in rooms:
         summary_rooms[room[c.ROOM_WEBSITE_NAME_COLUMN]]["count"] += 1
     return summary_rooms
+
+
+def get_room_history():
+    database = Database()
+    return database.get_room_history()
 
 
 if __name__ == "__main__":
