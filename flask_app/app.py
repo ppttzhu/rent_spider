@@ -35,8 +35,8 @@ def statistics_page():
         "statistics.html",
         title=f"房源信息统计({len(room_history)})",
         room_history=room_history,
-        headers=c.ROOM_TABLE_HISTORY_COLUMNS_NAME,
-        columns=c.WEBSITE_ROOM_HISTORY_VIEW_COLUMNS,
+        headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
+        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN],
     )
 
 

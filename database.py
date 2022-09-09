@@ -131,8 +131,8 @@ class Database:
         return rooms
 
     def get_room_history(self):
-        columns = c.WEBSITE_ROOM_HISTORY_VIEW_COLUMNS
-        order_by = [c.ROOM_FETCH_DATE_COLUMN]
+        columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
+        order_by = [c.ROOM_FETCH_DATE_COLUMN, c.WEBSITE_PRIORITY_COLUMN, c.ROOM_ROOM_TYPE_COLUMN]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {",".join(order_by)}"""
         self.cursor.execute(select_sql)
         rows = self.cursor.fetchall()
@@ -158,8 +158,8 @@ class Database:
             raise
 
     def create_room_history(self, room):
-        columns = c.ROOM_HISTORY_TABLE_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
-        values = [room[column] for column in c.ROOM_HISTORY_TABLE_COLUMNS] + [
+        columns = c.ROOM_TABLE_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
+        values = [room[column] for column in c.ROOM_TABLE_COLUMNS] + [
             datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         ]
         insert_sql = f"""INSERT INTO {c.ROOM_HISTORY_TABLE_NAME} ({",".join(columns)}) VALUES ('{"','".join(values)}')"""
