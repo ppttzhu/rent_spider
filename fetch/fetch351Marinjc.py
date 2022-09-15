@@ -25,10 +25,10 @@ class Fetch351Marinjc(Fetch):
         self.web_wait.until(EC.presence_of_element_located((By.XPATH, "//table/tbody/tr")))
         room_list = self.driver.find_elements(by=By.XPATH, value="//table/tbody/tr")
         for row in room_list:
-            room_number = row.find_element(by=By.XPATH, value='.//td[@data-label="Apartment"]').text
-            room_price = row.find_element(by=By.XPATH, value='.//td[@data-label="Rent"]').text
+            room_number = row.find_element(by=By.XPATH, value='.//td[@class="td-card-name"]').text
+            room_price = row.find_element(by=By.XPATH, value='.//td[@class="td-card-rent"]').text
             move_in_date = row.find_element(
-                by=By.XPATH, value='.//td[@data-label="Date Available"]'
+                by=By.XPATH, value='.//td[@class="td-card-available"]'
             ).text
             self.add_room_info(
                 room_number=room_number,

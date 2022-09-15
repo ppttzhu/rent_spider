@@ -10,8 +10,8 @@
     </head>
     <div class="container">
         <ul class="nav nav-tabs">
-            <li><a href="/">全部房源</a></li>
-            <li><a href="/statistics">房源信息统计</a></li>
+            <li class="{{'active' if id == 'home'}}"><a href="/">全部房源</a></li>
+            <li class="{{'active' if id == 'statistics'}}"><a href="/statistics">房源信息统计</a></li>
         </ul>
         {% block content %}{% endblock %}
     </div>

@@ -18,6 +18,7 @@ def index():
     summary_rooms = get_summary_rooms(rooms)
     return render_template(
         "rooms.html",
+        id="home",
         title=f"全部房源({len(rooms)})",
         rooms=rooms,
         headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
@@ -33,6 +34,7 @@ def statistics_page():
     room_history = get_room_history()
     return render_template(
         "statistics.html",
+        id="statistics",
         title=f"房源信息统计({len(room_history)})",
         room_history=room_history,
         headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
