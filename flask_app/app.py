@@ -42,6 +42,19 @@ def statistics_page():
     )
 
 
+@app.route("/fetch-status")
+def fetch_status_page():
+    fetch_status = get_fetch_status()
+    return render_template(
+        "fetch_status.html",
+        id="fetch_status",
+        title="抓取是否成功",
+        fetch_status=fetch_status,
+        headers=c.FETCH_STATUS_COLUMNS_NAME,
+        columns=c.FETCH_STATUS_COLUMNS + [c.WEBSITE_PRIORITY_COLUMN],
+    )
+
+
 def get_rooms():
     database = Database()
     columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
@@ -67,6 +80,11 @@ def get_summary_rooms(rooms):
 def get_room_history():
     database = Database()
     return database.get_room_history()
+
+
+def get_fetch_status():
+    database = Database()
+    return database.get_fetch_status()
 
 
 if __name__ == "__main__":

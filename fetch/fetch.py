@@ -6,7 +6,6 @@ import constants as c
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from utils.send_mail import send_error_email
 
 
 class Fetch:
@@ -23,7 +22,6 @@ class Fetch:
         self.room_info = []
         self.room_info_tuple_set = set()  # Avoid duplicate value
         self.web_wait = WebDriverWait(self.driver, c.WEB_DRIVER_WAIT_SECOND)
-        self.is_fetch_succeeded = True
 
     def fetch(self):
         try:
@@ -32,17 +30,15 @@ class Fetch:
             return self.room_info
         except Exception as error:
             self.report_error(error)
-            return []
+            return None
 
     def fetch_web(self):
         raise NotImplementedError("Must override abstract method")
 
     def report_error(self, error):
-        self.is_fetch_succeeded = False
         logging.error(f"Fetch Rooms Error in {self.website_name}")
         logging.error(repr(error))
         traceback.print_exc()
-        send_error_email(self.website_name, error)
 
     def add_room_info(self, room_number, room_type, move_in_date, room_price):
         if not room_number or not room_type or not move_in_date or not room_price:

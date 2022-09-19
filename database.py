@@ -50,7 +50,20 @@ class Database:
         if c.PLATFORM == c.Platform.AWS:
             self.tunnel.stop()
 
-    def update(self, cur_rooms, succeeded_websites):
+    def update(self, all_rooms):
+        website_room_counts = {}
+        failed_websites, succeeded_websites, cur_rooms = [], [], []
+        for website_name, rooms in all_rooms.items():
+            if rooms is None:
+                failed_websites.append(website_name)
+                website_room_counts[website_name] = -1
+            else:
+                succeeded_websites.append(website_name)
+                website_room_counts[website_name] = len(rooms)
+                cur_rooms += rooms
+        logging.info(f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}")
+        logging.info(f"Failed websites ({len(failed_websites)}): {failed_websites}")
+        self.update_fetch_status(website_room_counts)
         if c.NEED_UPDATE_WEBSITE:
             self.update_website()
         if not succeeded_websites:
@@ -71,6 +84,20 @@ class Database:
         logging.info(f"Removed rooms number: {len(removed_rooms)}")
         logging.info(f"Updated rooms number: {len(updated_rooms)}")
         return new_rooms, removed_rooms, updated_rooms
+
+    def update_fetch_status(self, website_room_counts):
+        date_string = datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        multi_rows = [
+            f"'{website_name}',{room_count},'{date_string}'"
+            for website_name, room_count in website_room_counts.items()
+        ]
+        insert_sql = f"""INSERT INTO {c.FETCH_STATUS_TABLE_NAME} ({",".join(c.FETCH_STATUS_COLUMNS)}) VALUES ({"),(".join(multi_rows)})"""
+        try:
+            self.cursor.execute(insert_sql)
+            self.conn.commit()
+        except Exception:
+            logging.error(f"Failed to execute {insert_sql}")
+            raise
 
     def compare_rooms_diff(self, prev_rooms, cur_rooms):
         def get_primary_key(room):
@@ -134,6 +161,20 @@ class Database:
         columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
         order_by = [c.ROOM_FETCH_DATE_COLUMN, c.WEBSITE_PRIORITY_COLUMN, c.ROOM_ROOM_TYPE_COLUMN]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {",".join(order_by)}"""
+        self.cursor.execute(select_sql)
+        rows = self.cursor.fetchall()
+        rooms = []
+        for row in rows:
+            room = {}
+            for idx, column in enumerate(columns):
+                room[column] = row[idx]
+            rooms.append(room)
+        return rooms
+
+    def get_fetch_status(self):
+        columns = c.FETCH_STATUS_COLUMNS + [c.WEBSITE_PRIORITY_COLUMN]
+        order_by = [c.ROOM_FETCH_DATE_COLUMN]
+        select_sql = f"""SELECT {",".join(columns)} FROM {c.FETCH_STATUS_VIEW_NAME} ORDER BY {",".join(order_by)} DESC"""
         self.cursor.execute(select_sql)
         rows = self.cursor.fetchall()
         rooms = []

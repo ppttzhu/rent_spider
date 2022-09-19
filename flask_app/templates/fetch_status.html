@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>{{ title }}</h1>
+    <hr>
+    <table id="data" class="table table-striped sortable">
+        <thead>
+            <tr>
+                {% for header in headers %}
+                <th>{{header}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in fetch_status %}
+            <tr>
+                {% for column in columns %}
+                {% if column == 'website_name' %}
+                <td> [{{room['priority']}}] {{room['website_name']}} </td>
+                {% elif column not in ['priority'] %}
+                <td>{{room[column]}}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <center>
+        <canvas id="chart" width="600" height="400"></canvas>
+        <script>
+            //         var barData = {
+            //             labels: [
+            //                 {% for item in labels %}
+            //         "{{ item }}",
+            //             {% endfor %}
+            //             ],
+            //         datasets: [{
+            //             label: "hello",
+            //             data: [
+            //                 {% for item in values %}
+            //                         "{{ item }}",
+            //         {% endfor %}
+            //         ]
+            //             }]
+            //   }
+            var ctx = document.getElementById("chart").getContext("2d");
+            let lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "test",
+                        data: [{
+                            x: '2021-11-06 23:39:30',
+                            y: 50
+                        }, {
+                            x: '2021-11-07 01:00:28',
+                            y: 60
+                        }, {
+                            x: '2021-11-07 09:00:28',
+                            y: 20
+                        }]
+                    }],
+                },
+                options: {
+                    scales: {
+                        x: {
+                            min: '2021-11-07 00:00:00',
+                        }
+                    }
+                }
+            });
+        </script>
+    </center>
+</div>
+{% endblock %}

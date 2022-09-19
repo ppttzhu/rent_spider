@@ -80,10 +80,3 @@ def send_notification_email(new_rooms, removed_rooms, updated_rooms):
         c.NOTIFICATION_EMAIL_SUBJECT,
         content,
     )
-
-
-def send_error_email(website_name, error):
-    content = f"<h3>{website_name}</h3>"
-    content += f"<div>{repr(error)}</div>"
-    content = "<html><body>" + content + "</body></html>"
-    send_email(c.EMAIL_RECEIVERS_DEV, c.EMAIL_RECEIVERS_DEV, c.ERROR_EMAIL_SUBJECT, content)

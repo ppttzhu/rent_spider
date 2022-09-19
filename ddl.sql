@@ -36,3 +36,16 @@ CREATE OR REPLACE VIEW v_website_room_history AS (
 	SELECT r.*, w.url, w.priority FROM room_history r
 	NATURAL JOIN website w
 );
+
+CREATE TABLE fetch_status (
+	website_name VARCHAR(50) NOT NULL,
+	room_count INT NOT NULL,
+	fetch_date DATETIME NOT NULL,
+	PRIMARY KEY(website_name, fetch_date),
+	FOREIGN KEY (website_name) REFERENCES website(website_name) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE VIEW v_fetch_status AS (
+	SELECT r.*, w.priority FROM fetch_status r
+	NATURAL JOIN website w
+)

@@ -20,25 +20,19 @@ def main():
         if c.PLATFORM != c.Platform.AWS:
             driver = init_driver()
         logging.info("-------------- Start Fetching Task -------------- ")
-        all_rooms, succeeded_websites, failed_websites = [], [], []
         logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
+        all_rooms = {}
         for key in c.WEBSITES_TARGETS:
             fetch_class = getattr(importlib.import_module(f"fetch.fetch{key}"), f"Fetch{key}")
             fetch_controller = fetch_class(driver, browser)
             rooms = fetch_controller.fetch()
-            if fetch_controller.is_fetch_succeeded:
-                all_rooms += rooms
-                succeeded_websites.append(fetch_controller.website_name)
-            else:
-                failed_websites.append(fetch_controller.website_name)
+            all_rooms[fetch_controller.website_name] = rooms
         if driver:
             driver.quit()
         if browser:
             browser.close()
-    logging.info(f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}")
-    logging.info(f"Failed websites ({len(failed_websites)}): {failed_websites}")
     database = Database()
-    new_rooms, removed_rooms, updated_rooms = database.update(all_rooms, succeeded_websites)
+    new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
     if new_rooms or removed_rooms or updated_rooms:
         send_notification_email(new_rooms, removed_rooms, updated_rooms)
     else:
