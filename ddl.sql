@@ -48,4 +48,4 @@ CREATE TABLE fetch_status (
 CREATE OR REPLACE VIEW v_fetch_status AS (
 	SELECT r.*, w.priority FROM fetch_status r
 	NATURAL JOIN website w
-)
+);

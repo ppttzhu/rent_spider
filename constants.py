@@ -50,7 +50,8 @@ FETCH_STATUS_COLUMNS = [
 ]
 ROOM_TABLE_COLUMNS_NAME = ["房源网站", "户型", "房号", "入住时间", "房价"]
 ROOM_FETCH_DATE_COLUMN_NAME = "抓取时间"
-FETCH_STATUS_COLUMNS_NAME = ["房源网站", "房间数量", ROOM_FETCH_DATE_COLUMN_NAME]
+ROOM_COUNT_COLUMN_NAME = "房间数量"
+FETCH_STATUS_COLUMNS_NAME = ["房源网站", ROOM_COUNT_COLUMN_NAME, ROOM_FETCH_DATE_COLUMN_NAME]
 
 WEBSITE_ROOM_VIEW_NAME = "v_website_room"
 WEBSITE_ROOM_HISTORY_VIEW_NAME = "v_website_room_history"
@@ -75,9 +76,21 @@ WEBSITES = [
         "platform": Platform.PYTHONANYWHERE,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/jackson-park-lic",
+        WEBSITE_NAME_COLUMN: "Jackson Park LIC SE",
+        "class_name": "JacksonParkAWS",
+        "platform": Platform.AWS,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/1-qps",
         WEBSITE_NAME_COLUMN: "1 QPS",
         "class_name": "1QPS",
+        "platform": Platform.AWS,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/rise-lic",
+        WEBSITE_NAME_COLUMN: "Rise LIC",
+        "class_name": "RiseLIC",
         "platform": Platform.AWS,
     },
     {

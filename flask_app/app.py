@@ -24,7 +24,7 @@ def index():
         headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
         columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN],
         summary_title=f"房源网站数量汇总({len(c.WEBSITES)})",
-        summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], "房源数量", "抓取频率"],
+        summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], c.ROOM_COUNT_COLUMN_NAME, "抓取频率"],
         summary_rooms=summary_rooms,
     )
 

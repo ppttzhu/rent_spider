@@ -51,6 +51,8 @@ class Database:
             self.tunnel.stop()
 
     def update(self, all_rooms):
+        if c.NEED_UPDATE_WEBSITE:
+            self.update_website()
         website_room_counts = {}
         failed_websites, succeeded_websites, cur_rooms = [], [], []
         for website_name, rooms in all_rooms.items():
@@ -64,8 +66,6 @@ class Database:
         logging.info(f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}")
         logging.info(f"Failed websites ({len(failed_websites)}): {failed_websites}")
         self.update_fetch_status(website_room_counts)
-        if c.NEED_UPDATE_WEBSITE:
-            self.update_website()
         if not succeeded_websites:
             return [], [], []
         prev_rooms = self.get_rooms(websites=succeeded_websites)
@@ -159,8 +159,8 @@ class Database:
 
     def get_room_history(self):
         columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
-        order_by = [c.ROOM_FETCH_DATE_COLUMN, c.WEBSITE_PRIORITY_COLUMN, c.ROOM_ROOM_TYPE_COLUMN]
-        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {",".join(order_by)}"""
+        order_by = [c.WEBSITE_PRIORITY_COLUMN, c.ROOM_ROOM_TYPE_COLUMN]
+        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {c.ROOM_FETCH_DATE_COLUMN} DESC, {",".join(order_by)}"""
         self.cursor.execute(select_sql)
         rows = self.cursor.fetchall()
         rooms = []

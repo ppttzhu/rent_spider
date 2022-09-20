@@ -1,5 +1,3 @@
-# Deprecated
-
 from fetch.fetchStreetEasy import FetchStreetEasy
 
 
