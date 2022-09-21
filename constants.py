@@ -22,6 +22,7 @@ WEB_DRIVER_WAIT_SECOND = 20
 
 WEBSITE_TABLE_NAME = "website"
 WEBSITE_NAME_COLUMN = "website_name"
+WEBSITE_LOCATION_COLUMN = "location"
 WEBSITE_URL_COLUMN = "url"
 WEBSITE_PRIORITY_COLUMN = "priority"
 
@@ -58,6 +59,7 @@ WEBSITE_ROOM_HISTORY_VIEW_NAME = "v_website_room_history"
 FETCH_STATUS_VIEW_NAME = "v_fetch_status"
 WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS = [
     WEBSITE_URL_COLUMN,
+    WEBSITE_LOCATION_COLUMN,
     WEBSITE_PRIORITY_COLUMN,
 ]
 WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
@@ -68,156 +70,182 @@ WEBSITES = [
         WEBSITE_NAME_COLUMN: "Steel Haus",
         "class_name": "SteelHaus",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://jacksonparklic.com/availability/",
         WEBSITE_NAME_COLUMN: "Jackson Park LIC",
         "class_name": "JacksonPark",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/jackson-park-lic",
         WEBSITE_NAME_COLUMN: "Jackson Park LIC SE",
         "class_name": "JacksonParkAWS",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/1-qps",
         WEBSITE_NAME_COLUMN: "1 QPS",
         "class_name": "1QPS",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/rise-lic",
         WEBSITE_NAME_COLUMN: "Rise LIC",
         "class_name": "RiseLIC",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/skyline-tower",
         WEBSITE_NAME_COLUMN: "Skyline Tower",
         "class_name": "SkylineTower",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/altalic-29_22-northern-boulevard-long_island_city",
         WEBSITE_NAME_COLUMN: "AltaLIC",
         "class_name": "Alta",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/watermark-lic",
         WEBSITE_NAME_COLUMN: "Watermark",
         "class_name": "Watermark",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/qlic-41_42-24-street-long_island_city",
         WEBSITE_NAME_COLUMN: "QLIC",
         "class_name": "QLIC",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/luna-lic",
         WEBSITE_NAME_COLUMN: "Luna",
         "class_name": "Luna",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/one-lic",
         WEBSITE_NAME_COLUMN: "One LIC",
         "class_name": "OneLIC",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/star-tower-lic",
         WEBSITE_NAME_COLUMN: "Star Tower",
         "class_name": "StarTower",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/hero-condominium",
         WEBSITE_NAME_COLUMN: "Hero",
         "class_name": "Hero",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/galerie-condominium",
         WEBSITE_NAME_COLUMN: "Galerie",
         "class_name": "Galerie",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/22_22-jackson-avenue-long_island_city",
         WEBSITE_NAME_COLUMN: "22-22 Jackson Ave",
         "class_name": "JacksonAve",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/aurora-condominium",
         WEBSITE_NAME_COLUMN: "Aurora",
         "class_name": "Aurora",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/packard-square",
         WEBSITE_NAME_COLUMN: "Packard Square",
         "class_name": "PackardSquare",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/packard-square-west",
         WEBSITE_NAME_COLUMN: "Packard Square West",
         "class_name": "PackardSquareWest",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-pearson-court-square",
         WEBSITE_NAME_COLUMN: "Pearson CourtSquare",
         "class_name": "PearsonCourtSquare",
         "platform": Platform.AWS,
+        "location": "LIC",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.351marinjc.com/floorplans",
         WEBSITE_NAME_COLUMN: "351 Marin JC",
         "class_name": "351Marinjc",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.grovepointe.com/floorplans",
         WEBSITE_NAME_COLUMN: "Grove Pointe",
         "class_name": "Gp",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.235grand.com/floorplans",
         WEBSITE_NAME_COLUMN: "235 Grand Street",
         "class_name": "235GrandStreet",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.485marin.com/floorplans",
         WEBSITE_NAME_COLUMN: "485 Marin",
         "class_name": "485Marin",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.225grandstreet.com/floorplans",
         WEBSITE_NAME_COLUMN: "225 Grand Street",
         "class_name": "225GrandStreet",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.18park.com/floorplans",
         WEBSITE_NAME_COLUMN: "18 Park",
         "class_name": "18Park",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
     {
         WEBSITE_URL_COLUMN: "https://www.journalsquared.com/availabilities",
         WEBSITE_NAME_COLUMN: "Journal Squared",
         "class_name": "Jsq",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
     },
 ]
 

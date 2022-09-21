@@ -2,6 +2,7 @@
 CREATE TABLE website (
 	website_name VARCHAR(50) PRIMARY KEY,
 	url VARCHAR(100),
+	location VARCHAR(50),
 	priority INT NOT NULL
 );
 
@@ -17,7 +18,7 @@ CREATE TABLE room (
 );
 
 CREATE OR REPLACE VIEW v_website_room AS (
-	SELECT r.*, w.url, w.priority FROM room r
+	SELECT r.*, w.url, w.location, w.priority FROM room r
 	NATURAL JOIN website w
 );
 
@@ -33,7 +34,7 @@ CREATE TABLE room_history (
 );
 
 CREATE OR REPLACE VIEW v_website_room_history AS (
-	SELECT r.*, w.url, w.priority FROM room_history r
+	SELECT r.*, w.url, w.location, w.priority FROM room_history r
 	NATURAL JOIN website w
 );
 

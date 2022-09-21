@@ -259,9 +259,8 @@ class Database:
                 raise
         # Update or insert if it is new
         for idx, website in enumerate(c.WEBSITES):
-            website_name = website[c.WEBSITE_NAME_COLUMN]
-            url = website[c.WEBSITE_URL_COLUMN]
-            update_sql = f"""INSERT INTO {c.WEBSITE_TABLE_NAME} ({c.WEBSITE_NAME_COLUMN}, {c.WEBSITE_URL_COLUMN}, {c.WEBSITE_PRIORITY_COLUMN}) VALUES('{website_name}', '{url}', {idx}) ON DUPLICATE KEY UPDATE {c.WEBSITE_URL_COLUMN}='{url}', {c.WEBSITE_PRIORITY_COLUMN}={idx}"""
+            url, location = website[c.WEBSITE_URL_COLUMN], website[c.WEBSITE_LOCATION_COLUMN]
+            update_sql = f"""INSERT INTO {c.WEBSITE_TABLE_NAME} ({c.WEBSITE_NAME_COLUMN}, {c.WEBSITE_URL_COLUMN}, {c.WEBSITE_LOCATION_COLUMN}, {c.WEBSITE_PRIORITY_COLUMN}) VALUES('{website[c.WEBSITE_NAME_COLUMN]}', '{url}', '{location}', {idx}) ON DUPLICATE KEY UPDATE {c.WEBSITE_URL_COLUMN}='{url}', {c.WEBSITE_LOCATION_COLUMN}='{location}', {c.WEBSITE_PRIORITY_COLUMN}={idx}"""
             try:
                 self.cursor.execute(update_sql)
                 self.conn.commit()

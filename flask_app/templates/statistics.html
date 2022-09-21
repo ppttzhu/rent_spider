@@ -18,7 +18,7 @@
                 {% for column in columns %}
                 {% if column == 'website_name' %}
                 <td> <a href="{{room['url']}}"> [{{room['priority']}}] {{room['website_name']}} </a> </td>
-                {% elif column not in ['url', 'priority'] %}
+                {% elif column not in ['url', 'location', 'priority'] %}
                 <td>{{room[column]}}</td>
                 {% endif %}
                 {% endfor %}

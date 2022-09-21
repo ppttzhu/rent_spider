@@ -14,16 +14,32 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    return room_with_location_filter()
+
+
+@app.route("/lic")
+def rooms_in_lic():
+    return room_with_location_filter("LIC")
+
+
+@app.route("/nj")
+def rooms_in_nj():
+    return room_with_location_filter("NJ")
+
+
+def room_with_location_filter(location=None):
     rooms = get_rooms()
-    summary_rooms = get_summary_rooms(rooms)
+    if location:
+        rooms = [room for room in rooms if room[c.WEBSITE_LOCATION_COLUMN] == location]
+    summary_rooms = get_summary_rooms(rooms, location)
     return render_template(
         "rooms.html",
-        id="home",
-        title=f"全部房源({len(rooms)})",
+        id=f"{location or 'home'}",
+        title=f"{location or '全部房源'}({len(rooms)})",
         rooms=rooms,
         headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
         columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN],
-        summary_title=f"房源网站数量汇总({len(c.WEBSITES)})",
+        summary_title=f"房源网站数量汇总({len(summary_rooms)})",
         summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], c.ROOM_COUNT_COLUMN_NAME, "抓取频率"],
         summary_rooms=summary_rooms,
     )
@@ -62,7 +78,7 @@ def get_rooms():
     return rooms
 
 
-def get_summary_rooms(rooms):
+def get_summary_rooms(rooms, location=None):
     summary_rooms = {
         web[c.ROOM_WEBSITE_NAME_COLUMN]: {
             "count": 0,
@@ -71,6 +87,7 @@ def get_summary_rooms(rooms):
             c.WEBSITE_URL_COLUMN: web[c.WEBSITE_URL_COLUMN],
         }
         for index, web in enumerate(c.WEBSITES)
+        if (True if not location else web[c.WEBSITE_LOCATION_COLUMN] == location)
     }
     for room in rooms:
         summary_rooms[room[c.ROOM_WEBSITE_NAME_COLUMN]]["count"] += 1
