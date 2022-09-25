@@ -1,76 +1,87 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div>
     <h1>{{ title }}</h1>
-    <hr>
-    <table id="data" class="table table-striped sortable">
-        <thead>
-            <tr>
-                {% for header in headers %}
-                <th>{{header}}</th>
+    <hr />
+    <form>
+        <div class="form-group">
+            <label for="website-select">筛选网页</label>
+            <select class="form-control" id="website-select" onchange="websiteSelected(this.value)">
+                {% for name in group_by_website %}
+                <option value="{{name}}">{{name}}</option>
                 {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for room in fetch_status %}
-            <tr>
-                {% for column in columns %}
-                {% if column == 'website_name' %}
-                <td> [{{room['priority']}}] {{room['website_name']}} </td>
-                {% elif column not in ['priority'] %}
-                <td>{{room[column]}}</td>
-                {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </select>
+        </div>
+    </form>
+
     <center>
         <canvas id="chart" width="600" height="400"></canvas>
-        <script>
-            //         var barData = {
-            //             labels: [
-            //                 {% for item in labels %}
-            //         "{{ item }}",
-            //             {% endfor %}
-            //             ],
-            //         datasets: [{
-            //             label: "hello",
-            //             data: [
-            //                 {% for item in values %}
-            //                         "{{ item }}",
-            //         {% endfor %}
-            //         ]
-            //             }]
-            //   }
-            var ctx = document.getElementById("chart").getContext("2d");
-            let lineChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: "test",
-                        data: [{
-                            x: '2021-11-06 23:39:30',
-                            y: 50
-                        }, {
-                            x: '2021-11-07 01:00:28',
-                            y: 60
-                        }, {
-                            x: '2021-11-07 09:00:28',
-                            y: 20
-                        }]
-                    }],
-                },
-                options: {
-                    scales: {
-                        x: {
-                            min: '2021-11-07 00:00:00',
+    </center>
+
+    <script type="text/javascript">
+        let selectedWeb;
+        let chart = renderChart('');
+
+        function websiteSelected(web) {
+            selectedWeb = web;
+            chart.destroy();
+            chart = renderChart(web);
+        }
+
+        function renderChart(selectedWeb) {
+            const datasets = [
+                      {% for name, records in group_by_website.items() %}
+                        {
+                            label: "{{ name }}",
+                            hidden: selectedWeb && selectedWeb !== "{{ name }}",
+                            borderColor: randomColorGenerator(),
+                            backgroundColor: '#FFFFFF',
+                            data: [
+                                {% for record in records %}
+                                    {
+                                        "x": "{{ record.x }}",
+                                        "y": {{ record.y }},
+                                    },
+                                {% endfor %}
+                            ]
+                        },
+                    {% endfor %}
+                  ]
+        const ctx = document.getElementById("chart").getContext("2d");
+        console.log("datasets", datasets);
+        return new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: datasets,
+            },
+            options: {
+                plugins: {
+                    title: {
+                        text: '房间数量',
+                        display: true,
+                        font: {
+                            size: 24
                         }
                     }
+                },
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            displayFormats: {
+                                hour: 'yyyy-MM-dd HH:mm'
+                            },
+                            parser: "yyyy-MM-dd HH:mm:ss",
+                        }
+                    },
                 }
-            });
-        </script>
-    </center>
+            }
+        });
+        }
+
+        function randomColorGenerator() {
+            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+        };
+
+    </script>
 </div>
 {% endblock %}

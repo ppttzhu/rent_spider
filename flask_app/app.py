@@ -1,5 +1,7 @@
+import json
 import os
 import sys
+from typing import DefaultDict
 
 root_dir = os.path.join(os.path.dirname(__file__), "../")
 
@@ -61,13 +63,20 @@ def statistics_page():
 @app.route("/fetch-status")
 def fetch_status_page():
     fetch_status = get_fetch_status()
+    group_by_website = DefaultDict(list)
+    for record in fetch_status:
+        group_by_website[record[c.ROOM_WEBSITE_NAME_COLUMN]].append(
+            {
+                "x": record[c.ROOM_FETCH_DATE_COLUMN].strftime("%Y-%m-%d %H:%M:%S"),
+                "y": record[c.FETCH_STATUS_ROOM_COUNT_COLUMN],
+            }
+        )
     return render_template(
         "fetch_status.html",
         id="fetch_status",
-        title="抓取是否成功",
+        title="抓取记录",
         fetch_status=fetch_status,
-        headers=c.FETCH_STATUS_COLUMNS_NAME,
-        columns=c.FETCH_STATUS_COLUMNS + [c.WEBSITE_PRIORITY_COLUMN],
+        group_by_website=group_by_website,
     )
 
 
