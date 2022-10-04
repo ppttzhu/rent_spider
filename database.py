@@ -53,6 +53,7 @@ class Database:
     def update(self, all_rooms):
         if c.NEED_UPDATE_WEBSITE:
             self.update_website()
+            self.delete_old_history()
         website_room_counts = {}
         failed_websites, succeeded_websites, cur_rooms = [], [], []
         for website_name, rooms in all_rooms.items():
@@ -267,3 +268,13 @@ class Database:
             except Exception:
                 logging.error(f"Failed to execute {update_sql}")
                 raise
+
+    def delete_old_history(self):
+        logging.info("Deleting old history 1 weeks ago...")
+        delete_sql = f"DELETE FROM {c.FETCH_STATUS_TABLE_NAME} WHERE {c.ROOM_FETCH_DATE_COLUMN} fetch_date < date_sub(now(),INTERVAL 1 WEEK)"
+        try:
+            self.cursor.execute(delete_sql)
+            self.conn.commit()
+        except Exception:
+            logging.error(f"Failed to execute {delete_sql}")
+            raise
