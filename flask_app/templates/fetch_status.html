@@ -14,27 +14,31 @@
     </form>
 
     <center>
-        <canvas id="chart" width="600" height="400"></canvas>
+        <canvas id="room_count" width="600" height="400"></canvas>
+        <canvas id="fetch_status_bool" width="600" height="400"></canvas>
     </center>
 
     <script type="text/javascript">
         let selectedWeb;
-        let chart = renderChart('');
+        let roomCountChart = renderRoomCountChart('');
+        let fetchStatusChart = renderFetchStatusChart('');
 
         function websiteSelected(web) {
             selectedWeb = web;
-            chart.destroy();
-            chart = renderChart(web);
+            roomCountChart.destroy();
+            roomCountChart = renderRoomCountChart(web);
+            fetchStatusChart.destroy();
+            fetchStatusChart = renderFetchStatusChart(web);
         }
 
-        function renderChart(selectedWeb) {
+        function renderRoomCountChart(selectedWeb) {
             const datasets = [
                       {% for name, records in group_by_website.items() %}
                         {
                             label: "{{ name }}",
                             hidden: selectedWeb && selectedWeb !== "{{ name }}",
-                            borderColor: randomColorGenerator(),
-                            backgroundColor: '#FFFFFF',
+                            borderColor: randomColorGenerator("{{ name }}"),
+                            backgroundColor: randomColorGenerator("{{ name }}"),
                             data: [
                                 {% for record in records %}
                                     {
@@ -46,41 +50,99 @@
                         },
                     {% endfor %}
                   ]
-        const ctx = document.getElementById("chart").getContext("2d");
-        console.log("datasets", datasets);
-        return new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: datasets,
-            },
-            options: {
-                plugins: {
-                    title: {
-                        text: '房间数量',
-                        display: true,
-                        font: {
-                            size: 24
-                        }
-                    }
+            const ctx = document.getElementById("room_count").getContext("2d");
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: datasets,
                 },
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            displayFormats: {
-                                hour: 'yyyy-MM-dd HH:mm'
-                            },
-                            parser: "yyyy-MM-dd HH:mm:ss",
+                options: {
+                    plugins: {
+                        title: {
+                            text: '房间数量',
+                            display: true,
+                            font: {
+                                size: 24
+                            }
                         }
                     },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                displayFormats: {
+                                    hour: 'yyyy-MM-dd HH:mm'
+                                },
+                                parser: "yyyy-MM-dd HH:mm:ss",
+                            }
+                        },
+                    }
                 }
-            }
-        });
+            });
         }
 
-        function randomColorGenerator() {
-            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
-        };
+        function renderFetchStatusChart(selectedWeb) {
+            const datasets = [
+                      {% for name, records in fetch_status_bool.items() %}
+                        {
+                            label: "{{ name }}",
+                            hidden: selectedWeb && selectedWeb !== "{{ name }}",
+                            borderColor: randomColorGenerator("{{ name }}"),
+                            backgroundColor: randomColorGenerator("{{ name }}"),
+                            data: [
+                                {% for record in records %}
+                                    {
+                                        "x": "{{ record.x }}",
+                                        "y": {{ record.y }},
+                                    },
+                                {% endfor %}
+                            ]
+                        },
+                    {% endfor %}
+                  ]
+            const ctx = document.getElementById("fetch_status_bool").getContext("2d");
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: datasets,
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            text: '抓取失败记录',
+                            display: true,
+                            font: {
+                                size: 24
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                displayFormats: {
+                                    hour: 'yyyy-MM-dd HH:mm'
+                                },
+                                parser: "yyyy-MM-dd HH:mm:ss",
+                            }
+                        },
+                    }
+                }
+            });
+        }
+
+        function randomColorGenerator(str) {
+            var hash = 0;
+            for (var i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            var colour = '#';
+            for (var i = 0; i < 3; i++) {
+                var value = (hash >> (i * 8)) & 0xFF;
+                colour += ('00' + value.toString(16)).substr(-2);
+            }
+            return colour;
+        }
 
     </script>
 </div>

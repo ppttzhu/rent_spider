@@ -271,7 +271,7 @@ class Database:
 
     def delete_old_history(self):
         logging.info("Deleting old history 1 weeks ago...")
-        delete_sql = f"DELETE FROM {c.FETCH_STATUS_TABLE_NAME} WHERE {c.ROOM_FETCH_DATE_COLUMN} fetch_date < date_sub(now(),INTERVAL 1 WEEK)"
+        delete_sql = f"DELETE FROM {c.FETCH_STATUS_TABLE_NAME} WHERE {c.ROOM_FETCH_DATE_COLUMN} < date_sub(now(),INTERVAL 1 WEEK)"
         try:
             self.cursor.execute(delete_sql)
             self.conn.commit()

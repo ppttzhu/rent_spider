@@ -64,19 +64,21 @@ def statistics_page():
 def fetch_status_page():
     fetch_status = get_fetch_status()
     group_by_website = DefaultDict(list)
+    fetch_status_bool = DefaultDict(list)
     for record in fetch_status:
-        group_by_website[record[c.ROOM_WEBSITE_NAME_COLUMN]].append(
-            {
-                "x": record[c.ROOM_FETCH_DATE_COLUMN].strftime("%Y-%m-%d %H:%M:%S"),
-                "y": record[c.FETCH_STATUS_ROOM_COUNT_COLUMN],
-            }
-        )
+        room_name = f"[{record[c.WEBSITE_PRIORITY_COLUMN]}] {record[c.ROOM_WEBSITE_NAME_COLUMN]}"
+        count = record[c.FETCH_STATUS_ROOM_COUNT_COLUMN]
+        fetch_date = record[c.ROOM_FETCH_DATE_COLUMN].strftime("%Y-%m-%d %H:%M:%S")
+        fetch_status_bool[room_name].append({"x": fetch_date, "y": -1 if count == -1 else 0})
+        if count != -1:
+            group_by_website[room_name].append({"x": fetch_date, "y": count})
     return render_template(
         "fetch_status.html",
         id="fetch_status",
         title="抓取记录",
         fetch_status=fetch_status,
         group_by_website=group_by_website,
+        fetch_status_bool=fetch_status_bool,
     )
 
 
