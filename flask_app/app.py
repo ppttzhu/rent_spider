@@ -1,4 +1,3 @@
-import json
 import os
 import sys
 from typing import DefaultDict
@@ -33,14 +32,32 @@ def room_with_location_filter(location=None):
     rooms = get_rooms()
     if location:
         rooms = [room for room in rooms if room[c.WEBSITE_LOCATION_COLUMN] == location]
-    summary_rooms = get_summary_rooms(rooms, location)
+    summary_rooms = get_summary_rooms(rooms, location, c.RentType.RENTAL)
     return render_template(
         "rooms.html",
         id=f"{location or 'home'}",
         title=f"{location or '全部房源'}({len(rooms)})",
         rooms=rooms,
-        headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
-        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN],
+        headers=c.ROOM_TABLE_COLUMNS_NAME + [c.FETCH_DATE_COLUMN_NAME],
+        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN],
+        summary_title=f"房源网站数量汇总({len(summary_rooms)})",
+        summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], c.ROOM_COUNT_COLUMN_NAME, "抓取频率"],
+        summary_rooms=summary_rooms,
+    )
+
+
+@app.route("/sublease")
+def sublease_rooms():
+    rooms = get_sublease()
+    print("rooms", rooms)
+    summary_rooms = get_summary_rooms(rooms, None, c.RentType.SUBLEASE)
+    return render_template(
+        "sublease.html",
+        id="sublease",
+        title=f"转租({len(rooms)})",
+        rooms=rooms,
+        headers=c.SUBLEASE_TABLE_COLUMNS_NAME + [c.FETCH_DATE_COLUMN_NAME],
+        columns=c.SUBLEASE_TABLE_COLUMNS + [c.FETCH_DATE_COLUMN],
         summary_title=f"房源网站数量汇总({len(summary_rooms)})",
         summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], c.ROOM_COUNT_COLUMN_NAME, "抓取频率"],
         summary_rooms=summary_rooms,
@@ -55,8 +72,8 @@ def statistics_page():
         id="statistics",
         title=f"房源信息统计({len(room_history)})",
         room_history=room_history,
-        headers=c.ROOM_TABLE_COLUMNS_NAME + [c.ROOM_FETCH_DATE_COLUMN_NAME],
-        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN],
+        headers=c.ROOM_TABLE_COLUMNS_NAME + [c.FETCH_DATE_COLUMN_NAME],
+        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN],
     )
 
 
@@ -66,9 +83,9 @@ def fetch_status_page():
     group_by_website = DefaultDict(list)
     fetch_status_bool = DefaultDict(list)
     for record in fetch_status:
-        room_name = f"[{record[c.WEBSITE_PRIORITY_COLUMN]}] {record[c.ROOM_WEBSITE_NAME_COLUMN]}"
-        count = record[c.FETCH_STATUS_ROOM_COUNT_COLUMN]
-        fetch_date = record[c.ROOM_FETCH_DATE_COLUMN].strftime("%Y-%m-%d %H:%M:%S")
+        room_name = f"[{record[c.WEBSITE_PRIORITY_COLUMN]}] {record[c.WEBSITE_NAME_COLUMN]}"
+        count = record[c.ROOM_COUNT_COLUMN]
+        fetch_date = record[c.FETCH_DATE_COLUMN].strftime("%Y-%m-%d %H:%M:%S")
         fetch_status_bool[room_name].append({"x": fetch_date, "y": -1 if count == -1 else 0})
         if count != -1:
             group_by_website[room_name].append({"x": fetch_date, "y": count})
@@ -84,24 +101,35 @@ def fetch_status_page():
 
 def get_rooms():
     database = Database()
-    columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
+    columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN]
     rooms = database.get_rooms(columns=columns)
     return rooms
 
 
-def get_summary_rooms(rooms, location=None):
+def get_sublease():
+    database = Database()
+    rooms = database.get_sublease()
+    return rooms
+
+
+def get_summary_rooms(rooms, location=None, rent_type=None):
     summary_rooms = {
-        web[c.ROOM_WEBSITE_NAME_COLUMN]: {
+        web[c.WEBSITE_NAME_COLUMN]: {
             "count": 0,
-            "frequency": "每日12点和19点" if web["platform"] == c.Platform.AWS else "几分钟一次",
+            "frequency": "每日12点和19点"
+            if web["platform"] == c.Platform.AWS
+            else "几分钟一次"
+            if web[c.WEBSITE_RENT_TYPE] == c.RentType.RENTAL
+            else "每日19点",
             c.WEBSITE_PRIORITY_COLUMN: index,
             c.WEBSITE_URL_COLUMN: web[c.WEBSITE_URL_COLUMN],
         }
         for index, web in enumerate(c.WEBSITES)
-        if (True if not location else web[c.WEBSITE_LOCATION_COLUMN] == location)
+        if (not location or web[c.WEBSITE_LOCATION_COLUMN] == location)
+        and (not rent_type or web[c.WEBSITE_RENT_TYPE] == rent_type)
     }
     for room in rooms:
-        summary_rooms[room[c.ROOM_WEBSITE_NAME_COLUMN]]["count"] += 1
+        summary_rooms[room[c.WEBSITE_NAME_COLUMN]]["count"] += 1
     return summary_rooms
 
 

@@ -55,7 +55,7 @@ class Database:
             self.update_website()
             self.delete_old_history()
         website_room_counts = {}
-        failed_websites, succeeded_websites, cur_rooms = [], [], []
+        failed_websites, succeeded_websites, rental_rooms, sublease_rooms = [], [], [], []
         for website_name, rooms in all_rooms.items():
             if rooms is None:
                 failed_websites.append(website_name)
@@ -63,14 +63,21 @@ class Database:
             else:
                 succeeded_websites.append(website_name)
                 website_room_counts[website_name] = len(rooms)
-                cur_rooms += rooms
+                if rooms:
+                    if c.ROOM_TITLE_COLUMN in rooms[0]:
+                        sublease_rooms += rooms
+                    else:
+                        rental_rooms += rooms
         logging.info(f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}")
         logging.info(f"Failed websites ({len(failed_websites)}): {failed_websites}")
         self.update_fetch_status(website_room_counts)
         if not succeeded_websites:
             return [], [], []
+        logging.info(f"Sublease rooms number: {len(sublease_rooms)}")
+        if sublease_rooms:
+            self.update_sublease_room(sublease_rooms, succeeded_websites)
         prev_rooms = self.get_rooms(websites=succeeded_websites)
-        new_rooms, removed_rooms, updated_rooms = self.compare_rooms_diff(prev_rooms, cur_rooms)
+        new_rooms, removed_rooms, updated_rooms = self.compare_rooms_diff(prev_rooms, rental_rooms)
         for room in new_rooms:
             self.create_room(room)
             self.create_room_history(room)
@@ -80,11 +87,37 @@ class Database:
             self.update_room(prev_room, cur_room)
             self.create_room_history(cur_room)
         logging.info(f"Previous rooms number: {len(prev_rooms)}")
-        logging.info(f"Current rooms number: {len(cur_rooms)}")
+        logging.info(f"Current rooms number: {len(rental_rooms)}")
         logging.info(f"New rooms number: {len(new_rooms)}")
         logging.info(f"Removed rooms number: {len(removed_rooms)}")
         logging.info(f"Updated rooms number: {len(updated_rooms)}")
         return new_rooms, removed_rooms, updated_rooms
+
+    def update_sublease_room(self, sublease_rooms, succeeded_websites):
+        delete_sql = f"""DELETE FROM {c.SUBLEASE_TABLE_NAME} WHERE {c.WEBSITE_NAME_COLUMN} IN ('{"','".join(succeeded_websites)}')"""
+        try:
+            self.cursor.execute(delete_sql)
+            self.conn.commit()
+        except Exception:
+            logging.error(f"Failed to execute {delete_sql}")
+            raise
+
+        fetch_date_string = datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        multi_rows = [
+            "'"
+            + "','".join(
+                [room[column] for column in c.SUBLEASE_TABLE_COLUMNS] + [fetch_date_string]
+            )
+            + "'"
+            for room in sublease_rooms
+        ]
+        insert_sql = f"""INSERT INTO {c.SUBLEASE_TABLE_NAME} ({",".join(c.SUBLEASE_TABLE_COLUMNS + [c.FETCH_DATE_COLUMN])}) VALUES ({"),(".join(multi_rows)})"""
+        try:
+            self.cursor.execute(insert_sql)
+            self.conn.commit()
+        except Exception:
+            logging.error(f"Failed to execute {insert_sql}")
+            raise
 
     def update_fetch_status(self, website_room_counts):
         date_string = datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
@@ -140,9 +173,9 @@ class Database:
             columns = c.WEBSITE_ROOM_VIEW_COLUMNS
         order_by = [
             c.WEBSITE_PRIORITY_COLUMN,
-            c.ROOM_ROOM_TYPE_COLUMN,
-            c.ROOM_MOVE_IN_DATE_COLUMN,
-            c.ROOM_ROOM_PRICE_COLUMN,
+            c.ROOM_TYPE_COLUMN,
+            c.MOVE_IN_DATE_COLUMN,
+            c.ROOM_PRICE_COLUMN,
         ]
         condition = ""
         if websites:
@@ -158,10 +191,29 @@ class Database:
             rooms.append(room)
         return rooms
 
+    def get_sublease(self):
+        columns = c.WEBSITE_SUBLEASE_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN]
+        order_by = [
+            c.WEBSITE_PRIORITY_COLUMN,
+            c.ROOM_TYPE_COLUMN,
+            c.MOVE_IN_DATE_COLUMN,
+            c.ROOM_PRICE_COLUMN,
+        ]
+        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_SUBLEASE_VIEW_NAME} ORDER BY {",".join(order_by)}"""
+        self.cursor.execute(select_sql)
+        rows = self.cursor.fetchall()
+        rooms = []
+        for row in rows:
+            room = {}
+            for idx, column in enumerate(columns):
+                room[column] = row[idx]
+            rooms.append(room)
+        return rooms
+
     def get_room_history(self):
-        columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
-        order_by = [c.WEBSITE_PRIORITY_COLUMN, c.ROOM_ROOM_TYPE_COLUMN]
-        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {c.ROOM_FETCH_DATE_COLUMN} DESC, {",".join(order_by)}"""
+        columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN]
+        order_by = [c.WEBSITE_PRIORITY_COLUMN, c.ROOM_TYPE_COLUMN]
+        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {c.FETCH_DATE_COLUMN} DESC, {",".join(order_by)}"""
         self.cursor.execute(select_sql)
         rows = self.cursor.fetchall()
         rooms = []
@@ -174,7 +226,7 @@ class Database:
 
     def get_fetch_status(self):
         columns = c.FETCH_STATUS_COLUMNS + [c.WEBSITE_PRIORITY_COLUMN]
-        order_by = [c.ROOM_FETCH_DATE_COLUMN]
+        order_by = [c.FETCH_DATE_COLUMN]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.FETCH_STATUS_VIEW_NAME} ORDER BY {",".join(order_by)} DESC"""
         self.cursor.execute(select_sql)
         rows = self.cursor.fetchall()
@@ -187,7 +239,7 @@ class Database:
         return rooms
 
     def create_room(self, room):
-        columns = c.ROOM_TABLE_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
+        columns = c.ROOM_TABLE_COLUMNS + [c.FETCH_DATE_COLUMN]
         values = [room[column] for column in c.ROOM_TABLE_COLUMNS] + [
             datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         ]
@@ -200,7 +252,7 @@ class Database:
             raise
 
     def create_room_history(self, room):
-        columns = c.ROOM_TABLE_COLUMNS + [c.ROOM_FETCH_DATE_COLUMN]
+        columns = c.ROOM_TABLE_COLUMNS + [c.FETCH_DATE_COLUMN]
         values = [room[column] for column in c.ROOM_TABLE_COLUMNS] + [
             datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         ]
@@ -271,7 +323,7 @@ class Database:
 
     def delete_old_history(self):
         logging.info("Deleting old history 1 weeks ago...")
-        delete_sql = f"DELETE FROM {c.FETCH_STATUS_TABLE_NAME} WHERE {c.ROOM_FETCH_DATE_COLUMN} < date_sub(now(),INTERVAL 1 WEEK)"
+        delete_sql = f"DELETE FROM {c.FETCH_STATUS_TABLE_NAME} WHERE {c.FETCH_DATE_COLUMN} < date_sub(now(),INTERVAL 1 WEEK)"
         try:
             self.cursor.execute(delete_sql)
             self.conn.commit()

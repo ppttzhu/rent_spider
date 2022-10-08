@@ -1,6 +1,7 @@
 import logging
 import re
 import traceback
+from time import sleep
 
 import constants as c
 from selenium.webdriver.common.by import By
@@ -48,11 +49,11 @@ class Fetch:
         room = {
             c.WEBSITE_URL_COLUMN: self.url,
             c.WEBSITE_PRIORITY_COLUMN: self.priority,
-            c.ROOM_WEBSITE_NAME_COLUMN: self.website_name,
-            c.ROOM_ROOM_NUMBER_COLUMN: self.process_room_number(room_number),
-            c.ROOM_ROOM_TYPE_COLUMN: self.process_room_type(room_type),
-            c.ROOM_MOVE_IN_DATE_COLUMN: self.process_move_in_date(move_in_date),
-            c.ROOM_ROOM_PRICE_COLUMN: self.process_room_price(room_price),
+            c.WEBSITE_NAME_COLUMN: self.website_name,
+            c.ROOM_NUMBER_COLUMN: self.process_room_number(room_number),
+            c.ROOM_TYPE_COLUMN: self.process_room_type(room_type),
+            c.MOVE_IN_DATE_COLUMN: self.process_move_in_date(move_in_date),
+            c.ROOM_PRICE_COLUMN: self.process_room_price(room_price),
         }
         room_info_tuple = tuple([room_number, room_type, move_in_date, room_price])
         if room_info_tuple in self.room_info_tuple_set:
@@ -60,6 +61,14 @@ class Fetch:
         logging.debug(room)
         self.room_info.append(room)
         self.room_info_tuple_set.add(room_info_tuple)
+
+    def add_sublease_info(self, sublease_info):
+        self.room_info.append(
+            {
+                **sublease_info,
+                c.WEBSITE_NAME_COLUMN: self.website_name,
+            }
+        )
 
     def save_html_doc(self, html_doc):
         with open("./tmp.html", "w", encoding="utf-8") as file:
@@ -101,7 +110,25 @@ class Fetch:
         return self.page.content()
 
     # se
-    def wait_until_xpath(self, driver, xpath):
+    def wait_until_xpath(self, xpath, driver=None):
+        if not driver:
+            driver = self.driver
         waiter = WebDriverWait(driver, c.WEB_DRIVER_WAIT_SECOND)
         waiter.until(EC.presence_of_element_located((By.XPATH, xpath)))
         return driver.find_elements(by=By.XPATH, value=xpath)
+
+    # se
+    def get_url_with_retry(self, url):
+        count = 0
+        max_retry = 3
+        sleep_second = 1
+        while True:
+            try:
+                self.driver.get(url)
+                return
+            except Exception as error:
+                count += 1
+                if count > max_retry:
+                    raise
+                logging.error(f"Caught {type(error).__name__}, retry {count}...")
+                sleep(sleep_second)

@@ -11,7 +11,7 @@ CREATE TABLE room (
 	room_number VARCHAR(50),
 	room_type VARCHAR(50) NOT NULL,
 	room_price VARCHAR(50) NOT NULL,
-	move_in_date VARCHAR(500) NOT NULL,
+	move_in_date VARCHAR(50) NOT NULL,
 	fetch_date DATETIME NOT NULL,
 	PRIMARY KEY(website_name, room_number),
 	FOREIGN KEY (website_name) REFERENCES website(website_name) ON DELETE CASCADE
@@ -27,7 +27,7 @@ CREATE TABLE room_history (
 	room_number VARCHAR(50),
 	room_type VARCHAR(50) NOT NULL,
 	room_price VARCHAR(50) NOT NULL,
-	move_in_date VARCHAR(500) NOT NULL,
+	move_in_date VARCHAR(50) NOT NULL,
 	fetch_date DATETIME NOT NULL,
 	PRIMARY KEY(website_name, room_number, fetch_date),
 	FOREIGN KEY (website_name) REFERENCES website(website_name) ON DELETE CASCADE
@@ -48,5 +48,22 @@ CREATE TABLE fetch_status (
 
 CREATE OR REPLACE VIEW v_fetch_status AS (
 	SELECT r.*, w.priority FROM fetch_status r
+	NATURAL JOIN website w
+);
+
+CREATE TABLE sublease (
+	website_name VARCHAR(50),
+	room_url VARCHAR(100) NOT NULL,
+	room_title VARCHAR(100) NOT NULL,
+	post_date DATETIME NOT NULL,
+	room_type VARCHAR(50) NOT NULL,
+	room_price VARCHAR(50) NOT NULL,
+	move_in_date VARCHAR(50) NOT NULL,
+	fetch_date DATETIME NOT NULL,
+	FOREIGN KEY (website_name) REFERENCES website(website_name) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE VIEW v_website_sublease AS (
+	SELECT r.*, w.url, w.location, w.priority FROM sublease r
 	NATURAL JOIN website w
 );
