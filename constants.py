@@ -17,6 +17,7 @@ class RentType(Enum):
 PLATFORM = None
 NEED_UPDATE_WEBSITE = None
 WEBSITES_TARGETS = None
+RENT_TYPE = None
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -391,6 +392,7 @@ try:
         PLATFORM = Platform.DEV
 
     NEED_UPDATE_WEBSITE = args.update
+    RENT_TYPE = RentType.SUBLEASE if args.sublease else RentType.RENTAL 
 
     if args.include:
         WEBSITES_TARGETS = args.include

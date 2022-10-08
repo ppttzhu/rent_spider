@@ -56,7 +56,7 @@ while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
     except Exception as error:
         logging.error(repr(error))
         traceback.print_exc()
-    if c.PLATFORM != c.Platform.PYTHONANYWHERE:
+    if c.PLATFORM != c.Platform.PYTHONANYWHERE or c.RENT_TYPE == c.RentType.SUBLEASE:
         sys.exit()
     logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
     time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
