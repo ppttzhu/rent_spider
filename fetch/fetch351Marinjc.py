@@ -6,7 +6,7 @@ from fetch.fetch import Fetch
 
 class Fetch351Marinjc(Fetch):
     def fetch_web(self):
-        self.driver.get(self.url)
+        self.get_url_with_retry(self.url)
         self.fetch_room_info("Studio", "Studio", 0)
         self.fetch_room_info("1B1B", "1BR", 1)
         self.fetch_room_info("2B2B", "2BR", 2)
@@ -36,5 +36,5 @@ class Fetch351Marinjc(Fetch):
                 move_in_date=move_in_date,
                 room_price=room_price,
             )
-        self.driver.get(self.url)
+        self.get_url_with_retry(self.url)
         self.driver.switch_to.window(self.driver.window_handles[0])

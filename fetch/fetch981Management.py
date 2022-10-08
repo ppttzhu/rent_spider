@@ -8,7 +8,7 @@ from fetch.fetch import Fetch
 
 class Fetch981Management(Fetch):
     def fetch_web(self):
-        self.driver.get(self.url)
+        self.get_url_with_retry(self.url)
         if self.check_availability():
             logging.info(f"No room available in {self.website_name}, skipping...")
             return
@@ -65,9 +65,9 @@ class Fetch981Management(Fetch):
                 move_in_date=move_in_date,
                 room_price=room_price,
             )
-            self.driver.get(current_url)
+            self.get_url_with_retry(current_url)
             self.driver.switch_to.window(self.driver.window_handles[0])
-        self.driver.get(self.url)
+        self.get_url_with_retry(self.url)
         self.driver.switch_to.window(self.driver.window_handles[0])
 
     def check_availability(self):

@@ -130,5 +130,5 @@ class Fetch:
                 count += 1
                 if count > max_retry:
                     raise
-                logging.error(f"Caught {type(error).__name__}, retry {count}...")
+                logging.error(f"Caught {type(error).__name__} in {url}, retry {count}...")
                 sleep(sleep_second)

@@ -7,7 +7,7 @@ from fetch.fetch import Fetch
 
 class FetchJacksonPark(Fetch):
     def fetch_web(self):
-        self.driver.get(self.url)
+        self.get_url_with_retry(self.url)
         results_xpath = "//div[@class='availibility-box']"
         no_results_xpath = "//h2[contains(text(), 'No results found.')]"
         self.web_wait.until(

@@ -18,7 +18,7 @@ class FetchJsq(Fetch):
         ]
 
     def fetch_web(self):
-        self.driver.get(self.url)
+        self.get_url_with_retry(self.url)
         sleep(3)  # sleep because table might not fully loaded
         self.web_wait.until(
             EC.presence_of_element_located((By.XPATH, '//table[@id="table"]/tbody/tr'))
