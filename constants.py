@@ -297,6 +297,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10004/apartment/e03s2",
+        WEBSITE_NAME_COLUMN: "Ehomie LIC Queen",
+        "class_name": "EhomieLICQueen",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "LIC Queen",
+        WEBSITE_RENT_TYPE: RentType.SUBLEASE,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10001/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie Mid Manhattan",
         "class_name": "EhomieMidMan",
@@ -326,14 +334,6 @@ WEBSITES = [
         "class_name": "EhomieBK",
         "platform": Platform.PYTHONANYWHERE,
         "location": "Brooklyn",
-        WEBSITE_RENT_TYPE: RentType.SUBLEASE,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10004/apartment/e03s2",
-        WEBSITE_NAME_COLUMN: "Ehomie LIC Queen",
-        "class_name": "EhomieLICQueen",
-        "platform": Platform.PYTHONANYWHERE,
-        "location": "LIC Queen",
         WEBSITE_RENT_TYPE: RentType.SUBLEASE,
     },
     {
@@ -392,7 +392,7 @@ try:
         PLATFORM = Platform.DEV
 
     NEED_UPDATE_WEBSITE = args.update
-    RENT_TYPE = RentType.SUBLEASE if args.sublease else RentType.RENTAL 
+    RENT_TYPE = RentType.SUBLEASE if args.sublease else RentType.RENTAL
 
     if args.include:
         WEBSITES_TARGETS = args.include

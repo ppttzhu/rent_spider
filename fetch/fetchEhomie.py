@@ -33,7 +33,7 @@ class FetchEhomie(Fetch):
                     }
                 )
             for room_info in target_rooms_info:
-                if room_info[c.POST_DATE_COLUMN] < datetime.now() - timedelta(days=7):
+                if room_info[c.POST_DATE_COLUMN] < datetime.now() - timedelta(days=30):
                     return
                 self.fetch_room_info(room_info)
             page += 1

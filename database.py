@@ -196,7 +196,6 @@ class Database:
         order_by = [
             c.WEBSITE_PRIORITY_COLUMN,
             c.ROOM_TYPE_COLUMN,
-            c.MOVE_IN_DATE_COLUMN,
             c.ROOM_PRICE_COLUMN,
         ]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_SUBLEASE_VIEW_NAME} ORDER BY {",".join(order_by)}"""
