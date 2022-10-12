@@ -49,7 +49,6 @@ def room_with_location_filter(location=None):
 @app.route("/sublease")
 def sublease_rooms():
     rooms = get_sublease()
-    print("rooms", rooms)
     summary_rooms = get_summary_rooms(rooms, None, c.RentType.SUBLEASE)
     return render_template(
         "sublease.html",
