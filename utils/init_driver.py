@@ -15,7 +15,7 @@ def init_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     if c.PLATFORM != c.Platform.PYTHONANYWHERE:
         return webdriver.Chrome(
-            ChromeDriverManager(version="105.0.5195.52").install(), options=chrome_options
+            ChromeDriverManager(version="106.0.5249.21").install(), options=chrome_options
         )
     else:
         return webdriver.Chrome(

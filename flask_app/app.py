@@ -23,6 +23,11 @@ def rooms_in_lic():
     return room_with_location_filter("LIC")
 
 
+@app.route("/manhattan")
+def rooms_in_manhattan():
+    return room_with_location_filter("Manhattan")
+
+
 @app.route("/nj")
 def rooms_in_nj():
     return room_with_location_filter("NJ")
