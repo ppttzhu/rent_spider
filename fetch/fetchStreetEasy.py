@@ -46,11 +46,19 @@ class FetchStreetEasy(Fetch):
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
+        room_price = room["room_price"]
+        if "Net Effective Rent" in html_doc:
+            net_effective_rent_info = soup.find_all("li", {"class": "styled__DetailCell-odgkne-1"})
+            if len(net_effective_rent_info) == 3:
+                net_price = net_effective_rent_info[0].text.split()[0]
+                free_month = net_effective_rent_info[1].text.split()[0]
+                total_month = net_effective_rent_info[2].text.split("-")[0]
+                room_price = f'N{room["room_price"]} G{net_price} {free_month}/{total_month}'
         self.add_room_info(
             room_number=room["room_number"],
             room_type=room["room_type"],
             move_in_date=move_in_date.text,
-            room_price=room["room_price"],
+            room_price=room_price,
         )
 
     def process_room_number(self, room_number):
