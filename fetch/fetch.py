@@ -3,10 +3,11 @@ import re
 import traceback
 from time import sleep
 
-import constants as c
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+import constants as c
 
 
 class Fetch:
@@ -75,7 +76,7 @@ class Fetch:
             file.write(html_doc)
 
     def process_room_price(self, room_price):
-        return room_price.replace("$", "").replace(",", "").replace(".00", "")
+        return room_price.replace.replace(",", "").replace(".00", "")
 
     def process_room_number(self, room_number):
         return room_number.replace("Apartment:", "").replace("#", "").replace("\n", "")

@@ -36,7 +36,7 @@ class FetchStreetEasy(Fetch):
                 }
             )
         for room in rooms:
-            sleep_time = randrange(15, 25)
+            sleep_time = randrange(20, 22)
             logging.info(f"Sleep {sleep_time}s to avoid being blocked...")
             sleep(sleep_time)
             self.fetch_room_info(room)
@@ -53,7 +53,7 @@ class FetchStreetEasy(Fetch):
                 net_price = net_effective_rent_info[0].text.split()[0]
                 free_month = net_effective_rent_info[1].text.split()[0]
                 total_month = net_effective_rent_info[2].text.split("-")[0]
-                room_price = f'N{room["room_price"]} G{net_price} {free_month}/{total_month}'
+                room_price = f'N{net_price} G{room["room_price"]} {free_month}/{total_month}'
         self.add_room_info(
             room_number=room["room_number"],
             room_type=room["room_type"],
