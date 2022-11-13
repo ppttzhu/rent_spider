@@ -36,7 +36,7 @@ class FetchStreetEasy(Fetch):
                 }
             )
         for room in rooms:
-            sleep_time = randrange(20, 22)
+            sleep_time = randrange(25, 30)
             logging.info(f"Sleep {sleep_time}s to avoid being blocked...")
             sleep(sleep_time)
             self.fetch_room_info(room)

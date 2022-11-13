@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from time import sleep
 
 import constants as c
-
 from fetch.fetch import Fetch
 
 
@@ -44,8 +43,8 @@ class FetchEhomie(Fetch):
         detail_info = self.wait_until_xpath('//pre[@class="detail-desc-info"]')[0].text
         if "求" in detail_info:
             return
-        price = self.wait_until_xpath('//div[@class="detail-info-price"]')[0].text
-        move_in_date = self.wait_until_xpath('//div[@class="detail-info-date"]')[0].text.replace(
+        price = self.wait_until_xpath('//div[@class="detail-item-price"]')[0].text
+        move_in_date = self.wait_until_xpath('//div[@class="detail-item-date"]')[0].text.replace(
             "租期时间：", ""
         )
         room_type = self.find_room_type(room_info[c.ROOM_TITLE_COLUMN] + detail_info)
