@@ -15,6 +15,7 @@ class FetchEhomie(Fetch):
         page = 1
         while page < 100:
             sleep(self.sleep_second)
+            print(f"get_url_with_retry: {self.url}-page{page}")
             self.get_url_with_retry(f"{self.url}-page{page}")
             rooms = self.wait_until_xpath('//div[@class="house-list"]/a')
             target_rooms_info = []
@@ -32,13 +33,14 @@ class FetchEhomie(Fetch):
                     }
                 )
             for room_info in target_rooms_info:
-                if room_info[c.POST_DATE_COLUMN] < datetime.now() - timedelta(days=30):
+                if room_info[c.POST_DATE_COLUMN] < datetime.now() - timedelta(days=7):
                     return
                 self.fetch_room_info(room_info)
             page += 1
 
     def fetch_room_info(self, room_info):
         sleep(self.sleep_second)
+        print("get_url_with_retry:", room_info[c.ROOM_URL_COLUMN])
         self.get_url_with_retry(room_info[c.ROOM_URL_COLUMN])
         detail_info = self.wait_until_xpath('//pre[@class="detail-desc-info"]')[0].text
         if "求" in detail_info:
