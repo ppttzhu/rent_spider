@@ -82,3 +82,11 @@ python3 -m unittest
 - How to setup gmail smtp: https://stackoverflow.com/questions/28421887/django-email-with-smtp-gmail-smtpauthenticationerror-534-application-specific-pa
 - Gmail smtp App password troubleshooting: https://kinsta.com/blog/gmail-smtp-server/
 - Playwright python doc: https://playwright.dev/python/docs/intro
+
+# My TODO List
+
+- Remove website list in constant and allow user to add it dynamically
+- Enhance website if any fetch failed, add warning in the list/table
+- Fix unstable website
+- Split StreetEasy fetch into separate ones and reduce sleep seconds
+- Maybe we can use image container to run to reduce the cost?

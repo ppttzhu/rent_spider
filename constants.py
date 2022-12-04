@@ -89,6 +89,14 @@ WEBSITE_SUBLEASE_VIEW_COLUMNS = SUBLEASE_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDIT
 
 WEBSITES = [
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/21-west-end-avenue-new_york",
+        WEBSITE_NAME_COLUMN: "21 West End Ave",
+        "class_name": "21WestEndAve",
+        "platform": Platform.AWS,
+        "location": "Manhattan",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-copper",
         WEBSITE_NAME_COLUMN: "The Copper",
         "class_name": "TheCopper",
