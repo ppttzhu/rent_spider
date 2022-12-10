@@ -6,9 +6,10 @@ root_dir = os.path.join(os.path.dirname(__file__), "../")
 
 sys.path.append(root_dir)  # For module not found error
 
+from flask import Flask, render_template
+
 import constants as c
 from database import Database
-from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -93,12 +94,15 @@ def fetch_status_page():
         fetch_status_bool[room_name].append({"x": fetch_date, "y": -1 if count == -1 else 0})
         if count != -1:
             group_by_website[room_name].append({"x": fetch_date, "y": count})
+    ordered_group_by_website = {}
+    for key in sorted(group_by_website.keys()):
+        ordered_group_by_website[key] = group_by_website[key]
     return render_template(
         "fetch_status.html",
         id="fetch_status",
         title="抓取记录",
         fetch_status=fetch_status,
-        group_by_website=group_by_website,
+        group_by_website=ordered_group_by_website,
         fetch_status_bool=fetch_status_bool,
     )
 

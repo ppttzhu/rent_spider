@@ -53,7 +53,7 @@ python3 main.py
 
 Debug mode: `export DEBUG=pw:api`
 
-## Test Web App
+## Test SQL database
 
 ```
 mysql -u root -p
