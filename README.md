@@ -23,6 +23,27 @@ aws cloudformation deploy --template ./cloudformation_template.json --stack-name
 3. Build our docker image: `docker build -t rent_spider .`
 4. Publish docker image to ECR with commands provided by AWS ECR.
 
+# Test Docker locally
+```
+# Start docker service
+sudo systemctl start docker.service
+
+# Build a image with DockerFile in current folder ., add a tag rent_spider
+docker build -t rent_spider .
+
+# Run a image in a container with interactive mode
+docker run -it --name rent_spider rent_spider bash
+```
+
+If you need to check chrome version to fit driver version
+```
+google-chrome version
+```
+
+Run the script to see if it works
+```
+cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -a
+```
 # Test run ECS task (once)
 
 Replace your task revision if needed.

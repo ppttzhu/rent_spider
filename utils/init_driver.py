@@ -14,13 +14,16 @@ def init_driver():
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    if c.PLATFORM != c.Platform.PYTHONANYWHERE:
+    if c.PLATFORM == c.Platform.DEV:
         # if version not available, have to download manually, unzip
+        # https://chromedriver.storage.googleapis.com/106.0.5249.21/chromedriver_mac64_m1.zip
         # xattr -d com.apple.quarantine /Users/haley/Desktop/chromedriver
         # return webdriver.Chrome("/Users/haley/Desktop/chromedriver", options=chrome_options)
         return webdriver.Chrome(
             ChromeDriverManager(version="106.0.5249.21").install(), options=chrome_options
         )
+    elif c.PLATFORM == c.Platform.AWS:
+        return webdriver.Chrome("/usr/local/chromedriver", options=chrome_options)
     else:
         return webdriver.Chrome(
             ChromeDriverManager(version="90.0.4430.24").install(), options=chrome_options
