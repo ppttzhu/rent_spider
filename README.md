@@ -19,8 +19,8 @@ aws cloudformation deploy --template ./cloudformation_template.json --stack-name
 # Docker setup for AWS ECR (x86_64)
 
 1. Install [Docker](https://docs.docker.com/desktop/install/mac-install/)
-2. Pull Amazon Linux image: `docker pull amazonlinux`
-3. Build our docker image: `docker build -t rent_spider .`
+2. Pull Amazon Linux image: `docker pull amazonlinux`, only need for the first time.
+3. Build our docker image: `docker build -t rent-spider .`
 4. Publish docker image to ECR with commands provided by AWS ECR.
 
 # Test Docker locally
@@ -29,15 +29,13 @@ aws cloudformation deploy --template ./cloudformation_template.json --stack-name
 sudo systemctl start docker.service
 
 # Build a image with DockerFile in current folder ., add a tag rent_spider
-docker build -t rent_spider .
+docker build -t rent-spider .
 
 # Run a image in a container with interactive mode
-docker run -it --name rent_spider rent_spider bash
-```
+docker run -it --name rent-spider rent-spider bash
 
-If you need to check chrome version to fit driver version
-```
-google-chrome version
+# If container already exist, start it
+docker start -i rent-spider
 ```
 
 Run the script to see if it works

@@ -16,6 +16,7 @@ RUN yum -y install gcc
 # install chrome for selenium
 RUN yum -y install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 RUN wget -O- "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" | tar -jx -C /usr/local/
+# Check chrome version to fit chrome driver version: google-chrome version
 RUN wget "https://chromedriver.storage.googleapis.com/103.0.5060.134/chromedriver_linux64.zip" -P /usr/local/
 RUN unzip /usr/local/chromedriver_linux64.zip -d /usr/local
 RUN ln -s /usr/local/firefox/firefox /usr/bin/firefox
@@ -26,5 +27,5 @@ RUN yum -y install Xvfb
 # pull code and install dependency
 RUN git clone https://github.com/ppttzhu/rent_spider.git
 RUN python3 -m pip install -r rent_spider/requirements.txt
-RUN python3 -m playwright install firefox
+RUN PLAYWRIGHT_BROWSERS_PATH=/usr/local/pw_drivers python3 -m playwright install firefox
 COPY secrets.cfg rent_spider/secrets.cfg
