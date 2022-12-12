@@ -23,7 +23,7 @@ class Fetch:
         self.room_type_map = None
         self.room_info = []
         self.room_info_tuple_set = set()  # Avoid duplicate value
-        self.web_wait = WebDriverWait(self.driver, c.WEB_DRIVER_WAIT_SECOND)
+        self.web_wait = WebDriverWait(self.driver, c.WEB_DRIVER_TIMEOUT_SECOND)
 
     def fetch(self):
         try:
@@ -107,14 +107,14 @@ class Fetch:
     # pw
     def get_html_doc(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
-        self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_WAIT_SECOND * 60 * 1000)
+        self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 60 * 1000)
         return self.page.content()
 
     # se
     def wait_until_xpath(self, xpath, driver=None):
         if not driver:
             driver = self.driver
-        waiter = WebDriverWait(driver, c.WEB_DRIVER_WAIT_SECOND)
+        waiter = WebDriverWait(driver, c.WEB_DRIVER_TIMEOUT_SECOND)
         waiter.until(EC.presence_of_element_located((By.XPATH, xpath)))
         return driver.find_elements(by=By.XPATH, value=xpath)
 

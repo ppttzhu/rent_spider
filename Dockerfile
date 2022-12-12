@@ -5,6 +5,7 @@ RUN yum -y install git
 RUN yum -y install wget
 RUN yum -y install tar
 RUN yum -y install bzip2
+RUN yum -y install which
 
 # install mysql and gcc for MySQLdb
 RUN yum -y install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
@@ -15,7 +16,8 @@ RUN yum -y install gcc
 # install firefox browser
 RUN wget -O- "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" | tar -jx -C /usr/local/
 RUN ln -s /usr/local/firefox/firefox /usr/bin/firefox
-RUN yum -y install libXinerama.x86_64 cups-libs dbus-glib
+# firefox dependencies
+RUN yum -y install libXinerama.x86_64 cups-libs dbus-glib alsa-lib libappindicator-gtk3 liberation-fonts
 # for headed browser, because headless will be blocked
 RUN yum -y install Xvfb
 

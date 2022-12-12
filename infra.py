@@ -10,6 +10,7 @@ from aws_cdk import aws_ecs as ecs
 from aws_cdk import aws_events as events
 from aws_cdk import aws_events_targets as events_targets
 from aws_cdk import aws_iam as iam
+from aws_cdk import aws_logs as logs
 from aws_cdk import aws_stepfunctions as sfn
 from aws_cdk import aws_stepfunctions_tasks as tasks
 from constructs import Construct
@@ -48,37 +49,50 @@ class InfraStack(Stack):
             ],
         )
         image = ecs.ContainerImage.from_ecr_repository(repository)
-        task_definition.add_container("Container", image=image)
+        log_group = logs.LogGroup(
+            self,
+            "ECS Log Group",
+            log_group_name=f"/ecs/{STACK_NAME}",
+            retention=logs.RetentionDays.ONE_WEEK,
+            removal_policy=cdk.RemovalPolicy.DESTROY,
+        )
+        task_definition.add_container(
+            "Container",
+            image=image,
+            logging=ecs.LogDrivers.aws_logs(stream_prefix="ecs", log_group=log_group),
+        )
 
         # Step Function
         sfn_map = sfn.Map(
             self, "Map", max_concurrency=1, items_path=sfn.JsonPath.string_at("$.websites")
         )
-        sfn_map.iterator(
-            tasks.EcsRunTask(
-                self,
-                "EcsRunTask",
-                integration_pattern=sfn.IntegrationPattern.RUN_JOB,
-                cluster=cluster,
-                task_definition=task_definition,
-                subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC),
-                container_overrides=[
-                    tasks.ContainerOverride(
-                        container_definition=ecs.ContainerDefinition(
-                            self,
-                            "ContainerDefinition",
-                            task_definition=task_definition,
-                            image=image,
-                            entry_point=["sh", "-c"],
-                        ),
-                        command=sfn.JsonPath.list_at("$.commands"),
-                    )
-                ],
-                launch_target=tasks.EcsFargateLaunchTarget(
-                    platform_version=ecs.FargatePlatformVersion.LATEST
-                ),
-            )
+        ecs_run_task = tasks.EcsRunTask(
+            self,
+            "EcsRunTask",
+            integration_pattern=sfn.IntegrationPattern.RUN_JOB,
+            cluster=cluster,
+            task_definition=task_definition,
+            assign_public_ip=True,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC),
+            container_overrides=[
+                tasks.ContainerOverride(
+                    container_definition=ecs.ContainerDefinition(
+                        self,
+                        "ContainerDefinition",
+                        task_definition=task_definition,
+                        image=image,
+                        entry_point=["sh", "-c"],
+                    ),
+                    command=sfn.JsonPath.list_at("$.commands"),
+                )
+            ],
+            launch_target=tasks.EcsFargateLaunchTarget(
+                platform_version=ecs.FargatePlatformVersion.LATEST
+            ),
         )
+        ecs_run_task.add_catch(sfn.Pass(self, "EcsRunTaskCatch"), errors=["States.ALL"])
+        wait = sfn.Wait(self, "Wait", time=sfn.WaitTime.duration(cdk.Duration.seconds(1)))
+        sfn_map.iterator(wait.next(ecs_run_task))
         definition = sfn_map
         sfn_role = iam.Role(
             self,

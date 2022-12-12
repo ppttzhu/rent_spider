@@ -23,7 +23,8 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 MINUTES_BETWEEN_FETCH = 7
 TOTAL_DURATION_IN_MINUTES = 55
-WEB_DRIVER_WAIT_SECOND = 20
+WEB_DRIVER_TIMEOUT_SECOND = 20
+SE_SLEEP_SECOND = 20
 
 
 WEBSITE_TABLE_NAME = "website"
@@ -325,6 +326,14 @@ WEBSITES = [
         WEBSITE_NAME_COLUMN: "485 Marin",
         "class_name": "485Marin",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/vantage-33-park-view-avenue-jersey_city",
+        WEBSITE_NAME_COLUMN: "Vantage",
+        "class_name": "Vantage",
+        "platform": Platform.AWS,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },

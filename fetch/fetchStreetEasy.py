@@ -1,9 +1,9 @@
 import logging
-from random import randrange
 from time import sleep
 
 from bs4 import BeautifulSoup
 
+import constants as c
 from fetch.fetch import Fetch
 
 
@@ -36,9 +36,8 @@ class FetchStreetEasy(Fetch):
                 }
             )
         for room in rooms:
-            sleep_time = randrange(25, 30)
-            logging.info(f"Sleep {sleep_time}s to avoid being blocked...")
-            sleep(sleep_time)
+            logging.info(f"Sleep {c.SE_SLEEP_SECOND}s to avoid being blocked...")
+            sleep(c.SE_SLEEP_SECOND)
             self.fetch_room_info(room)
 
     def fetch_room_info(self, room):
