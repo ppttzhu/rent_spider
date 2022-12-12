@@ -2,3 +2,7 @@
 *__pycache__
 .vscode
 secrets.cfg
+
+# CDK Context & Staging files
+.cdk.staging/
+cdk.out/

@@ -12,8 +12,28 @@ This scrapy framework is built on pythonanywhere and AWS.
 
 ## Deploy AWS resources
 
+Install the required dependencies.
+
 ```
-aws cloudformation deploy --template ./cloudformation_template.json --stack-name rent-spider --capabilities CAPABILITY_IAM
+$ pip install -r requirements-dev.txt
+```
+
+Run Bootstrap for first time deployment.
+
+```
+$ cdk bootstrap
+```
+
+Synthesize the CloudFormation template for this code.
+
+```
+$ cdk synth
+```
+
+Deploy the CloudFormation template.
+
+```
+$ cdk deploy
 ```
 
 # Docker setup for AWS ECR (x86_64)

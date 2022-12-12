@@ -7,6 +7,8 @@ import constants as c
 
 
 def init_driver():
+    if c.PLATFORM == c.Platform.AWS:
+        return None
     logging.info("Init webdriver...")
     chrome_options = webdriver.ChromeOptions()
     if c.PLATFORM != c.Platform.DEV:
@@ -17,13 +19,8 @@ def init_driver():
     if c.PLATFORM == c.Platform.DEV:
         # if version not available, have to download manually, unzip
         # https://chromedriver.storage.googleapis.com/106.0.5249.21/chromedriver_mac64_m1.zip
-        # xattr -d com.apple.quarantine /Users/haley/Desktop/chromedriver
-        # return webdriver.Chrome("/Users/haley/Desktop/chromedriver", options=chrome_options)
-        return webdriver.Chrome(
-            ChromeDriverManager(version="106.0.5249.21").install(), options=chrome_options
-        )
-    elif c.PLATFORM == c.Platform.AWS:
-        return webdriver.Chrome("/usr/local/chromedriver", options=chrome_options)
+        # xattr -d com.apple.quarantine /Users/haley/Documents/git/chromedriver
+        return webdriver.Chrome("/Users/haley/Documents/git/chromedriver", options=chrome_options)
     else:
         return webdriver.Chrome(
             ChromeDriverManager(version="90.0.4430.24").install(), options=chrome_options

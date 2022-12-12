@@ -14,11 +14,9 @@ from utils.send_mail import send_notification_email
 
 def main():
     with sync_playwright() as play:
-        driver, browser = None, None
+        driver, browser = init_driver(), None
         if c.PLATFORM != c.Platform.PYTHONANYWHERE:
-            browser = play.firefox.launch(headless=True)
-        if c.PLATFORM != c.Platform.AWS:
-            driver = init_driver()
+            browser = play.firefox.launch(headless=False)  # headless will be blocked
         logging.info("-------------- Start Fetching Task -------------- ")
         logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
         all_rooms = {}
