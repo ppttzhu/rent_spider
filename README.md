@@ -127,5 +127,4 @@ python3 -m unittest
 - Remove website list in constant and allow user to add it dynamically
 - Enhance website if any fetch failed, add warning in the list/table
 - Fix unstable website
-- Split StreetEasy fetch into separate ones and reduce sleep seconds
-- Maybe we can use image container to run to reduce the cost?
+- Add room page link

@@ -107,7 +107,7 @@ class Fetch:
     # pw
     def get_html_doc(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
-        self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 60 * 1000)
+        self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 1000)
         return self.page.content()
 
     # se

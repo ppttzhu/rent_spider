@@ -18,6 +18,7 @@ from constructs import Construct
 import constants as c
 
 STACK_NAME = "rent-spider"
+MEMORY_RESERVATION_MIB = 8192
 
 
 class InfraStack(Stack):
@@ -27,14 +28,25 @@ class InfraStack(Stack):
         # ECS
         vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id="vpc-145a3a6e")
         cluster = ecs.Cluster(self, "Cluster", cluster_name=STACK_NAME, vpc=vpc)
+        execution_role = iam.Role(
+            self,
+            "EcsExecutionRole",
+            assumed_by=iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name(
+                    "service-role/AmazonECSTaskExecutionRolePolicy"
+                )
+            ],
+        )
         task_definition = ecs.FargateTaskDefinition(
             self,
             "TaskDef",
-            memory_limit_mib=8192,
+            memory_limit_mib=MEMORY_RESERVATION_MIB,
             cpu=2048,
             runtime_platform=ecs.RuntimePlatform(
                 operating_system_family=ecs.OperatingSystemFamily.LINUX,
             ),
+            execution_role=execution_role,
         )
         repository = ecr.Repository(
             self,
@@ -56,11 +68,6 @@ class InfraStack(Stack):
             retention=logs.RetentionDays.ONE_WEEK,
             removal_policy=cdk.RemovalPolicy.DESTROY,
         )
-        task_definition.add_container(
-            "Container",
-            image=image,
-            logging=ecs.LogDrivers.aws_logs(stream_prefix="ecs", log_group=log_group),
-        )
 
         # Step Function
         sfn_map = sfn.Map(
@@ -79,8 +86,11 @@ class InfraStack(Stack):
                     container_definition=ecs.ContainerDefinition(
                         self,
                         "ContainerDefinition",
+                        container_name=STACK_NAME,
                         task_definition=task_definition,
                         image=image,
+                        logging=ecs.LogDrivers.aws_logs(stream_prefix="ecs", log_group=log_group),
+                        memory_reservation_mib=MEMORY_RESERVATION_MIB,
                         entry_point=["sh", "-c"],
                     ),
                     command=sfn.JsonPath.list_at("$.commands"),
@@ -91,7 +101,7 @@ class InfraStack(Stack):
             ),
         )
         ecs_run_task.add_catch(sfn.Pass(self, "EcsRunTaskCatch"), errors=["States.ALL"])
-        wait = sfn.Wait(self, "Wait", time=sfn.WaitTime.duration(cdk.Duration.seconds(1)))
+        wait = sfn.Wait(self, "Wait", time=sfn.WaitTime.duration(cdk.Duration.seconds(5 * 60)))
         sfn_map.iterator(wait.next(ecs_run_task))
         definition = sfn_map
         sfn_role = iam.Role(
