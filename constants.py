@@ -24,7 +24,8 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 MINUTES_BETWEEN_FETCH = 7
 TOTAL_DURATION_IN_MINUTES = 55
 WEB_DRIVER_TIMEOUT_SECOND = 20
-SE_SLEEP_SECOND = 20
+SE_SLEEP_MIN_SECOND = 25
+SE_SLEEP_MAX_SECOND = 30
 
 
 WEBSITE_TABLE_NAME = "website"
@@ -293,6 +294,14 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/astor-lic",
         WEBSITE_NAME_COLUMN: "Astor LIC",
         "class_name": "AstorLIC",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-green-house",
+        WEBSITE_NAME_COLUMN: "Green House",
+        "class_name": "GreenHouse",
         "platform": Platform.AWS,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,

@@ -130,6 +130,7 @@ class InfraStack(Stack):
                     ]
                 }
                 for website in c.WEBSITES
+                if website["platform"] == c.Platform.AWS
             ]
         }
         rule = events.Rule(
