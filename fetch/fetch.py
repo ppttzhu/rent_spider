@@ -97,18 +97,18 @@ class Fetch:
 
     # pw
     def init_page(self):
-        self.page = self.browser.new_page()
-        # don't load image and avoid doubleclick request
-        self.page.route(
-            re.compile(r"(\.png$)|(\.jpg$)|(\.webp$)|(doubleclick)"), lambda route: route.abort()
-        )
+        self.context = self.browser.new_context()
+        self.page = self.context.new_page()
         return self.page
 
     # pw
     def get_html_doc(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
+        self.init_page()
         self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 1000)
-        return self.page.content()
+        content = self.page.content()
+        self.context.close()
+        return content
 
     # se
     def wait_until_xpath(self, xpath, driver=None):
