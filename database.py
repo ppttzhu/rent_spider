@@ -237,6 +237,18 @@ class Database:
             rooms.append(room)
         return rooms
 
+    def get_latest_fetch_status(self):
+        select_sql = f"""SELECT {c.WEBSITE_NAME_COLUMN}, max({c.FETCH_DATE_COLUMN}) AS {c.FETCH_DATE_COLUMN} FROM {c.FETCH_STATUS_VIEW_NAME} WHERE {c.ROOM_COUNT_COLUMN} > -1 GROUP BY {c.WEBSITE_NAME_COLUMN}"""
+        self.cursor.execute(select_sql)
+        rows = self.cursor.fetchall()
+        rooms = []
+        for row in rows:
+            room = {}
+            for idx, column in enumerate([c.WEBSITE_NAME_COLUMN, c.FETCH_DATE_COLUMN]):
+                room[column] = row[idx]
+            rooms.append(room)
+        return rooms
+
     def create_room(self, room):
         columns = c.ROOM_TABLE_COLUMNS + [c.FETCH_DATE_COLUMN]
         values = [room[column] for column in c.ROOM_TABLE_COLUMNS] + [

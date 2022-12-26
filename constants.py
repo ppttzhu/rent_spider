@@ -44,6 +44,8 @@ ROOM_TYPE_COLUMN = "room_type"
 MOVE_IN_DATE_COLUMN = "move_in_date"
 ROOM_PRICE_COLUMN = "room_price"
 FETCH_DATE_COLUMN = "fetch_date"
+LATEST_FETCH_DATE_COLUMN = "latest_fetch_date"
+LATEST_FETCH_WARNING = "latest_fetch_warning"
 ROOM_COUNT_COLUMN = "room_count"
 ROOM_TITLE_COLUMN = "room_title"
 ROOM_URL_COLUMN = "room_url"
@@ -74,6 +76,8 @@ FETCH_STATUS_COLUMNS = [
 ROOM_TABLE_COLUMNS_NAME = ["房源网站", "户型", "房号", "入住时间", "房价"]
 SUBLEASE_TABLE_COLUMNS_NAME = ["房源网站", "转租信息", "户型", "入住时间", "房价", "发布时间"]
 FETCH_DATE_COLUMN_NAME = "抓取时间"
+FETCH_FREQUENCY_COLUMN_NAME = "抓取频率"
+LATEST_FETCH_DATE_COLUMN_NAME = "更新时间"
 ROOM_COUNT_COLUMN_NAME = "房间数量"
 FETCH_STATUS_COLUMNS_NAME = ["房源网站", ROOM_COUNT_COLUMN_NAME, FETCH_DATE_COLUMN_NAME]
 

@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime, timedelta
 from typing import DefaultDict
 
 root_dir = os.path.join(os.path.dirname(__file__), "../")
@@ -36,18 +37,38 @@ def rooms_in_nj():
 
 def room_with_location_filter(location=None):
     rooms = get_rooms()
+    latest_fetch_status = get_latest_fetch_status()
+    latest_fetch_status_dict = {
+        record[c.WEBSITE_NAME_COLUMN]: record[c.FETCH_DATE_COLUMN] for record in latest_fetch_status
+    }
     if location:
         rooms = [room for room in rooms if room[c.WEBSITE_LOCATION_COLUMN] == location]
+    for room in rooms:
+        room[c.LATEST_FETCH_DATE_COLUMN] = latest_fetch_status_dict.get(room[c.WEBSITE_NAME_COLUMN])
+        room[c.LATEST_FETCH_WARNING] = not room[c.LATEST_FETCH_DATE_COLUMN] or room[
+            c.LATEST_FETCH_DATE_COLUMN
+        ] < datetime.now() - timedelta(days=1)
     summary_rooms = get_summary_rooms(rooms, location, c.RentType.RENTAL)
+    for web_name, summary in summary_rooms.items():
+        summary[c.LATEST_FETCH_DATE_COLUMN] = latest_fetch_status_dict.get(web_name)
+        summary[c.LATEST_FETCH_WARNING] = not summary[c.LATEST_FETCH_DATE_COLUMN] or summary[
+            c.LATEST_FETCH_DATE_COLUMN
+        ] < datetime.now() - timedelta(days=1)
     return render_template(
         "rooms.html",
         id=f"{location or 'home'}",
         title=f"{location or '全部房源'}({len(rooms)})",
         rooms=rooms,
-        headers=c.ROOM_TABLE_COLUMNS_NAME + [c.FETCH_DATE_COLUMN_NAME],
-        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN],
+        headers=c.ROOM_TABLE_COLUMNS_NAME
+        + [c.FETCH_DATE_COLUMN_NAME, c.LATEST_FETCH_DATE_COLUMN_NAME],
+        columns=c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN, c.LATEST_FETCH_DATE_COLUMN],
         summary_title=f"房源网站数量汇总({len(summary_rooms)})",
-        summary_headers=[c.ROOM_TABLE_COLUMNS_NAME[0], c.ROOM_COUNT_COLUMN_NAME, "抓取频率"],
+        summary_headers=[
+            c.ROOM_TABLE_COLUMNS_NAME[0],
+            c.ROOM_COUNT_COLUMN_NAME,
+            c.FETCH_FREQUENCY_COLUMN_NAME,
+            c.LATEST_FETCH_DATE_COLUMN_NAME,
+        ],
         summary_rooms=summary_rooms,
     )
 
@@ -149,6 +170,11 @@ def get_room_history():
 def get_fetch_status():
     database = Database()
     return database.get_fetch_status()
+
+
+def get_latest_fetch_status():
+    database = Database()
+    return database.get_latest_fetch_status()
 
 
 if __name__ == "__main__":

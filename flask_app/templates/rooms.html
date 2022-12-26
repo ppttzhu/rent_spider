@@ -13,15 +13,19 @@
     <tbody>
       {% for room in rooms %}
       <tr>
-        {% for column in columns %} {% if column == 'website_name' %}
+        {% for column in columns %}
+        {% if column == 'website_name' %}
         <td>
           <a href="{{room['url']}}">
             [{{room['priority']}}] {{room['website_name']}}
           </a>
         </td>
-        {% elif column not in ['url', 'location', 'priority'] %}
+        {% elif column == 'latest_fetch_date' %}
+        <td style="{% if room['latest_fetch_warning'] %} color:red {% endif %}">{{ room[column] or '> 1 week'}}</td>
+        {% elif column not in ['url', 'location', 'priority', 'latest_fetch_warning'] %}
         <td>{{room[column]}}</td>
-        {% endif %} {% endfor %}
+        {% endif %}
+        {% endfor %}
       </tr>
       {% endfor %}
     </tbody>
@@ -42,6 +46,7 @@
         <td><a href="{{room['url']}}"> [{{room['priority']}}] {{name}} </a></td>
         <td>{{room['count']}}</td>
         <td>{{room['frequency']}}</td>
+        <td style="{% if room['latest_fetch_warning'] %} color:red {% endif %}">{{ room['latest_fetch_date'] or '> 1 week'}}</td>
       </tr>
       {% endfor %}
     </tbody>
