@@ -44,6 +44,7 @@ $ cdk deploy
 4. Publish docker image to ECR with commands provided by AWS ECR.
 
 # Test Docker locally
+
 ```
 # Start docker service
 sudo systemctl start docker.service
@@ -59,9 +60,11 @@ docker start -i rent-spider
 ```
 
 Run the script to see if it works
+
 ```
 cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -a
 ```
+
 # Test run ECS task (once)
 
 Replace your task revision if needed.
@@ -121,10 +124,3 @@ python3 -m unittest
 - How to setup gmail smtp: https://stackoverflow.com/questions/28421887/django-email-with-smtp-gmail-smtpauthenticationerror-534-application-specific-pa
 - Gmail smtp App password troubleshooting: https://kinsta.com/blog/gmail-smtp-server/
 - Playwright python doc: https://playwright.dev/python/docs/intro
-
-# My TODO List
-
-- Remove website list in constant and allow user to add it dynamically
-- Enhance website if any fetch failed, add warning in the list/table
-- Fix unstable website
-- Add room page link

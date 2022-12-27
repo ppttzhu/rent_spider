@@ -254,6 +254,9 @@ class Database:
         values = [room[column] for column in c.ROOM_TABLE_COLUMNS] + [
             datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         ]
+        if room[c.ROOM_URL_COLUMN]:
+            columns.append(c.ROOM_URL_COLUMN)
+            values.append(room[c.ROOM_URL_COLUMN])
         insert_sql = f"""INSERT INTO {c.ROOM_TABLE_NAME} ({",".join(columns)}) VALUES ('{"','".join(values)}')"""
         try:
             self.cursor.execute(insert_sql)

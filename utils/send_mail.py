@@ -35,6 +35,10 @@ def generate_table(rooms):
             cell_content = room[column_name]
             if column_name == c.WEBSITE_NAME_COLUMN:
                 cell_content = f"""<a href="{room[c.WEBSITE_URL_COLUMN]}">[{room[c.WEBSITE_PRIORITY_COLUMN]}] {room[c.WEBSITE_NAME_COLUMN]}</a>"""
+            elif column_name == c.ROOM_NUMBER_COLUMN and room[c.ROOM_URL_COLUMN]:
+                cell_content = (
+                    f"""<a href="{room[c.ROOM_URL_COLUMN]}">{room[c.ROOM_NUMBER_COLUMN]}</a>"""
+                )
             elif is_room_updated and room[column_name] != prev_room[column_name]:
                 cell_content = f"<del>{prev_room[column_name]}</del> {room[column_name]}"
             room_content += f"""<td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{cell_content}</td>"""

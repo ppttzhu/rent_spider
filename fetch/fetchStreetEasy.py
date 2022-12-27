@@ -43,7 +43,8 @@ class FetchStreetEasy(Fetch):
             self.fetch_room_info(room)
 
     def fetch_room_info(self, room):
-        html_doc = self.get_html_doc(room["room_href"])
+        room_url = room["room_href"]
+        html_doc = self.get_html_doc(room_url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
@@ -60,6 +61,7 @@ class FetchStreetEasy(Fetch):
             room_type=room["room_type"],
             move_in_date=move_in_date.text,
             room_price=room_price,
+            room_url=room_url,
         )
 
     def process_room_number(self, room_number):

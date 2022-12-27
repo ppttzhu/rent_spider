@@ -42,7 +42,7 @@ class Fetch:
         logging.error(repr(error))
         traceback.print_exc()
 
-    def add_room_info(self, room_number, room_type, move_in_date, room_price):
+    def add_room_info(self, room_number, room_type, move_in_date, room_price, room_url=None):
         if not room_number or not room_type or not move_in_date or not room_price:
             raise Exception(
                 f"Should not have empty value: room_number={room_number}, room_type={room_type}, move_in_date={move_in_date}, room_price={room_price}"
@@ -51,6 +51,7 @@ class Fetch:
             c.WEBSITE_URL_COLUMN: self.url,
             c.WEBSITE_PRIORITY_COLUMN: self.priority,
             c.WEBSITE_NAME_COLUMN: self.website_name,
+            c.ROOM_URL_COLUMN: room_url,
             c.ROOM_NUMBER_COLUMN: self.process_room_number(room_number),
             c.ROOM_TYPE_COLUMN: self.process_room_type(room_type),
             c.MOVE_IN_DATE_COLUMN: self.process_move_in_date(move_in_date),

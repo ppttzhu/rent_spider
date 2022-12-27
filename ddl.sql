@@ -9,6 +9,7 @@ CREATE TABLE website (
 CREATE TABLE room (
 	website_name VARCHAR(50),
 	room_number VARCHAR(50),
+	room_url VARCHAR(256),
 	room_type VARCHAR(50) NOT NULL,
 	room_price VARCHAR(50) NOT NULL,
 	move_in_date VARCHAR(50) NOT NULL,

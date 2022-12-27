@@ -20,9 +20,15 @@
             [{{room['priority']}}] {{room['website_name']}}
           </a>
         </td>
+        {% elif column == 'room_number' and room['room_url'] %}
+        <td>
+          <a href="{{room['room_url']}}">
+            {{room['room_number']}}
+          </a>
+        </td>
         {% elif column == 'latest_fetch_date' %}
         <td style="{% if room['latest_fetch_warning'] %} color:red {% endif %}">{{ room[column] or '> 1 week'}}</td>
-        {% elif column not in ['url', 'location', 'priority', 'latest_fetch_warning'] %}
+        {% elif column not in ['url', 'location', 'priority', 'latest_fetch_warning', 'room_url'] %}
         <td>{{room[column]}}</td>
         {% endif %}
         {% endfor %}
@@ -46,7 +52,8 @@
         <td><a href="{{room['url']}}"> [{{room['priority']}}] {{name}} </a></td>
         <td>{{room['count']}}</td>
         <td>{{room['frequency']}}</td>
-        <td style="{% if room['latest_fetch_warning'] %} color:red {% endif %}">{{ room['latest_fetch_date'] or '> 1 week'}}</td>
+        <td style="{% if room['latest_fetch_warning'] %} color:red {% endif %}">{{ room['latest_fetch_date'] or '> 1
+          week'}}</td>
       </tr>
       {% endfor %}
     </tbody>
