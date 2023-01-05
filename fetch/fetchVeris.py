@@ -1,16 +1,23 @@
-import re
 from collections import defaultdict
 from time import sleep
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
-import constants as c
 from fetch.fetch import Fetch
 
 
 class FetchVeris(Fetch):
+    def __init__(self, driver, browser):
+        super().__init__(driver, browser)
+        self.room_type_map = [
+            ("^Studio / 1 Bath$", "Studio"),
+            ("^1 Bed / 1 Bath$", "1B1B"),
+            ("^2 Beds / 1 Bath$", "2B1B"),
+            ("^2 Beds / 2 Bath$", "2B2B"),
+            ("^2 Beds / 2.5 Bath$", "2B2.5B"),
+            ("^3 Beds / 2 Bath$", "3B2B"),
+        ]
+
     def fetch_web(self):
         def read_list():
             if not self.reading_list:
