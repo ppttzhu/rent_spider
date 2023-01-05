@@ -21,9 +21,7 @@ class FetchVeris(Fetch):
     def fetch_web(self):
         def read_list():
             if not self.reading_list:
-                self.driver.execute_script(
-                    "arguments[0].scrollIntoView({block: 'center'});", view_buttons[0]
-                )
+                self.move_to_center(view_buttons[0])
                 view_buttons[0].click()
                 sleep(0.5)
                 self.reading_list = True
@@ -48,9 +46,7 @@ class FetchVeris(Fetch):
 
         def read_floor():
             if self.reading_list:
-                self.driver.execute_script(
-                    "arguments[0].scrollIntoView({block: 'center'});", view_buttons[1]
-                )
+                self.move_to_center(view_buttons[1])
                 view_buttons[1].click()
                 sleep(0.5)
                 self.reading_list = False
@@ -89,9 +85,7 @@ class FetchVeris(Fetch):
                 )
             except Exception:
                 break
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView({block: 'center'});", next_page_button
-            )
+            self.move_to_center(next_page_button)
             next_page_button.click()
             sleep(3)
         for room in rooms_dict.values():

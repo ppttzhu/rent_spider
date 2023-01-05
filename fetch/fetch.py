@@ -3,6 +3,7 @@ import re
 import traceback
 from time import sleep
 
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -134,3 +135,11 @@ class Fetch:
                     raise
                 logging.error(f"Caught {type(error).__name__} in {url}, retry {count}...")
                 sleep(sleep_second)
+
+    # se
+    def move_to_center(self, element):
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+
+    # se
+    def move_to_element(self, element):
+        ActionChains(self.driver).move_to_element(element).perform()
