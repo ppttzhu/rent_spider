@@ -3,13 +3,15 @@ import logging
 import sys
 import time
 import traceback
+from collections import defaultdict
 
+from openpyxl import Workbook
 from playwright.sync_api import sync_playwright
 
 import constants as c
 from database import Database
 from utils.init_driver import init_driver
-from utils.send_mail import send_notification_email
+from utils.send_mail import send_email, send_notification_email
 
 
 def main():
@@ -47,14 +49,47 @@ logging.basicConfig(
 
 logging.info(f"Running on {c.PLATFORM} mode...")
 
-start_time = time.time()
-while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
-    try:
-        main()
-    except Exception as error:
-        logging.error(repr(error))
-        traceback.print_exc()
-    if c.PLATFORM != c.Platform.PYTHONANYWHERE or c.RENT_TYPE == c.RentType.SUBLEASE:
-        sys.exit()
-    logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
-    time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
+
+def main_in_loop():
+    start_time = time.time()
+    while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
+        try:
+            main()
+        except Exception as error:
+            logging.error(repr(error))
+            traceback.print_exc()
+        if c.PLATFORM != c.Platform.PYTHONANYWHERE or c.RENT_TYPE == c.RentType.SUBLEASE:
+            sys.exit()
+        logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
+        time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
+
+
+def send_snapshot_email():
+    database = Database()
+    all_rooms = database.get_rooms()
+    wb = Workbook()
+    rooms_split_by_location = defaultdict(list)
+    for room in all_rooms:
+        rooms_split_by_location[room["location"]].append(room)
+    for location, rooms in rooms_split_by_location.items():
+        ws = wb.create_sheet(location)
+        ws.append(list(rooms[0].keys()))
+        for room in rooms:
+            ws.append(list(room.values()))
+    default_sheet = wb["Sheet"]
+    wb.remove(default_sheet)
+    wb.save(c.SNAPSHOT_DIR)
+    send_email(
+        c.EMAIL_RECEIVERS_DEV if c.PLATFORM == c.Platform.DEV else c.SNAPSHOT_EMAIL_RECEIVERS,
+        c.EMAIL_RECEIVERS_DEV,
+        c.SNAPSHOT_EMAIL_SUBJECT,
+        "",
+        c.SNAPSHOT_DIR,
+    )
+    database.quit()
+
+
+if c.IS_CVS_SNAPSHOT:
+    send_snapshot_email()
+else:
+    main_in_loop()

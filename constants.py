@@ -18,8 +18,10 @@ PLATFORM = None
 NEED_UPDATE_WEBSITE = None
 WEBSITES_TARGETS = None
 RENT_TYPE = None
+IS_CVS_SNAPSHOT = False
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+SNAPSHOT_DIR = os.path.join(ROOT_DIR, "../snapshot.xlsx")
 
 MINUTES_BETWEEN_FETCH = 7
 TOTAL_DURATION_IN_MINUTES = 55
@@ -497,10 +499,12 @@ WEBSITES_DICT = {
 }
 
 NOTIFICATION_EMAIL_SUBJECT = "【房源通知】"
+SNAPSHOT_EMAIL_SUBJECT = "【房源每日快照】"
 ERROR_EMAIL_SUBJECT = "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"
 EMAIL_RECEIVERS_DEV = ["ppttzhu@gmail.com"]
 EMAIL_RECEIVERS = ["atongmu0577@163.com", "panyuany1@163.com"]
+SNAPSHOT_EMAIL_RECEIVERS = ["atongmu0577@163.com", "panyuany1@163.com"]
 
 
 DATABASE_HOST = "ppttzhu.mysql.pythonanywhere-services.com"
@@ -524,6 +528,7 @@ try:
     parser.add_argument("-e", "--exclude", nargs="+", help="Websites to exclude")
     parser.add_argument("-a", "--auto", action="store_true", help="Automatic choose websites")
     parser.add_argument("-s", "--sublease", action="store_true", help="Sublease websites only")
+    parser.add_argument("-c", "--csv", action="store_true", help="Send cvs snapshot email")
     parser.add_argument("-r", "--remote", action="store_true", help="SSH to remote database")
     parser.add_argument("-u", "--update", action="store_true", help="Update website table")
     args = parser.parse_args()
@@ -536,6 +541,7 @@ try:
         PLATFORM = Platform.DEV
 
     NEED_UPDATE_WEBSITE = args.update
+    IS_CVS_SNAPSHOT = args.csv
     RENT_TYPE = RentType.SUBLEASE if args.sublease else RentType.RENTAL
 
     if args.include:

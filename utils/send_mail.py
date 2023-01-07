@@ -1,7 +1,10 @@
 import configparser
 import logging
+import os
 import smtplib
+from email import encoders
 from email.header import Header
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formataddr, parseaddr
@@ -46,7 +49,7 @@ def generate_table(rooms):
     return """<table style="border-collapse: collapse;">""" + content + "</table>"
 
 
-def send_email(receivers, receivers_cc, subject, content):
+def send_email(receivers, receivers_cc, subject, content, attachment_path=None):
     username = c.EMAIL_SENDER
     mail_from = c.EMAIL_SENDER
     config = configparser.ConfigParser()
@@ -60,6 +63,14 @@ def send_email(receivers, receivers_cc, subject, content):
     mimemsg["Cc"] = ",".join(receivers_cc)
     logging.info(f'Sending email to {mimemsg["To"]}, cc {mimemsg["Cc"]}...')
     mimemsg.attach(mail_body)
+    if attachment_path:
+        attachment = open(attachment_path, "rb")
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload((attachment).read())
+        encoders.encode_base64(part)
+        filename = os.path.basename(attachment_path)
+        part.add_header("Content-Disposition", f"attachment; filename= {filename}")
+        mimemsg.attach(part)
     connection = smtplib.SMTP(host=c.SMTP_HOST, port=c.SMTP_PORT)
     connection.starttls()
     connection.login(username, password)
