@@ -1,7 +1,7 @@
 import configparser
 import logging
-import os
 import smtplib
+from datetime import date
 from email import encoders
 from email.header import Header
 from email.mime.base import MIMEBase
@@ -68,7 +68,7 @@ def send_email(receivers, receivers_cc, subject, content, attachment_path=None):
         part = MIMEBase("application", "octet-stream")
         part.set_payload((attachment).read())
         encoders.encode_base64(part)
-        filename = os.path.basename(attachment_path)
+        filename = f"{date.today()}_munan_NY_NJ_rooms.xlsx"
         part.add_header("Content-Disposition", f"attachment; filename= {filename}")
         mimemsg.attach(part)
     connection = smtplib.SMTP(host=c.SMTP_HOST, port=c.SMTP_PORT)
