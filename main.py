@@ -5,7 +5,6 @@ import time
 import traceback
 from collections import defaultdict
 
-from openpyxl import Workbook
 from playwright.sync_api import sync_playwright
 
 import constants as c
@@ -65,6 +64,7 @@ def main_in_loop():
 
 
 def send_snapshot_email():
+    from openpyxl import Workbook
     database = Database()
     all_rooms = database.get_rooms()
     wb = Workbook()
