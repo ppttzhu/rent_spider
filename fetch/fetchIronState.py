@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 
 from selenium.webdriver.common.by import By
@@ -17,7 +18,13 @@ class FetchIronState(Fetch):
 
     def fetch_web(self):
         self.get_url_with_retry(self.url)
-        links = self.wait_until_xpath('//article[contains(@class, "floorplans-box")]/a')
+        [empty_text, links] = self.wait_until_any_xpath(
+            '//div[@class="message-not-result"]',
+            '//article[contains(@class, "floorplans-box")]/a',
+        )
+        if empty_text:
+            logging.info(f"No room available in {self.website_name}, skipping...")
+            return
         detail_hrefs = []
         for link in links:
             detail_hrefs.append(link.get_attribute("href"))

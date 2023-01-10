@@ -121,6 +121,20 @@ class Fetch:
         return driver.find_elements(by=By.XPATH, value=xpath)
 
     # se
+    def wait_until_any_xpath(self, xpath1, xpath2, driver=None):
+        if not driver:
+            driver = self.driver
+        waiter = WebDriverWait(driver, c.WEB_DRIVER_TIMEOUT_SECOND)
+        waiter.until(
+            lambda wd: len(wd.find_elements(By.XPATH, xpath1)) > 0
+            or len(wd.find_elements(By.XPATH, xpath2)) > 0
+        )
+        return [
+            driver.find_elements(by=By.XPATH, value=xpath1),
+            driver.find_elements(by=By.XPATH, value=xpath2),
+        ]
+
+    # se
     def get_url_with_retry(self, url):
         count = 0
         max_retry = 3

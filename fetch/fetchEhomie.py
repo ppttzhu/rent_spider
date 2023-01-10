@@ -40,7 +40,6 @@ class FetchEhomie(Fetch):
 
     def fetch_room_info(self, room_info):
         sleep(self.sleep_second)
-        print("get_url_with_retry:", room_info[c.ROOM_URL_COLUMN])
         self.get_url_with_retry(room_info[c.ROOM_URL_COLUMN])
         detail_info = self.wait_until_xpath('//pre[@class="detail-desc-info"]')[0].text
         if "求" in detail_info:
