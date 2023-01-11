@@ -227,6 +227,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/bevel-lic",
+        WEBSITE_NAME_COLUMN: "Bevel LIC",
+        "class_name": "BevelLIC",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/one-lic",
         WEBSITE_NAME_COLUMN: "One LIC",
         "class_name": "OneLIC",
