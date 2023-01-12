@@ -210,7 +210,11 @@ class Database:
         return rooms
 
     def get_room_history(self):
-        columns = c.WEBSITE_ROOM_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN]
+        columns = c.ROOM_TABLE_COLUMNS + [
+            c.WEBSITE_URL_COLUMN,
+            c.WEBSITE_PRIORITY_COLUMN,
+            c.FETCH_DATE_COLUMN,
+        ]
         order_by = [c.WEBSITE_PRIORITY_COLUMN, c.ROOM_TYPE_COLUMN]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {c.FETCH_DATE_COLUMN} DESC, {",".join(order_by)}"""
         self.cursor.execute(select_sql)
