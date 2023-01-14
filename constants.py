@@ -186,6 +186,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/arc-30_02-39-avenue-queens",
+        WEBSITE_NAME_COLUMN: "Arc",
+        "class_name": "Arc",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/skyline-tower",
         WEBSITE_NAME_COLUMN: "Skyline Tower",
         "class_name": "SkylineTower",
