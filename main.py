@@ -65,6 +65,7 @@ def main_in_loop():
 
 def send_snapshot_email():
     from openpyxl import Workbook
+
     database = Database()
     all_rooms = database.get_rooms()
     wb = Workbook()
