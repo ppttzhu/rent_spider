@@ -35,6 +35,11 @@ def rooms_in_nj():
     return room_with_location_filter("NJ")
 
 
+@app.route("/nj2")
+def rooms_in_nj2():
+    return room_with_location_filter("NJ2")
+
+
 def room_with_location_filter(location=None):
     rooms = get_rooms()
     latest_fetch_status = get_latest_fetch_status()
