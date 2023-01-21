@@ -434,6 +434,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://www.vyvapts.com/availability",
+        WEBSITE_NAME_COLUMN: "VYV",
+        "class_name": "VYV",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://www.journalsquared.com/availabilities",
         WEBSITE_NAME_COLUMN: "Journal Squared",
         "class_name": "Jsq",
