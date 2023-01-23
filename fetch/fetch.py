@@ -157,3 +157,9 @@ class Fetch:
     # se, deprecated
     def move_to_element(self, element):
         ActionChains(self.driver).move_to_element(element).perform()
+
+    def get_substring_by_regex(self, string, regex):
+        match = re.search(regex, string)
+        if match:
+            return match.group(1)
+        return None
