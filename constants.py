@@ -138,6 +138,22 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/555ten-555-10th-avenue-manhattan",
+        WEBSITE_NAME_COLUMN: "555 Ten",
+        "class_name": "555Ten",
+        "platform": Platform.AWS,
+        "location": "Manhattan",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/eos-100-west-31st-street-new_york",
+        WEBSITE_NAME_COLUMN: "EOS",
+        "class_name": "EOS",
+        "platform": Platform.AWS,
+        "location": "Manhattan",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://jacksonparklic.com/availability/",
         WEBSITE_NAME_COLUMN: "Jackson Park LIC",
         "class_name": "JacksonPark",
