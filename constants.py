@@ -322,6 +322,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/45_57-davis-street-long_island_city",
+        WEBSITE_NAME_COLUMN: "45-57 David St",
+        "class_name": "4557DavidSt",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-pearson-court-square",
         WEBSITE_NAME_COLUMN: "Pearson CourtSquare",
         "class_name": "PearsonCourtSquare",
