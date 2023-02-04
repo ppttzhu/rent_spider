@@ -210,6 +210,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-forge",
+        WEBSITE_NAME_COLUMN: "Forge",
+        "class_name": "Forge",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/skyline-tower",
         WEBSITE_NAME_COLUMN: "Skyline Tower",
         "class_name": "SkylineTower",
