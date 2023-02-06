@@ -110,6 +110,12 @@ python3 flask_app/app.py
 
 Then go to: http://127.0.0.1:3000/
 
+## Test Download
+
+```
+python3 download.py
+```
+
 ## Run Unit Test
 
 ```
