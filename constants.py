@@ -25,7 +25,7 @@ SNAPSHOT_DIR = os.path.join(ROOT_DIR, "../snapshot.xlsx")
 
 MINUTES_BETWEEN_FETCH = 7
 TOTAL_DURATION_IN_MINUTES = 50
-WEB_DRIVER_TIMEOUT_SECOND = 20
+WEB_DRIVER_TIMEOUT_SECOND = 30
 SE_SLEEP_MIN_SECOND = 20
 SE_SLEEP_MAX_SECOND = 25
 
@@ -458,6 +458,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/quinn-197-van-vorst-street-jersey_city",
+        WEBSITE_NAME_COLUMN: "Quinn",
+        "class_name": "Quinn",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/the-blvd-collection",
         WEBSITE_NAME_COLUMN: "The Blvd",
         "class_name": "TheBlvd",
@@ -506,14 +514,6 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://www.urby.com/harrison",
-        WEBSITE_NAME_COLUMN: "Harrison Urby",
-        "class_name": "HarrisonUrby",
-        "platform": Platform.PYTHONANYWHERE,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
         WEBSITE_URL_COLUMN: "https://ironstate.com/property/50-columbus",
         WEBSITE_NAME_COLUMN: "50 Columbus",
         "class_name": "50Columbus",
@@ -541,6 +541,14 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://www.vyvapts.com/availability",
         WEBSITE_NAME_COLUMN: "VYV",
         "class_name": "VYV",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ2",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://www.urby.com/harrison",
+        WEBSITE_NAME_COLUMN: "Harrison Urby",
+        "class_name": "HarrisonUrby",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ2",
         WEBSITE_RENT_TYPE: RentType.RENTAL,

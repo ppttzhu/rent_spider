@@ -49,6 +49,7 @@ logging.basicConfig(
 logging.info(f"Running on {c.PLATFORM} mode...")
 
 
+# deprecated
 def main_in_loop():
     start_time = time.time()
     while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
@@ -93,4 +94,4 @@ def send_snapshot_email():
 if c.IS_CVS_SNAPSHOT:
     send_snapshot_email()
 else:
-    main_in_loop()
+    main()

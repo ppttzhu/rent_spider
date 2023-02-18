@@ -19,7 +19,8 @@ def init_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     if c.PLATFORM == c.Platform.DEV:
         # if version not available, have to download manually, unzip
-        # https://chromedriver.storage.googleapis.com/106.0.5249.21/chromedriver_mac64_m1.zip
+        # https://chromedriver.storage.googleapis.com/110.0.5481.30/chromedriver_mac_arm64.zip
+        # If not trusted, run this command in terminal
         # xattr -d com.apple.quarantine /Users/haley/Documents/git/chromedriver
         return webdriver.Chrome("/Users/haley/Documents/git/chromedriver", options=chrome_options)
     else:

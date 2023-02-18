@@ -152,7 +152,7 @@ def get_summary_rooms(rooms, location=None, rent_type=None):
             "count": 0,
             "frequency": "每日12点和19点"
             if web["platform"] == c.Platform.AWS
-            else "几分钟一次"
+            else "一小时一次"
             if web[c.WEBSITE_RENT_TYPE] == c.RentType.RENTAL
             else "每日19点",
             c.WEBSITE_PRIORITY_COLUMN: index,
