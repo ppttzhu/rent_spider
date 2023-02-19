@@ -49,13 +49,21 @@ class FetchUrby(Fetch):
         rooms = self.wait_until_xpath("//article[@class='card']")
         for room in rooms:
             self.move_to_center(room)
-            room_number = room.find_element_by_xpath(".//p[contains(@class, 'unit')]").text
-            room_type = room.find_element_by_xpath(".//p[contains(@class, 'beds-baths')]").text
-            move_in_date = room.find_element_by_xpath(
-                ".//p[contains(@class, 'ribbon')]"
-            ).text.replace("Available ", "")
-            room_price = room.find_element_by_xpath(".//p[contains(@class, 'price')]").text.replace(
-                "/MO", ""
+            room_number = room.find_element_by_xpath(
+                ".//p[contains(@class, 'unit')]"
+            ).get_attribute("textContent")
+            room_type = room.find_element_by_xpath(
+                ".//p[contains(@class, 'beds-baths')]"
+            ).get_attribute("textContent")
+            move_in_date = (
+                room.find_element_by_xpath(".//p[contains(@class, 'ribbon')]")
+                .get_attribute("textContent")
+                .replace("Available ", "")
+            )
+            room_price = (
+                room.find_element_by_xpath(".//p[contains(@class, 'price')]")
+                .get_attribute("textContent")
+                .replace("/MO", "")
             )
             room_url = room.find_element_by_xpath(".//a[contains(@class, 'image')]").get_attribute(
                 "href"

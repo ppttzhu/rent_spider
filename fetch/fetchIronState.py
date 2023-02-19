@@ -1,5 +1,4 @@
 import logging
-from time import sleep
 
 from selenium.webdriver.common.by import By
 
@@ -35,14 +34,22 @@ class FetchIronState(Fetch):
         self.get_url_with_retry(href)
         rooms = self.wait_until_xpath('//article[contains(@class, "property-box")]/a/div')
         for room in rooms:
-            self.move_to_center(room)
-            sleep(2)
-            move_in_date = room.find_element(by=By.XPATH, value=".//ul[1]/li").text.replace(
-                "AVAILABLE", ""
+            move_in_date = (
+                room.find_element(by=By.XPATH, value=".//ul[1]/li")
+                .get_attribute("textContent")
+                .replace("AVAILABLE", "")
             )
-            room_price = room.find_element(by=By.XPATH, value=".//ul[2]/li[1]").text
-            room_type = room.find_element(by=By.XPATH, value=".//ul[2]/li[3]").text
-            room_number = room.find_element(by=By.XPATH, value=".//h3").text.replace("Unit ", "")
+            room_price = room.find_element(by=By.XPATH, value=".//ul[2]/li[1]").get_attribute(
+                "textContent"
+            )
+            room_type = room.find_element(by=By.XPATH, value=".//ul[2]/li[3]").get_attribute(
+                "textContent"
+            )
+            room_number = (
+                room.find_element(by=By.XPATH, value=".//h3")
+                .get_attribute("textContent")
+                .replace("Unit ", "")
+            )
             self.add_room_info(
                 room_number=room_number,
                 room_type=room_type,
