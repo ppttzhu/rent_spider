@@ -30,25 +30,11 @@ class FetchUrby(Fetch):
         self.get_url_with_retry(self.url)
         self.close_popup()
         while True:
-            rooms = self.wait_until_xpath("//article[@class='card']")
-            for room in rooms:
-                self.move_to_center(room)
-                room_number = room.find_element_by_xpath(".//p[@class='unit']").text
-                room_type = room.find_element_by_xpath(".//p[@class='beds-baths']").text
-                move_in_date = room.find_element_by_xpath(
-                    ".//p[contains(@class, 'ribbon')]"
-                ).text.replace("Available ", "")
-                room_price = room.find_element_by_xpath(".//p[@class='price']").text.replace(
-                    "/MO", ""
-                )
-                room_url = room.find_element_by_xpath(".//a[@class='image']").get_attribute("href")
-                self.add_room_info(
-                    room_number,
-                    room_type,
-                    move_in_date,
-                    room_price,
-                    room_url,
-                )
+            try:
+                self.fetch_rooms_info()
+            except Exception:
+                self.close_popup()
+                self.fetch_rooms_info()
             pagination = self.driver.find_element_by_xpath('//div[@class="pagination"]')
             next_page_button = pagination.find_element_by_xpath(".//button[2]")
             if not next_page_button.is_enabled():
@@ -58,3 +44,26 @@ class FetchUrby(Fetch):
             except Exception:
                 self.close_popup()
                 next_page_button.click()
+
+    def fetch_rooms_info(self):
+        rooms = self.wait_until_xpath("//article[@class='card']")
+        for room in rooms:
+            self.move_to_center(room)
+            room_number = room.find_element_by_xpath(".//p[contains(@class, 'unit')]").text
+            room_type = room.find_element_by_xpath(".//p[contains(@class, 'beds-baths')]").text
+            move_in_date = room.find_element_by_xpath(
+                ".//p[contains(@class, 'ribbon')]"
+            ).text.replace("Available ", "")
+            room_price = room.find_element_by_xpath(".//p[contains(@class, 'price')]").text.replace(
+                "/MO", ""
+            )
+            room_url = room.find_element_by_xpath(".//a[contains(@class, 'image')]").get_attribute(
+                "href"
+            )
+            self.add_room_info(
+                room_number,
+                room_type,
+                move_in_date,
+                room_price,
+                room_url,
+            )
