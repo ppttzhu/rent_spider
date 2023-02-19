@@ -461,7 +461,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/quinn-197-van-vorst-street-jersey_city",
         WEBSITE_NAME_COLUMN: "Quinn",
         "class_name": "Quinn",
-        "platform": Platform.PYTHONANYWHERE,
+        "platform": Platform.AWS,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
