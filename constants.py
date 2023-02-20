@@ -410,6 +410,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-addition",
+        WEBSITE_NAME_COLUMN: "The Addition",
+        "class_name": "TheAddition",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/astor-lic",
         WEBSITE_NAME_COLUMN: "Astor LIC",
         "class_name": "AstorLIC",
