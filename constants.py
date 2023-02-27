@@ -634,6 +634,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://www.newportrentals.com/apartments-jersey-city-for-rent/",
+        WEBSITE_NAME_COLUMN: "Newport Rental",
+        "class_name": "NewportRental",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NPR",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10004/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie LIC Queen",
         "class_name": "EhomieLICQueen",
