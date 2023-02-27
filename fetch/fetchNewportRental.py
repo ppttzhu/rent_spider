@@ -1,3 +1,4 @@
+import re
 from time import sleep
 
 from selenium.webdriver.common.by import By
@@ -30,11 +31,11 @@ class FetchNewportRental(Fetch):
         }
         self.room_type_map = [
             ("Studio", "Studio"),
-            ("^1 Bedroom 1 Bathroom$", "1B1B"),
-            ("^2 Bedrooms 1 Bathroom$", "2B1B"),
-            ("^2 Bedrooms 2 Bathrooms$", "2B2B"),
-            ("^3 Bedrooms 2 Bathrooms$", "3B2B"),
-            ("^3 Bedrooms 3 Bathrooms$", "3B3B"),
+            ("^1 Bedroom1 Bathroom$", "1B1B"),
+            ("^2 Bedrooms1 Bathroom$", "2B1B"),
+            ("^2 Bedrooms2 Bathrooms$", "2B2B"),
+            ("^3 Bedrooms2 Bathrooms$", "3B2B"),
+            ("^3 Bedrooms3 Bathrooms$", "3B3B"),
         ]
 
     def fetch_web(self):
@@ -60,13 +61,17 @@ class FetchNewportRental(Fetch):
 
             building_room_number = room.find_element_by_xpath(
                 ".//div[contains(@class, 'col--01')]"
-            ).text.split("\n")[0]
-            building_name = building_room_number.split("|")[0].strip()
-            room_number = building_room_number.split("|")[1].replace("Residence", "").strip()
+            ).text
+            building_room_number_list = re.split("\||\n", building_room_number)
+            building_room_number_list = [i for i in building_room_number_list if i]
+            building_name = building_room_number_list[0].strip()
+            room_number = building_room_number_list[1].replace("Residence", "").strip()
             merged_building_room_number = f"[{self.building_name_priority_map.get(building_name)}] {building_name} {room_number}"
 
             room_type = room.find_element_by_xpath(".//div[contains(@class, 'col--02')]").text
-            room_type = "".join(room_type.split("\n")[:2]).replace("|", "")
+            room_type_list = re.split("\||\n", room_type)
+            room_type_list = [i.strip() for i in room_type_list if i]
+            room_type = "".join(room_type_list[:2])
             room_price = room.find_element_by_xpath(
                 ".//span[contains(@class, 'display-price')]"
             ).text
