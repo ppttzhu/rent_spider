@@ -89,7 +89,8 @@ class Fetch:
             if re.search(re_rule, room_type):
                 ret = type_value
                 break
-        ret = ret.replace("Studio", "0Studio")  # To make Studio appear at the first
+        if "studio" in ret.lower():
+            return "0Studio"  # To make Studio appear at the first
         return ret
 
     def process_move_in_date(self, move_in_date):

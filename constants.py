@@ -669,8 +669,16 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-greystone",
         WEBSITE_NAME_COLUMN: "Greystone",
         "class_name": "Greystone",
-        "platform": Platform.PYTHONANYWHERE,
+        "platform": Platform.AWS,
         "location": "CU",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://tfc.com/new-york-luxury-no-fee-apartments",
+        WEBSITE_NAME_COLUMN: "TFC",
+        "class_name": "TFC",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "TFC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
