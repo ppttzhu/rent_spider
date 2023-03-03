@@ -45,6 +45,11 @@ def rooms_in_npr():
     return room_with_location_filter("NPR")
 
 
+@app.route("/cu")
+def rooms_in_cu():
+    return room_with_location_filter("CU")
+
+
 def room_with_location_filter(location=None):
     rooms = get_rooms()
     latest_fetch_status = get_latest_fetch_status()
