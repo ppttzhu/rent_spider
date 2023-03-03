@@ -674,11 +674,19 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://tfc.com/new-york-luxury-no-fee-apartments",
-        WEBSITE_NAME_COLUMN: "TFC",
-        "class_name": "TFC",
+        WEBSITE_URL_COLUMN: "https://tfc.com/new-york-luxury-no-fee-apartments/plaza-district--lincoln-square--midtown-south--union-square--williamsburg-brooklyn--penn-quarter--golden-triangle--midtown--meatpacking-district--nomad--astoria--hudson-yards--greenwich-village--bushwick--prospect-heights--chelsea--washington-dc--flatiron--midtown-east--gramercy-park--reston-rentals",
+        WEBSITE_NAME_COLUMN: "TFC Chelsea",
+        "class_name": "TFCChelsea",
         "platform": Platform.PYTHONANYWHERE,
-        "location": "TFC",
+        "location": "TFCChelsea",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://tfc.com/new-york-luxury-no-fee-apartments/plaza-district--lincoln-square--midtown-south--union-square--williamsburg-brooklyn--penn-quarter--golden-triangle--midtown--meatpacking-district--nomad--astoria--west-village--financial-district--long-island-city--greenwich-village--downtown-brooklyn--bushwick--murray-hill--midtown-west--prospect-heights--upper-east-side--washington-dc--flatiron--midtown-east--gramercy-park--reston-rentals",
+        WEBSITE_NAME_COLUMN: "TFC Others",
+        "class_name": "TFCOthers",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "TFCOthers",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {

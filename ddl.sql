@@ -1,7 +1,7 @@
 -- mysql
 CREATE TABLE website (
 	website_name VARCHAR(50) PRIMARY KEY,
-	url VARCHAR(100),
+	url VARCHAR(2048),
 	location VARCHAR(50),
 	priority INT NOT NULL
 );

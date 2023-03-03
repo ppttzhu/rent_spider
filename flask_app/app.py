@@ -45,9 +45,14 @@ def rooms_in_npr():
     return room_with_location_filter("NPR")
 
 
-@app.route("/tfc")
-def rooms_in_tfc():
-    return room_with_location_filter("TFC")
+@app.route("/tfc-chelsea")
+def rooms_in_tfc_chelsea():
+    return room_with_location_filter("TFCChelsea")
+
+
+@app.route("/tfc-others")
+def rooms_in_tfc_others():
+    return room_with_location_filter("TFCOthers")
 
 
 @app.route("/cu")
