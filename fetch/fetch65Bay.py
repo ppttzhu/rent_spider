@@ -4,6 +4,7 @@ from fetch.fetch import Fetch
 class Fetch65Bay(Fetch):
     def __init__(self, driver, browser):
         super().__init__(driver, browser)
+        self.room_detail_url_map = {}
         self.base_url = "https://www.65bay.com"
         self.room_type_map = [
             ("Studio", "Studio"),
@@ -26,10 +27,9 @@ class Fetch65Bay(Fetch):
             room_hrefs.append(
                 f"{self.base_url}/availableunits.aspx?myOlePropertyId={property_id}&floorPlans={floor_plans}"
             )
-        self.room_detail_urls = []
         for room_href in room_hrefs:
             self.fetch_room(room_href)
-        for room_detail_url in self.room_detail_urls:
+        for room_detail_url in self.room_detail_url_map:
             self.fetch_room_detail(room_detail_url)
 
     def fetch_room(self, room_href):
@@ -40,7 +40,7 @@ class Fetch65Bay(Fetch):
         for button in select_buttons:
             onclick_command = button.get_attribute("onclick")
             room_detail_url = self.get_substring_by_regex(onclick_command, r"SetTermsUrl\('(.*)'\)")
-            self.room_detail_urls.append(f"{self.base_url}/{room_detail_url}")
+            self.room_detail_url_map[f"{self.base_url}/{room_detail_url}"] = room_href
 
     def fetch_room_detail(self, room_detail_url):
         self.get_url_with_retry(room_detail_url)
@@ -54,5 +54,5 @@ class Fetch65Bay(Fetch):
             room_type=room_type,
             move_in_date=move_in_date,
             room_price=room_price,
-            room_url=room_detail_url,
+            room_url=self.room_detail_url_map[room_detail_url],
         )
