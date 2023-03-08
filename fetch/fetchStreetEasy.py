@@ -71,6 +71,8 @@ class FetchStreetEasy(Fetch):
         if "studio" in room_type:
             return "0Studio"
         bed_index = room_type.find("bed")
+        if bed_index == -1:
+            return "0Studio"
         bed_count = int(room_type[bed_index - 2])
         bath_index = room_type.find("bath")
         bath_count = int(room_type[bath_index - 2])

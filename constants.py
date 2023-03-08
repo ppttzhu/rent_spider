@@ -594,6 +594,14 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/55-jordan-avenue-jersey_city",
+        WEBSITE_NAME_COLUMN: "55 Jordan",
+        "class_name": "55Jordan",
+        "platform": Platform.AWS,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://www.journalsquared.com/availabilities",
         WEBSITE_NAME_COLUMN: "Journal Squared",
         "class_name": "Jsq",
