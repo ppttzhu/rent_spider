@@ -20,7 +20,7 @@ class FetchVeris(Fetch):
 
     def slow_button_click(self, button):
         self.move_to_center(button)
-        sleep(2)
+        sleep(3)
         button.click()
 
     def fetch_web(self):
