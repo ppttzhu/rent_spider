@@ -155,6 +155,10 @@ class Fetch:
     def move_to_center(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
 
+    def move_to_element(self, element):
+        actions = ActionChains(self.driver)
+        actions.move_to_element(element).perform()
+
     def get_substring_by_regex(self, string, regex):
         match = re.search(regex, string)
         if match:

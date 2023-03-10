@@ -18,11 +18,15 @@ class FetchVeris(Fetch):
             ("^3 Beds / 2 Bath$", "3B2B"),
         ]
 
+    def slow_button_click(self, button):
+        self.move_to_center(button)
+        sleep(1)
+        button.click()
+
     def fetch_web(self):
         def read_list():
             if not self.reading_list:
-                self.move_to_center(view_buttons[0])
-                view_buttons[0].click()
+                self.slow_button_click(view_buttons[0])
                 sleep(0.5)
                 self.reading_list = True
             for room in rooms:
@@ -46,8 +50,7 @@ class FetchVeris(Fetch):
 
         def read_floor():
             if self.reading_list:
-                self.move_to_center(view_buttons[1])
-                view_buttons[1].click()
+                self.slow_button_click(view_buttons[1])
                 sleep(0.5)
                 self.reading_list = False
             for room in rooms:
@@ -85,8 +88,9 @@ class FetchVeris(Fetch):
                 )
             except Exception:
                 break
-            self.move_to_center(next_page_button)
-            next_page_button.click()
+            self.slow_button_click(next_page_button)
             sleep(3)
         for room in rooms_dict.values():
+            if room.get("room_number") is None:
+                continue  # some room does not exist in floor plan view, skip them
             self.add_room_info(**room)
