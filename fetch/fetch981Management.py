@@ -12,12 +12,8 @@ class Fetch981Management(Fetch):
         if self.check_availability():
             logging.info(f"No room available in {self.website_name}, skipping...")
             return
-        self.web_wait.until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(@id, 'uiTab')]"))
-        )
-        room_types_elements = self.driver.find_elements(
-            by=By.XPATH, value="//a[contains(@id, 'uiTab')]"
-        )
+        room_types_elements = self.wait_until_xpath("//a[contains(@id, 'uiTab')]")
+
         room_types = [
             (index, element.accessible_name) for index, element in enumerate(room_types_elements)
         ]

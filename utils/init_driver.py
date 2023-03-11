@@ -10,9 +10,17 @@ def init_driver():
     if c.PLATFORM == c.Platform.AWS:
         return None
     logging.info("Init webdriver...")
+
+    # To avoid being blocked
+    from fake_useragent import UserAgent
+
+    ua = UserAgent()
+    user_agent = ua.random
+
     chrome_options = webdriver.ChromeOptions()
     if c.PLATFORM != c.Platform.DEV:
         chrome_options.add_argument("--headless")
+    chrome_options.add_argument(f"user-agent={user_agent}")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")

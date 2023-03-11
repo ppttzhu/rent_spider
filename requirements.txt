@@ -7,3 +7,4 @@ beautifulsoup4==4.11.1
 playwright==1.28.0
 sshtunnel==0.4.0
 openpyxl==3.0.10
+fake-useragent==1.1.1
