@@ -22,8 +22,12 @@ def main():
         logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
         all_rooms = {}
         for key in c.WEBSITES_TARGETS:
-            fetch_class = getattr(importlib.import_module(f"fetch.fetch{key}"), f"Fetch{key}")
-            fetch_controller = fetch_class(driver, browser)
+            parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
+            fetch_class = getattr(
+                importlib.import_module(f"fetch.fetch{parent_class_name}"),
+                f"Fetch{parent_class_name}",
+            )
+            fetch_controller = fetch_class(key, driver, browser)
             rooms = fetch_controller.fetch()
             all_rooms[fetch_controller.website_name] = rooms
         if driver:

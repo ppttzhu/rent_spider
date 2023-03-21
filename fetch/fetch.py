@@ -12,11 +12,11 @@ import constants as c
 
 
 class Fetch:
-    def __init__(self, driver, browser):
+    def __init__(self, web_key, driver, browser):
+        self.web_key = web_key
         self.driver = driver
         self.browser = browser
 
-        web_key = self.__class__.__name__.replace("Fetch", "")
         self.url = c.WEBSITES_DICT[web_key][c.WEBSITE_URL_COLUMN]
         self.website_name = c.WEBSITES_DICT[web_key][c.WEBSITE_NAME_COLUMN]
         self.priority = c.WEBSITES_DICT[web_key][c.WEBSITE_PRIORITY_COLUMN]

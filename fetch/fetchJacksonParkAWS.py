@@ -2,8 +2,8 @@ from fetch.fetchStreetEasy import FetchStreetEasy
 
 
 class FetchJacksonParkAWS(FetchStreetEasy):
-    def __init__(self, driver, browser):
-        super().__init__(driver, browser)
+    def __init__(self, web_key, driver, browser):
+        super().__init__(web_key, driver, browser)
         self.table_class = "nice_table listings building-pages active-rentals-table"
 
     def process_room_number(self, room_number):

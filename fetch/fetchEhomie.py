@@ -7,8 +7,8 @@ from fetch.fetch import Fetch
 
 
 class FetchEhomie(Fetch):
-    def __init__(self, driver, browser):
-        super().__init__(driver, browser)
+    def __init__(self, web_key, driver, browser):
+        super().__init__(web_key, driver, browser)
         self.sleep_second = 0.5
 
     def fetch_web(self):

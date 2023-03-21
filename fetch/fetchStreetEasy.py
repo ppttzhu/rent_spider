@@ -9,8 +9,8 @@ from fetch.fetch import Fetch
 
 
 class FetchStreetEasy(Fetch):
-    def __init__(self, driver, browser):
-        super().__init__(driver, browser)
+    def __init__(self, web_key, driver, browser):
+        super().__init__(web_key, driver, browser)
         self.init_page()
         self.table_class = "nice_table building-pages BuildingUnit-table"
 

@@ -100,6 +100,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/101-west-end-avenue-new_york",
         WEBSITE_NAME_COLUMN: "101 West End",
+        "parent_class_name": "StreetEasy",
         "class_name": "101WestEnd",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -108,6 +109,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/21-west-end-avenue-new_york",
         WEBSITE_NAME_COLUMN: "21 West End Ave",
+        "parent_class_name": "StreetEasy",
         "class_name": "21WestEndAve",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -116,6 +118,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/via-57-west",
         WEBSITE_NAME_COLUMN: "Via 57 West",
+        "parent_class_name": "StreetEasy",
         "class_name": "Via57West",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -124,6 +127,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-max",
         WEBSITE_NAME_COLUMN: "The Max",
+        "parent_class_name": "StreetEasy",
         "class_name": "TheMax",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -132,6 +136,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/mercedes-house",
         WEBSITE_NAME_COLUMN: "Mercedes House",
+        "parent_class_name": "StreetEasy",
         "class_name": "MercedesHouse",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -140,6 +145,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/aro-242-west-53-street-new_york",
         WEBSITE_NAME_COLUMN: "Aro",
+        "parent_class_name": "StreetEasy",
         "class_name": "Aro",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -148,6 +154,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-biltmore",
         WEBSITE_NAME_COLUMN: "Biltmore",
+        "parent_class_name": "StreetEasy",
         "class_name": "Biltmore",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -156,6 +163,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/sky-605-west-42-street-new_york",
         WEBSITE_NAME_COLUMN: "Sky",
+        "parent_class_name": "StreetEasy",
         "class_name": "Sky",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -164,6 +172,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/mima-450-west-42-street-new_york",
         WEBSITE_NAME_COLUMN: "Mima",
+        "parent_class_name": "StreetEasy",
         "class_name": "Mima",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -172,6 +181,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/555ten-555-10th-avenue-manhattan",
         WEBSITE_NAME_COLUMN: "555 Ten",
+        "parent_class_name": "StreetEasy",
         "class_name": "555Ten",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -180,6 +190,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-victory",
         WEBSITE_NAME_COLUMN: "The Victory",
+        "parent_class_name": "StreetEasy",
         "class_name": "TheVictory",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -188,6 +199,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/lyra-555-west-38-street-new_york",
         WEBSITE_NAME_COLUMN: "Lyra",
+        "parent_class_name": "StreetEasy",
         "class_name": "Lyra",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -196,6 +208,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/henry-hall",
         WEBSITE_NAME_COLUMN: "Henry Hall",
+        "parent_class_name": "StreetEasy",
         "class_name": "HenryHall",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -204,6 +217,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/445-west-35-street-new_york",
         WEBSITE_NAME_COLUMN: "445W 35th",
+        "parent_class_name": "StreetEasy",
         "class_name": "445W35th",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -212,6 +226,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-lewis",
         WEBSITE_NAME_COLUMN: "The Lewis",
+        "parent_class_name": "StreetEasy",
         "class_name": "TheLewis",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -220,6 +235,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-eugene",
         WEBSITE_NAME_COLUMN: "The Eugene",
+        "parent_class_name": "StreetEasy",
         "class_name": "TheEugene",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -228,6 +244,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/685-first-avenue-manhattan",
         WEBSITE_NAME_COLUMN: "685 First Avenue",
+        "parent_class_name": "StreetEasy",
         "class_name": "685FirstAvenue",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -236,6 +253,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-copper",
         WEBSITE_NAME_COLUMN: "The Copper",
+        "parent_class_name": "StreetEasy",
         "class_name": "TheCopper",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -244,6 +262,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-epic",
         WEBSITE_NAME_COLUMN: "The Epic",
+        "parent_class_name": "StreetEasy",
         "class_name": "TheEpic",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -253,6 +272,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-continental",
         WEBSITE_NAME_COLUMN: "The Continental",
         "class_name": "TheContinental",
+        "parent_class_name": "StreetEasy",
         "platform": Platform.AWS,
         "location": "Manhattan",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -260,6 +280,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/eos-100-west-31st-street-new_york",
         WEBSITE_NAME_COLUMN: "EOS",
+        "parent_class_name": "StreetEasy",
         "class_name": "EOS",
         "platform": Platform.AWS,
         "location": "Manhattan",
@@ -284,6 +305,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/1-qps",
         WEBSITE_NAME_COLUMN: "1 QPS",
+        "parent_class_name": "StreetEasy",
         "class_name": "1QPS",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -292,6 +314,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/rise-lic",
         WEBSITE_NAME_COLUMN: "Rise LIC",
+        "parent_class_name": "StreetEasy",
         "class_name": "RiseLIC",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -300,7 +323,17 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/sven-29_59-northern-boulevard-long_island_city",
         WEBSITE_NAME_COLUMN: "Sven",
+        "parent_class_name": "StreetEasy",
         "class_name": "Sven",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/dutch-lic",
+        WEBSITE_NAME_COLUMN: "Dutch LIC",
+        "parent_class_name": "StreetEasy",
+        "class_name": "DutchLIC",
         "platform": Platform.AWS,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -316,6 +349,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/arc-30_02-39-avenue-queens",
         WEBSITE_NAME_COLUMN: "Arc",
+        "parent_class_name": "StreetEasy",
         "class_name": "Arc",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -324,6 +358,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-forge",
         WEBSITE_NAME_COLUMN: "Forge",
+        "parent_class_name": "StreetEasy",
         "class_name": "Forge",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -332,6 +367,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/skyline-tower",
         WEBSITE_NAME_COLUMN: "Skyline Tower",
+        "parent_class_name": "StreetEasy",
         "class_name": "SkylineTower",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -340,6 +376,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/altalic-29_22-northern-boulevard-long_island_city",
         WEBSITE_NAME_COLUMN: "AltaLIC",
+        "parent_class_name": "StreetEasy",
         "class_name": "Alta",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -348,6 +385,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/watermark-lic",
         WEBSITE_NAME_COLUMN: "Watermark",
+        "parent_class_name": "StreetEasy",
         "class_name": "Watermark",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -356,6 +394,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/qlic-41_42-24-street-long_island_city",
         WEBSITE_NAME_COLUMN: "QLIC",
+        "parent_class_name": "StreetEasy",
         "class_name": "QLIC",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -364,6 +403,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/luna-lic",
         WEBSITE_NAME_COLUMN: "Luna",
+        "parent_class_name": "StreetEasy",
         "class_name": "Luna",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -372,6 +412,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/bevel-lic",
         WEBSITE_NAME_COLUMN: "Bevel LIC",
+        "parent_class_name": "StreetEasy",
         "class_name": "BevelLIC",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -380,6 +421,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/one-lic",
         WEBSITE_NAME_COLUMN: "One LIC",
+        "parent_class_name": "StreetEasy",
         "class_name": "OneLIC",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -388,6 +430,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/star-tower-lic",
         WEBSITE_NAME_COLUMN: "Star Tower",
+        "parent_class_name": "StreetEasy",
         "class_name": "StarTower",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -396,6 +439,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/hero-condominium",
         WEBSITE_NAME_COLUMN: "Hero",
+        "parent_class_name": "StreetEasy",
         "class_name": "Hero",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -404,6 +448,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/galerie-condominium",
         WEBSITE_NAME_COLUMN: "Galerie",
+        "parent_class_name": "StreetEasy",
         "class_name": "Galerie",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -420,7 +465,17 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/aurora-condominium",
         WEBSITE_NAME_COLUMN: "Aurora",
+        "parent_class_name": "StreetEasy",
         "class_name": "Aurora",
+        "platform": Platform.AWS,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/dutch-house",
+        WEBSITE_NAME_COLUMN: "Dutch House",
+        "parent_class_name": "StreetEasy",
+        "class_name": "DutchHouse",
         "platform": Platform.AWS,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -428,6 +483,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/packard-square",
         WEBSITE_NAME_COLUMN: "Packard Square",
+        "parent_class_name": "StreetEasy",
         "class_name": "PackardSquare",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -436,6 +492,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/packard-square-west",
         WEBSITE_NAME_COLUMN: "Packard Square West",
+        "parent_class_name": "StreetEasy",
         "class_name": "PackardSquareWest",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -444,6 +501,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/45_57-davis-street-long_island_city",
         WEBSITE_NAME_COLUMN: "45-57 David St",
+        "parent_class_name": "StreetEasy",
         "class_name": "4557DavidSt",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -452,6 +510,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-pearson-court-square",
         WEBSITE_NAME_COLUMN: "Pearson CourtSquare",
+        "parent_class_name": "StreetEasy",
         "class_name": "PearsonCourtSquare",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -461,6 +520,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-addition",
         WEBSITE_NAME_COLUMN: "The Addition",
         "class_name": "TheAddition",
+        "parent_class_name": "StreetEasy",
         "platform": Platform.AWS,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -468,6 +528,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/astor-lic",
         WEBSITE_NAME_COLUMN: "Astor LIC",
+        "parent_class_name": "StreetEasy",
         "class_name": "AstorLIC",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -476,6 +537,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-green-house",
         WEBSITE_NAME_COLUMN: "Green House",
+        "parent_class_name": "StreetEasy",
         "class_name": "GreenHouse",
         "platform": Platform.AWS,
         "location": "LIC",
@@ -484,8 +546,18 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/haus25",
         WEBSITE_NAME_COLUMN: "Haus 25",
+        "parent_class_name": "Veris",
         "class_name": "Haus25",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-hendrix",
+        WEBSITE_NAME_COLUMN: "Hendrix",
+        "parent_class_name": "StreetEasy",
+        "class_name": "Hendrix",
+        "platform": Platform.AWS,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -516,6 +588,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://ironstate.com/property/90-columbus",
         WEBSITE_NAME_COLUMN: "90 Columbus",
+        "parent_class_name": "IronState",
         "class_name": "90Columbus",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -524,6 +597,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://ironstate.com/property/70-columbus",
         WEBSITE_NAME_COLUMN: "70 Columbus",
+        "parent_class_name": "IronState",
         "class_name": "70Columbus",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -532,6 +606,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/88-regent-street-jersey_city",
         WEBSITE_NAME_COLUMN: "88 Regent",
+        "parent_class_name": "StreetEasy",
         "class_name": "88Regent",
         "platform": Platform.AWS,
         "location": "NJ",
@@ -548,6 +623,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/quinn-197-van-vorst-street-jersey_city",
         WEBSITE_NAME_COLUMN: "Quinn",
+        "parent_class_name": "StreetEasy",
         "class_name": "Quinn",
         "platform": Platform.AWS,
         "location": "NJ",
@@ -556,6 +632,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/the-blvd-collection",
         WEBSITE_NAME_COLUMN: "The Blvd",
+        "parent_class_name": "Veris",
         "class_name": "TheBlvd",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -564,6 +641,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/vantage-33-park-view-avenue-jersey_city",
         WEBSITE_NAME_COLUMN: "Vantage",
+        "parent_class_name": "StreetEasy",
         "class_name": "Vantage",
         "platform": Platform.AWS,
         "location": "NJ",
@@ -572,6 +650,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.urby.com/jersey-city",
         WEBSITE_NAME_COLUMN: "JC Urby",
+        "parent_class_name": "Urby",
         "class_name": "JCUrby",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -596,6 +675,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/55-jordan-avenue-jersey_city",
         WEBSITE_NAME_COLUMN: "55 Jordan",
+        "parent_class_name": "StreetEasy",
         "class_name": "55Jordan",
         "platform": Platform.AWS,
         "location": "NJ",
@@ -612,6 +692,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://ironstate.com/property/50-columbus",
         WEBSITE_NAME_COLUMN: "50 Columbus",
+        "parent_class_name": "IronState",
         "class_name": "50Columbus",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -620,6 +701,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://ironstate.com/property/the-gotham",
         WEBSITE_NAME_COLUMN: "The Gotham",
+        "parent_class_name": "IronState",
         "class_name": "TheGotham",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -644,6 +726,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.urby.com/harrison",
         WEBSITE_NAME_COLUMN: "Harrison Urby",
+        "parent_class_name": "Urby",
         "class_name": "HarrisonUrby",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ2",
@@ -652,6 +735,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://verisresidential.com/properties/riverhouse-11-at-port-imperial",
         WEBSITE_NAME_COLUMN: "RiverHouse 11",
+        "parent_class_name": "Veris",
         "class_name": "RiverHouse11",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ2",
@@ -660,6 +744,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://verisresidential.com/weehawken-nj-apartments/riverhouse-9-at-port-imperial",
         WEBSITE_NAME_COLUMN: "RiverHouse 9",
+        "parent_class_name": "Veris",
         "class_name": "RiverHouse9",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ2",
@@ -676,6 +761,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-greystone",
         WEBSITE_NAME_COLUMN: "Greystone",
+        "parent_class_name": "StreetEasy",
         "class_name": "Greystone",
         "platform": Platform.AWS,
         "location": "CU",
@@ -684,6 +770,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://tfc.com/new-york-luxury-no-fee-apartments/plaza-district--lincoln-square--midtown-south--union-square--williamsburg-brooklyn--penn-quarter--golden-triangle--midtown--meatpacking-district--nomad--astoria--hudson-yards--greenwich-village--bushwick--prospect-heights--chelsea--washington-dc--flatiron--midtown-east--gramercy-park--reston-rentals",
         WEBSITE_NAME_COLUMN: "TFC Chelsea",
+        "parent_class_name": "TFC",
         "class_name": "TFCChelsea",
         "platform": Platform.PYTHONANYWHERE,
         "location": "TFCChelsea",
@@ -692,14 +779,43 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://tfc.com/new-york-luxury-no-fee-apartments/plaza-district--lincoln-square--midtown-south--union-square--williamsburg-brooklyn--penn-quarter--golden-triangle--midtown--meatpacking-district--nomad--astoria--west-village--financial-district--long-island-city--greenwich-village--downtown-brooklyn--bushwick--murray-hill--midtown-west--prospect-heights--upper-east-side--washington-dc--flatiron--midtown-east--gramercy-park--reston-rentals",
         WEBSITE_NAME_COLUMN: "TFC Others",
+        "parent_class_name": "TFC",
         "class_name": "TFCOthers",
         "platform": Platform.PYTHONANYWHERE,
         "location": "TFCOthers",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/88_08-justice-avenue-elmhurst_",
+        WEBSITE_NAME_COLUMN: "88-08 Justice Ave",
+        "parent_class_name": "StreetEasy",
+        "class_name": "JusticeAve",
+        "platform": Platform.AWS,
+        "location": "Elmhurst",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/lofts-at-qb",
+        WEBSITE_NAME_COLUMN: "Lofts at QB",
+        "parent_class_name": "StreetEasy",
+        "class_name": "LoftsAtQB",
+        "platform": Platform.AWS,
+        "location": "Elmhurst",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-alexander-61_55-junction-boulevard-rego_park",
+        WEBSITE_NAME_COLUMN: "Alexander",
+        "parent_class_name": "StreetEasy",
+        "class_name": "Alexander",
+        "platform": Platform.AWS,
+        "location": "Elmhurst",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10004/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie LIC Queen",
+        "parent_class_name": "Ehomie",
         "class_name": "EhomieLICQueen",
         "platform": Platform.PYTHONANYWHERE,
         "location": "LIC Queen",
@@ -708,6 +824,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10001/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie Mid Manhattan",
+        "parent_class_name": "Ehomie",
         "class_name": "EhomieMidMan",
         "platform": Platform.PYTHONANYWHERE,
         "location": "Mid Manhattan",
@@ -716,6 +833,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10002/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie Up Manhattan",
+        "parent_class_name": "Ehomie",
         "class_name": "EhomieUpMan",
         "platform": Platform.PYTHONANYWHERE,
         "location": "Up Manhattan",
@@ -724,6 +842,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10003/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie NJ",
+        "parent_class_name": "Ehomie",
         "class_name": "EhomieNJ",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
@@ -732,6 +851,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10005/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie Brooklyn",
+        "parent_class_name": "Ehomie",
         "class_name": "EhomieBK",
         "platform": Platform.PYTHONANYWHERE,
         "location": "Brooklyn",
@@ -740,6 +860,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.ehomie.com/us/new-york/region-10006/apartment/e03s2",
         WEBSITE_NAME_COLUMN: "Ehomie Roosevelt",
+        "parent_class_name": "Ehomie",
         "class_name": "EhomieRoosevelt",
         "platform": Platform.PYTHONANYWHERE,
         "location": "Roosevelt",
