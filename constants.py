@@ -759,6 +759,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/windermere-666-west-end-avenue-new_york",
+        WEBSITE_NAME_COLUMN: "Windermere",
+        "parent_class_name": "StreetEasy",
+        "class_name": "Windermere",
+        "platform": Platform.AWS,
+        "location": "CU",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-greystone",
         WEBSITE_NAME_COLUMN: "Greystone",
         "parent_class_name": "StreetEasy",
