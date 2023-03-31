@@ -613,6 +613,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-bridget",
+        WEBSITE_NAME_COLUMN: "The Bridget",
+        "parent_class_name": "StreetEasy",
+        "class_name": "TheBridget",
+        "platform": Platform.AWS,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://www.485marin.com/floorplans",
         WEBSITE_NAME_COLUMN: "485 Marin",
         "class_name": "485Marin",

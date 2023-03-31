@@ -37,7 +37,8 @@ class FetchIronState(Fetch):
             move_in_date = (
                 room.find_element(by=By.XPATH, value=".//ul[1]/li")
                 .get_attribute("textContent")
-                .replace("AVAILABLE", "")
+                .lower()
+                .replace("available", "")
             )
             room_price = room.find_element(by=By.XPATH, value=".//ul[2]/li[1]").get_attribute(
                 "textContent"
