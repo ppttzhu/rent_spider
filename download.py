@@ -1,3 +1,4 @@
+import getpass
 import os
 import re
 
@@ -5,11 +6,11 @@ import requests
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
-from fetch.fetch1QPS import Fetch1QPS
+from fetch.fetchVYV import FetchVYV
 
-web_url = "https://streeteasy.com/building/eagle-lofts/floorplans"
-web_name = "Eagle Lofts"  # for downloaded file name and folder name
-download_path = f"/Users/haley/Desktop/{web_name}"
+web_url = "https://streeteasy.com/building/788-columbus-avenue-new_york/floorplans"
+web_name = "788"  # for downloaded file name and folder name
+download_path = f"/Users/{getpass.getuser()}/Downloads/{web_name}"  # for macos
 
 # create folder if not exist
 if not os.path.exists(download_path):
@@ -26,7 +27,7 @@ def download_floorplan(room_id, url):
 
 with sync_playwright() as play:
     browser = play.firefox.launch(headless=False)
-    fetcher = Fetch1QPS(None, browser)
+    fetcher = FetchVYV("VYV", None, browser)
     html_doc = fetcher.get_html_doc(web_url)
     soup = BeautifulSoup(html_doc, "html.parser")
     a_elements = soup.find_all("a", text=re.compile("^click to view .* floorplan$"))
