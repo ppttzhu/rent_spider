@@ -19,9 +19,19 @@ class FetchVeris(Fetch):
         ]
 
     def slow_button_click(self, button):
-        self.move_to_center(button)
-        sleep(3)
-        button.click()
+        try:
+            self.move_to_center(button)
+            sleep(3)
+            button.click()
+        except Exception:
+            self.driver.switch_to.frame("webchat-iframe")
+            webchat_close = self.driver.find_elements(
+                by=By.XPATH,
+                value='//webchat[@class="ng-star-inserted"]/header/nav',
+            )
+            webchat_close[0].click()
+            self.driver.switch_to.default_content()
+            button.click()
 
     def fetch_web(self):
         def read_list():
