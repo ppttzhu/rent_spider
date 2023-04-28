@@ -29,7 +29,7 @@ class Fetch351Marinjc(Fetch):
             room_price = row.find_element(by=By.XPATH, value='.//td[@class="td-card-rent"]').text
             move_in_date = row.find_element(
                 by=By.XPATH, value='.//td[@class="td-card-available"]'
-            ).text
+            ).text.replace("Date:", "")
             self.add_room_info(
                 room_number=room_number,
                 room_type=room_type,

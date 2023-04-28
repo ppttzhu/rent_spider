@@ -920,6 +920,7 @@ WEBSITES_DICT = {
 }
 
 NOTIFICATION_EMAIL_SUBJECT = "【房源通知】"
+NOTIFICATION_EMAIL_SUBJECT_SUMMER = "【7-8月房源通知】"
 SNAPSHOT_EMAIL_SUBJECT = "【房源每日快照】"
 ERROR_EMAIL_SUBJECT = "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"

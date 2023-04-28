@@ -8,8 +8,8 @@ from playwright.sync_api import sync_playwright
 
 from fetch.fetchVYV import FetchVYV
 
-web_url = "https://streeteasy.com/building/788-columbus-avenue-new_york/floorplans"
-web_name = "788"  # for downloaded file name and folder name
+web_url = "https://streeteasy.com/building/hayden-43_25-hunter-street-long_island_city/floorplans"
+web_name = "hayden"  # for downloaded file name and folder name
 download_path = f"/Users/{getpass.getuser()}/Downloads/{web_name}"  # for macos
 
 # create folder if not exist
@@ -39,7 +39,14 @@ with sync_playwright() as play:
         links[room_id] = element.get("href")
     print(f"Removed duplicates and found {len(links)} links to download")
     count = 0
+    failed_links = []
     for room_id, url in links.items():
         count += 1
-        print(f"Downloading {count}/{len(links)} from {url}")
-        download_floorplan(room_id, url)
+        print(f"Downloading {count}/{len(links)} from {url}", end="")
+        try:
+            download_floorplan(room_id, url)
+            print(" - Done")
+        except Exception as e:
+            print(" - Failed" + str(e))
+            failed_links.append(url)
+    print(f"{len(failed_links)} failed links: {failed_links}")

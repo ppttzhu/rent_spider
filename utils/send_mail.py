@@ -95,3 +95,42 @@ def send_notification_email(new_rooms, removed_rooms, updated_rooms):
         c.NOTIFICATION_EMAIL_SUBJECT,
         content,
     )
+
+    send_notification_email_summer(new_rooms, removed_rooms, updated_rooms)
+
+
+def filter_summer_room(rooms):
+    summer_rooms = []
+    for room in rooms:
+        room_to_check = room[1] if isinstance(room, tuple) else room
+        start_with_texts = ["07/", "08/", "7/", "8/", "Jul", "Aug"]
+        for start_with_text in start_with_texts:
+            if room_to_check["move_in_date"].startswith(start_with_text):
+                summer_rooms.append(room)
+                continue
+    return summer_rooms
+
+
+def send_notification_email_summer(new_rooms, removed_rooms, updated_rooms):
+    new_rooms = filter_summer_room(new_rooms)
+    removed_rooms = filter_summer_room(removed_rooms)
+    updated_rooms = filter_summer_room(updated_rooms)
+    if not new_rooms and not removed_rooms and not updated_rooms:
+        return
+
+    content = ""
+    if new_rooms:
+        content += "<h3>新房源:</h3>" + generate_table(new_rooms)
+    if removed_rooms:
+        content += "<h3>下架房源:</h3>" + generate_table(removed_rooms)
+    if updated_rooms:
+        content += "<h3>房源信息更新:</h3>" + generate_table(updated_rooms)
+    content += f"""<h3>全部房源:<div><a href="{c.WEB_APP_LINK}">{c.WEB_APP_LINK}</a></div></h3>"""
+    content = "<html><body>" + content + "</body></html>"
+
+    send_email(
+        c.EMAIL_RECEIVERS_DEV if c.PLATFORM == c.Platform.DEV else c.EMAIL_RECEIVERS,
+        c.EMAIL_RECEIVERS_DEV,
+        c.NOTIFICATION_EMAIL_SUBJECT_SUMMER,
+        content,
+    )
