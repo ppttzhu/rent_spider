@@ -71,6 +71,9 @@ def room_with_location_filter(location=None):
     latest_fetch_status_dict = {
         record[c.WEBSITE_NAME_COLUMN]: record[c.FETCH_DATE_COLUMN] for record in latest_fetch_status
     }
+    for room in rooms:
+        if room[c.ROOM_NUMBER_COLUMN].startswith("[Long Island City]"):
+            room[c.WEBSITE_LOCATION_COLUMN] = "LIC"
     if location:
         rooms = [room for room in rooms if room[c.WEBSITE_LOCATION_COLUMN] == location]
     for room in rooms:
@@ -188,7 +191,8 @@ def get_summary_rooms(rooms, location=None, rent_type=None):
         and (not rent_type or web[c.WEBSITE_RENT_TYPE] == rent_type)
     }
     for room in rooms:
-        summary_rooms[room[c.WEBSITE_NAME_COLUMN]]["count"] += 1
+        if room[c.WEBSITE_NAME_COLUMN] in summary_rooms:
+            summary_rooms[room[c.WEBSITE_NAME_COLUMN]]["count"] += 1
     return summary_rooms
 
 

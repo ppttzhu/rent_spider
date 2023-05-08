@@ -3,14 +3,13 @@ import logging
 import sys
 import time
 import traceback
-from collections import defaultdict
 
 from playwright.sync_api import sync_playwright
 
 import constants as c
 from database import Database
 from utils.init_driver import init_driver
-from utils.send_mail import send_email, send_notification_email
+from utils.send_mail import send_notification_email_summer
 
 
 def main():
@@ -37,7 +36,8 @@ def main():
     database = Database()
     new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
     if new_rooms or removed_rooms or updated_rooms:
-        send_notification_email(new_rooms, removed_rooms, updated_rooms)
+        # send_notification_email(new_rooms, removed_rooms, updated_rooms)
+        send_notification_email_summer(new_rooms, removed_rooms, updated_rooms)
     else:
         logging.info("Nothing new to send")
     database.quit()
@@ -68,34 +68,4 @@ def main_in_loop():
         time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
 
 
-def send_snapshot_email():
-    from openpyxl import Workbook
-
-    database = Database()
-    all_rooms = database.get_rooms()
-    wb = Workbook()
-    rooms_split_by_location = defaultdict(list)
-    for room in all_rooms:
-        rooms_split_by_location[room["location"]].append(room)
-    for location, rooms in rooms_split_by_location.items():
-        ws = wb.create_sheet(location)
-        ws.append(list(rooms[0].keys()))
-        for room in rooms:
-            ws.append(list(room.values()))
-    default_sheet = wb["Sheet"]
-    wb.remove(default_sheet)
-    wb.save(c.SNAPSHOT_DIR)
-    send_email(
-        c.EMAIL_RECEIVERS_DEV if c.PLATFORM == c.Platform.DEV else c.SNAPSHOT_EMAIL_RECEIVERS,
-        c.EMAIL_RECEIVERS_DEV,
-        c.SNAPSHOT_EMAIL_SUBJECT,
-        "",
-        c.SNAPSHOT_DIR,
-    )
-    database.quit()
-
-
-if c.IS_CVS_SNAPSHOT:
-    send_snapshot_email()
-else:
-    main()
+main()
