@@ -65,6 +65,16 @@ def rooms_in_elmhurst():
     return room_with_location_filter("Elmhurst")
 
 
+@app.route("/bk")
+def rooms_in_bk():
+    return room_with_location_filter("BK")
+
+
+@app.route("/bklow")
+def rooms_in_bklow():
+    return room_with_location_filter("BKLow")
+
+
 def room_with_location_filter(location=None):
     rooms = get_rooms()
     latest_fetch_status = get_latest_fetch_status()
