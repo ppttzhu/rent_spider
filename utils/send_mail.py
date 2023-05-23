@@ -101,7 +101,7 @@ def filter_summer_room(rooms):
     summer_rooms = []
     for room in rooms:
         room_to_check = room[1] if isinstance(room, tuple) else room
-        start_with_texts = ["07/", "08/", "7/", "8/", "Jul", "Aug"]
+        start_with_texts = ["08/", "8/", "Aug"]
         for start_with_text in start_with_texts:
             if room_to_check["move_in_date"].startswith(start_with_text):
                 summer_rooms.append(room)

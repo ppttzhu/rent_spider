@@ -101,7 +101,7 @@ class InfraStack(Stack):
             ),
         )
         ecs_run_task.add_catch(sfn.Pass(self, "EcsRunTaskCatch"), errors=["States.ALL"])
-        wait = sfn.Wait(self, "Wait", time=sfn.WaitTime.duration(cdk.Duration.seconds(5 * 60)))
+        wait = sfn.Wait(self, "Wait", time=sfn.WaitTime.duration(cdk.Duration.seconds(30)))
         sfn_map.iterator(wait.next(ecs_run_task))
         definition = sfn_map
         sfn_role = iam.Role(
@@ -136,7 +136,7 @@ class InfraStack(Stack):
         rule = events.Rule(
             self,
             "Rule",
-            schedule=events.Schedule.cron(minute="0", hour="16,23"),
+            schedule=events.Schedule.cron(minute="0", hour="11,23"),
         )
         events_role = iam.Role(
             self,

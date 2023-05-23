@@ -741,24 +741,6 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://verisresidential.com/properties/riverhouse-11-at-port-imperial",
-        WEBSITE_NAME_COLUMN: "RiverHouse 11",
-        "parent_class_name": "Veris",
-        "class_name": "RiverHouse11",
-        "platform": Platform.PYTHONANYWHERE,
-        "location": "NJ2",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://verisresidential.com/weehawken-nj-apartments/riverhouse-9-at-port-imperial",
-        WEBSITE_NAME_COLUMN: "RiverHouse 9",
-        "parent_class_name": "Veris",
-        "class_name": "RiverHouse9",
-        "platform": Platform.PYTHONANYWHERE,
-        "location": "NJ2",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
         WEBSITE_URL_COLUMN: "https://www.newportrentals.com/apartments-jersey-city-for-rent/",
         WEBSITE_NAME_COLUMN: "Newport Rental",
         "class_name": "NewportRental",
@@ -906,6 +888,24 @@ WEBSITES = [
         WEBSITE_NAME_COLUMN: "The Brooklyner",
         "parent_class_name": "StreetEasy",
         "class_name": "TheBrooklyner",
+        "platform": Platform.AWS,
+        "location": "BK",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/city-tower",
+        WEBSITE_NAME_COLUMN: "City Tower",
+        "parent_class_name": "StreetEasy",
+        "class_name": "CityTower",
+        "platform": Platform.AWS,
+        "location": "BK",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-azure-436-albee-square",
+        WEBSITE_NAME_COLUMN: "The Azure",
+        "parent_class_name": "StreetEasy",
+        "class_name": "TheAzure",
         "platform": Platform.AWS,
         "location": "BK",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -1144,8 +1144,8 @@ WEBSITES_DICT = {
 }
 
 NOTIFICATION_EMAIL_SUBJECT = "【房源通知】"
-NOTIFICATION_EMAIL_SUBJECT_SUMMER = "【7-8月房源通知】"
-NOTIFICATION_EMAIL_SUBJECT_SUMMER_SUMMARY = "【7-8月今日房源通知汇总】"
+NOTIFICATION_EMAIL_SUBJECT_SUMMER = "【8月房源通知】"
+NOTIFICATION_EMAIL_SUBJECT_SUMMER_SUMMARY = "【8月今日房源通知汇总】"
 SNAPSHOT_EMAIL_SUBJECT = "【房源每日快照】"
 ERROR_EMAIL_SUBJECT = "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"
