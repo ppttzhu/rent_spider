@@ -1150,8 +1150,8 @@ SNAPSHOT_EMAIL_SUBJECT = "【房源每日快照】"
 ERROR_EMAIL_SUBJECT = "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"
 EMAIL_RECEIVERS_DEV = ["ppttzhu@gmail.com"]
-EMAIL_RECEIVERS = ["atongmu0577@163.com", "tyler.acreny@gmail.com"]
-SNAPSHOT_EMAIL_RECEIVERS = ["atongmu0577@163.com", "tyler.acreny@gmail.com"]
+EMAIL_RECEIVERS = ["atongmu0577@163.com", "tyler.acreny@gmail.com", "zoe.acreny@gmail.com"]
+SNAPSHOT_EMAIL_RECEIVERS = ["atongmu0577@163.com", "tyler.acreny@gmail.com", "zoe.acreny@gmail.com"]
 
 
 DATABASE_HOST = "ppttzhu.mysql.pythonanywhere-services.com"
