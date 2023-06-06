@@ -33,7 +33,7 @@ $ cdk synth
 Deploy the CloudFormation template.
 
 ```
-$ cdk deploy
+$ cdk deploy --all
 ```
 
 # Docker setup for AWS ECR (x86_64)

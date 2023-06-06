@@ -19,14 +19,17 @@ import constants as c
 
 STACK_NAME = "rent-spider"
 MEMORY_RESERVATION_MIB = 8192
+VPC_ID = {"us-east-1": "vpc-145a3a6e", "us-west-2": "vpc-01f42463bab73d1ef"}
+STACK_NAME_MAP = {"us-east-1": STACK_NAME, "us-west-2": STACK_NAME + "-us-west-2"}
 
 
 class InfraStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        region = kwargs["env"]["region"]
 
         # ECS
-        vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id="vpc-145a3a6e")
+        vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id=VPC_ID[region])
         cluster = ecs.Cluster(self, "Cluster", cluster_name=STACK_NAME, vpc=vpc)
         execution_role = iam.Role(
             self,
@@ -122,6 +125,8 @@ class InfraStack(Stack):
         state_machine = sfn.StateMachine(self, "StateMachine", definition=definition, role=sfn_role)
 
         # Scheduler
+        mid = len(c.WEBSITES) // 3
+        websites = c.WEBSITES[:mid] if region == "us-west-2" else c.WEBSITES[mid:]
         sfn_input = {
             "websites": [
                 {
@@ -129,7 +134,7 @@ class InfraStack(Stack):
                         f"cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -i {website['class_name']}"
                     ]
                 }
-                for website in c.WEBSITES
+                for website in websites
                 if website["platform"] == c.Platform.AWS
             ]
         }
@@ -163,11 +168,12 @@ class InfraStack(Stack):
 
 
 app = cdk.App()
-InfraStack(
-    app,
-    STACK_NAME,
-    env={"account": os.environ["CDK_DEFAULT_ACCOUNT"], "region": os.environ["CDK_DEFAULT_REGION"]},
-)
+for region in ["us-east-1", "us-west-2"]:
+    InfraStack(
+        app,
+        STACK_NAME_MAP[region],
+        env={"account": os.environ["CDK_DEFAULT_ACCOUNT"], "region": region},
+    )
 
 
 app.synth()
