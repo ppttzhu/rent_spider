@@ -19,7 +19,7 @@ def format_addr(s):
 
 def generate_header():
     header = ""
-    for column_name in c.ROOM_TABLE_COLUMNS_NAME:
+    for column_name in c.ROOM_TABLE_COLUMNS_NAME + ["地区"]:
         header += f"""<th style="border: 1px solid #dddddd;text-align: center;padding: 8px; min-width: 100px;">{column_name}</th>"""
     header = "<tr>" + header + "</tr>"
     return header
@@ -33,7 +33,10 @@ def generate_table(rooms):
             prev_room, room = room
         room_content = ""
         for column_name in c.WEBSITE_ROOM_VIEW_COLUMNS:
-            if column_name in c.WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS:
+            if (
+                column_name in c.WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
+                and column_name != c.WEBSITE_LOCATION_COLUMN
+            ):
                 continue
             cell_content = room[column_name]
             if column_name == c.WEBSITE_NAME_COLUMN:
@@ -102,10 +105,13 @@ def filter_summer_room(rooms):
     for room in rooms:
         room_to_check = room[1] if isinstance(room, tuple) else room
         start_with_texts = ["08/", "8/", "Aug"]
+        building_to_escape = ["River Bridge Tower"]
+        should_append = room_to_check[c.WEBSITE_NAME_COLUMN] in building_to_escape
         for start_with_text in start_with_texts:
-            if room_to_check["move_in_date"].startswith(start_with_text):
-                summer_rooms.append(room)
-                continue
+            if room_to_check[c.MOVE_IN_DATE_COLUMN].startswith(start_with_text):
+                should_append = True
+        if should_append:
+            summer_rooms.append(room)
     return summer_rooms
 
 

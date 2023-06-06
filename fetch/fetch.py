@@ -57,6 +57,7 @@ class Fetch:
             c.ROOM_TYPE_COLUMN: self.process_room_type(room_type),
             c.MOVE_IN_DATE_COLUMN: self.process_move_in_date(move_in_date),
             c.ROOM_PRICE_COLUMN: self.process_room_price(room_price),
+            c.WEBSITE_LOCATION_COLUMN: c.WEBSITES_DICT[self.web_key][c.WEBSITE_LOCATION_COLUMN],
         }
         room_info_tuple = tuple([room_number, room_type, move_in_date, room_price])
         if room_info_tuple in self.room_info_tuple_set:
