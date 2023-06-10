@@ -188,11 +188,7 @@ def get_summary_rooms(rooms, location=None, rent_type=None):
     summary_rooms = {
         web[c.WEBSITE_NAME_COLUMN]: {
             "count": 0,
-            "frequency": "每日12点和19点"
-            if web["platform"] == c.Platform.AWS
-            else "一小时一次"
-            if web[c.WEBSITE_RENT_TYPE] == c.RentType.RENTAL
-            else "每日19点",
+            "frequency": c.FREQUENCY_MAP[web["platform"]],
             c.WEBSITE_PRIORITY_COLUMN: index,
             c.WEBSITE_URL_COLUMN: web[c.WEBSITE_URL_COLUMN],
         }

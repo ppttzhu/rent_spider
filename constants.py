@@ -15,6 +15,12 @@ class RentType(Enum):
     SUBLEASE = 2
 
 
+FREQUENCY_MAP = {
+    Platform.AWS: "每日两次",
+    Platform.PYTHONANYWHERE: "一小时一次",
+    Platform.PYTHONANYWHERE_2: "十分钟一次",
+}
+
 PLATFORM = None
 IS_REMOTE = False
 NEED_UPDATE_WEBSITE = None
@@ -24,7 +30,7 @@ RENT_TYPE = None
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 SNAPSHOT_DIR = os.path.join(ROOT_DIR, "../snapshot.xlsx")
 
-MINUTES_BETWEEN_FETCH = 7
+MINUTES_BETWEEN_FETCH = 10
 TOTAL_DURATION_IN_MINUTES = 60
 WEB_DRIVER_TIMEOUT_SECOND = 30
 SE_SLEEP_MIN_SECOND = 20

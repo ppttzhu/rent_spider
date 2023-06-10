@@ -62,7 +62,7 @@ docker start -i rent-spider
 Run the script to see if it works
 
 ```
-cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -a
+cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -p AWS
 ```
 
 # Test run ECS task (once)

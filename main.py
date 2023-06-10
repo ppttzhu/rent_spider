@@ -67,8 +67,9 @@ def main_in_loop():
             # No time to finish a new iteration
             break
         else:
-            logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
-            time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
+            time_sleep_in_mins = max(c.MINUTES_BETWEEN_FETCH - one_loop_duration // 60, 0)
+            logging.info(f"Sleep for {time_sleep_in_mins} mins...")
+            time.sleep(time_sleep_in_mins * 60)
 
 
 if c.PLATFORM == c.Platform.PYTHONANYWHERE_2 or c.RENT_TYPE == c.RentType.SUBLEASE:
