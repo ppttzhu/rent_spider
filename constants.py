@@ -1204,7 +1204,7 @@ try:
     parser.add_argument("-u", "--update", action="store_true", help="Update website table")
     args = parser.parse_args()
 
-    PLATFORM = args.platform or Platform.DEV
+    PLATFORM = Platform[args.platform] if args.platform else Platform.DEV
     IS_REMOTE = args.remote
 
     NEED_UPDATE_WEBSITE = args.update
@@ -1219,7 +1219,7 @@ try:
             filter(lambda x: x[WEBSITE_RENT_TYPE] == RentType.SUBLEASE, WEBSITES)
         )
         WEBSITES_TARGETS = [w["class_name"] for w in website_for_sublease]
-    elif args.auto and PLATFORM != Platform.DEV:
+    elif PLATFORM != Platform.DEV:
         website_for_platform = list(
             filter(
                 lambda x: x["platform"] == PLATFORM and x[WEBSITE_RENT_TYPE] != RentType.SUBLEASE,
