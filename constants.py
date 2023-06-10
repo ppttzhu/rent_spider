@@ -4,9 +4,10 @@ from enum import Enum
 
 
 class Platform(Enum):
-    AWS = 1
-    PYTHONANYWHERE = 2
-    DEV = 3
+    DEV = 1
+    AWS = 2
+    PYTHONANYWHERE = 3
+    PYTHONANYWHERE_2 = 4  # secondary pythonanywhere account
 
 
 class RentType(Enum):
@@ -15,6 +16,7 @@ class RentType(Enum):
 
 
 PLATFORM = None
+IS_REMOTE = False
 NEED_UPDATE_WEBSITE = None
 WEBSITES_TARGETS = None
 RENT_TYPE = None
@@ -23,7 +25,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 SNAPSHOT_DIR = os.path.join(ROOT_DIR, "../snapshot.xlsx")
 
 MINUTES_BETWEEN_FETCH = 7
-TOTAL_DURATION_IN_MINUTES = 50
+TOTAL_DURATION_IN_MINUTES = 60
 WEB_DRIVER_TIMEOUT_SECOND = 30
 SE_SLEEP_MIN_SECOND = 20
 SE_SLEEP_MAX_SECOND = 25
@@ -590,7 +592,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://www.grovepointe.com/floorplans",
         WEBSITE_NAME_COLUMN: "Grove Pointe",
         "class_name": "Gp",
-        "platform": Platform.PYTHONANYWHERE,
+        "platform": Platform.PYTHONANYWHERE_2,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -598,7 +600,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://www.235grand.com/floorplans",
         WEBSITE_NAME_COLUMN: "235 Grand Street",
         "class_name": "235GrandStreet",
-        "platform": Platform.PYTHONANYWHERE,
+        "platform": Platform.PYTHONANYWHERE_2,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -607,7 +609,7 @@ WEBSITES = [
         WEBSITE_NAME_COLUMN: "90 Columbus",
         "parent_class_name": "IronState",
         "class_name": "90Columbus",
-        "platform": Platform.PYTHONANYWHERE,
+        "platform": Platform.PYTHONANYWHERE_2,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -694,7 +696,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://www.18park.com/floorplans",
         WEBSITE_NAME_COLUMN: "18 Park",
         "class_name": "18Park",
-        "platform": Platform.PYTHONANYWHERE,
+        "platform": Platform.PYTHONANYWHERE_2,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -1196,18 +1198,14 @@ try:
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--include", nargs="+", help="Websites to include")
     parser.add_argument("-e", "--exclude", nargs="+", help="Websites to exclude")
-    parser.add_argument("-a", "--auto", action="store_true", help="Automatic choose websites")
+    parser.add_argument("-p", "--platform", help="Platform to select")
     parser.add_argument("-s", "--sublease", action="store_true", help="Sublease websites only")
     parser.add_argument("-r", "--remote", action="store_true", help="SSH to remote database")
     parser.add_argument("-u", "--update", action="store_true", help="Update website table")
     args = parser.parse_args()
 
-    if os.environ.get("PYTHONANYWHERE_DOMAIN") is not None:
-        PLATFORM = Platform.PYTHONANYWHERE
-    elif args.remote:
-        PLATFORM = Platform.AWS
-    else:
-        PLATFORM = Platform.DEV
+    PLATFORM = args.platform or Platform.DEV
+    IS_REMOTE = args.remote
 
     NEED_UPDATE_WEBSITE = args.update
     RENT_TYPE = RentType.SUBLEASE if args.sublease else RentType.RENTAL

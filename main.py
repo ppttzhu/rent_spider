@@ -1,6 +1,5 @@
 import importlib
 import logging
-import sys
 import time
 import traceback
 
@@ -15,7 +14,7 @@ from utils.send_mail import send_notification_email_summer
 def main():
     with sync_playwright() as play:
         driver, browser = init_driver(), None
-        if c.PLATFORM != c.Platform.PYTHONANYWHERE:
+        if c.PLATFORM not in [c.Platform.PYTHONANYWHERE, c.Platform.PYTHONANYWHERE_2]:
             browser = play.firefox.launch(headless=False)  # headless will be blocked
         logging.info("-------------- Start Fetching Task -------------- ")
         logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
@@ -53,19 +52,26 @@ logging.basicConfig(
 logging.info(f"Running on {c.PLATFORM} mode...")
 
 
-# deprecated
 def main_in_loop():
     start_time = time.time()
-    while time.time() - start_time < c.TOTAL_DURATION_IN_MINUTES * 60:
+    while True:
+        last_iteration_start_time = time.time()
         try:
             main()
         except Exception as error:
             logging.error(repr(error))
             traceback.print_exc()
-        if c.PLATFORM != c.Platform.PYTHONANYWHERE or c.RENT_TYPE == c.RentType.SUBLEASE:
-            sys.exit()
-        logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
-        time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
+        one_loop_duration = time.time() - last_iteration_start_time
+        logging.info(f"Last iter takes {one_loop_duration//60} mins...")
+        if time.time() + one_loop_duration > start_time + c.TOTAL_DURATION_IN_MINUTES * 60:
+            # No time to finish a new iteration
+            break
+        else:
+            logging.info(f"Sleep for {c.MINUTES_BETWEEN_FETCH} mins...")
+            time.sleep(c.MINUTES_BETWEEN_FETCH * 60)
 
 
-main()
+if c.PLATFORM == c.Platform.PYTHONANYWHERE_2 or c.RENT_TYPE == c.RentType.SUBLEASE:
+    main_in_loop()
+else:
+    main()

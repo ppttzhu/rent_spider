@@ -16,7 +16,7 @@ class Database:
         logging.info("Init DB...")
         config = configparser.ConfigParser()
         config.read(os.path.join(c.ROOT_DIR, "secrets.cfg"))
-        if c.PLATFORM == c.Platform.AWS:
+        if c.IS_REMOTE:
             logging.info("Opening SSH tunnel...")
             tunnel = SSHTunnelForwarder(
                 c.SSH_HOST,
