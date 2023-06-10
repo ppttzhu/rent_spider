@@ -35,8 +35,8 @@ class Database:
             )
         else:
             conn = MySQLdb.connect(
-                host="127.0.0.1" if c.PLATFORM == c.Platform.DEV else c.DATABASE_HOST,
-                user="root" if c.PLATFORM == c.Platform.DEV else c.DATABASE_USER,
+                host=c.DATABASE_HOST if os.environ.get("PYTHONANYWHERE_DOMAIN") else "127.0.0.1",
+                user=c.DATABASE_USER if os.environ.get("PYTHONANYWHERE_DOMAIN") else "root",
                 passwd=config["database"]["password"],
                 db=c.DATABASE_NAME,
             )
