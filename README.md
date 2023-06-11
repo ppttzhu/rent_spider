@@ -122,6 +122,12 @@ python3 download.py
 python3 -m unittest
 ```
 
+# Export database table snapshot from pythonanywhere
+
+```
+mysql -u 'ppttzhu' -p -h 'ppttzhu.mysql.pythonanywhere-services.com' -e "SELECT * FROM room_history LIMIT 1" 'ppttzhu$default' | tr '\t' ',' > export.csv
+```
+
 # References
 
 - How access mysql in pythonanywhere from local machine: https://help.pythonanywhere.com/pages/AccessingMySQLFromOutsidePythonAnywhere/

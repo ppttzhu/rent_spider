@@ -131,7 +131,7 @@ class InfraStack(Stack):
             "websites": [
                 {
                     "commands": [
-                        f"cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -i {website['class_name']}"
+                        f"cd rent_spider; git pull; xvfb-run -- python3 main.py -u -r -p AWS -i {website['class_name']}"
                     ]
                 }
                 for website in websites
