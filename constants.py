@@ -1180,7 +1180,6 @@ EMAIL_RECEIVERS = [
     "atongmu0577@163.com",
     "tyler.acreny@gmail.com",
     "zoe.acreny@gmail.com",
-    "sylvia.acreny@gmail.com",
 ]
 SNAPSHOT_EMAIL_RECEIVERS = ["atongmu0577@163.com", "tyler.acreny@gmail.com", "zoe.acreny@gmail.com"]
 
