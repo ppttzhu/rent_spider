@@ -910,6 +910,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/ava-fort-greene",
+        WEBSITE_NAME_COLUMN: "Ava Fort Greene",
+        "parent_class_name": "StreetEasy",
+        "class_name": "AvaFortGreene",
+        "platform": Platform.AWS,
+        "location": "BK",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-brooklyner",
         WEBSITE_NAME_COLUMN: "The Brooklyner",
         "parent_class_name": "StreetEasy",
