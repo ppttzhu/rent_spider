@@ -48,13 +48,11 @@ class Fetch981Management(Fetch):
             ).click()
             self.driver.switch_to.window(self.driver.window_handles[0])
             move_in_date = self.web_wait.until(
-                EC.presence_of_element_located((By.ID, "sMoveInDate"))
+                EC.presence_of_element_located((By.ID, "CSMoveInDate"))
             ).get_attribute("value")
             room_price = self.web_wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, '//div[@id="divPricingInfo"]/div/div[2]/label')
-                )
-            ).text
+                EC.presence_of_element_located((By.XPATH, '//div[@data-selenium-id="CVRent"]/div'))
+            ).text.replace("/month", "")
             self.add_room_info(
                 room_number=room_number,
                 room_type=room_type,
