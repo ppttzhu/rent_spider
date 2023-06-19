@@ -75,15 +75,28 @@ def rooms_in_bklow():
     return room_with_location_filter("BKLow")
 
 
+def apply_location_override_rules(rooms):
+    max_lyra_index = 0
+    hudson_indices = []
+    for idx, room in enumerate(rooms):
+        if room[c.ROOM_NUMBER_COLUMN].startswith("[Long Island City]"):
+            room[c.WEBSITE_LOCATION_COLUMN] = "LIC"
+        if room[c.ROOM_NUMBER_COLUMN].startswith("[Hudson Yards]"):
+            room[c.WEBSITE_LOCATION_COLUMN] = "Manhattan"
+            hudson_indices.append(idx)
+        if room[c.WEBSITE_NAME_COLUMN] == "Lyra":
+            max_lyra_index = idx
+    for idx in hudson_indices:
+        rooms.insert(max_lyra_index + 1, rooms.pop(idx))
+
+
 def room_with_location_filter(location=None):
     rooms = get_rooms()
     latest_fetch_status = get_latest_fetch_status()
     latest_fetch_status_dict = {
         record[c.WEBSITE_NAME_COLUMN]: record[c.FETCH_DATE_COLUMN] for record in latest_fetch_status
     }
-    for room in rooms:
-        if room[c.ROOM_NUMBER_COLUMN].startswith("[Long Island City]"):
-            room[c.WEBSITE_LOCATION_COLUMN] = "LIC"
+    apply_location_override_rules(rooms)
     if location:
         rooms = [room for room in rooms if room[c.WEBSITE_LOCATION_COLUMN] == location]
     for room in rooms:
