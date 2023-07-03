@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 import constants as c
+from utils.user_agent import get_random_user_agent
 
 
 class Fetch:
@@ -101,7 +102,7 @@ class Fetch:
 
     # pw
     def init_page(self):
-        self.context = self.browser.new_context()
+        self.context = self.browser.new_context(user_agent=get_random_user_agent())
         self.page = self.context.new_page()
         return self.page
 
