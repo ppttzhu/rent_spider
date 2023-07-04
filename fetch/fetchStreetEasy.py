@@ -1,21 +1,17 @@
 import logging
-import random
-from time import sleep
 
 from bs4 import BeautifulSoup
 
-import constants as c
 from fetch.fetch import Fetch
 
 
 class FetchStreetEasy(Fetch):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.init_page()
         self.table_class = "nice_table building-pages BuildingUnit-table"
 
     def fetch_web(self):
-        html_doc = self.get_html_doc_with_cookie(self.url)
+        html_doc = self.get_html_doc_with_zyte(self.url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         table = soup.find_all("table", {"class": self.table_class})
@@ -37,14 +33,11 @@ class FetchStreetEasy(Fetch):
                 }
             )
         for room in rooms:
-            sleep_seconds = random.randint(c.SE_SLEEP_MIN_SECOND, c.SE_SLEEP_MAX_SECOND)
-            logging.info(f"Sleep {sleep_seconds}s to avoid being blocked...")
-            sleep(sleep_seconds)
             self.fetch_room_info(room)
 
     def fetch_room_info(self, room):
         room_url = room["room_href"]
-        html_doc = self.get_html_doc(room_url)
+        html_doc = self.get_html_doc_with_zyte(room_url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})

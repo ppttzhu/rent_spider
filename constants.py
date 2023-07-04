@@ -1,4 +1,5 @@
 import argparse
+import configparser
 import os
 from enum import Enum
 
@@ -29,6 +30,8 @@ RENT_TYPE = None
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 SNAPSHOT_DIR = os.path.join(ROOT_DIR, "../snapshot.xlsx")
+CONFIG = configparser.ConfigParser()
+CONFIG.read(os.path.join(ROOT_DIR, "secrets.cfg"))
 
 MINUTES_BETWEEN_FETCH = 10
 TOTAL_DURATION_IN_MINUTES = 60
@@ -102,9 +105,6 @@ WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS = [
 ]
 WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
 WEBSITE_SUBLEASE_VIEW_COLUMNS = SUBLEASE_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
-
-COOKIE_TABLE_NAME = "cookie"
-COOKIE_COLUMN_NAME = "cookie"
 
 WEBSITES = [
     {

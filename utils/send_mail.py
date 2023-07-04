@@ -1,4 +1,3 @@
-import configparser
 import logging
 import smtplib
 from datetime import date
@@ -55,9 +54,7 @@ def generate_table(rooms):
 def send_email(receivers, receivers_cc, subject, content, attachment_path=None):
     username = c.EMAIL_SENDER
     mail_from = c.EMAIL_SENDER
-    config = configparser.ConfigParser()
-    config.read("secrets.cfg")
-    password = config["email"]["password"]
+    password = c.CONFIG["email"]["password"]
     mail_body = MIMEText(content, "html", "utf-8")
     mimemsg = MIMEMultipart()
     mimemsg["From"] = format_addr(f"{subject} <'{mail_from}'>")

@@ -1,7 +1,10 @@
 *.DS_Store
 *__pycache__
 .vscode
+# Passwords and API key
 secrets.cfg
+# Zyte certificate
+zyte-ca.crt 
 
 # CDK Context & Staging files
 .cdk.staging/

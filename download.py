@@ -27,6 +27,7 @@ def download_floorplan(room_id, url):
 
 with sync_playwright() as play:
     browser = play.firefox.launch(headless=False)
+    # TODO: update me
     fetcher = FetchVYV("VYV", None, browser)
     html_doc = fetcher.get_html_doc(web_url)
     soup = BeautifulSoup(html_doc, "html.parser")

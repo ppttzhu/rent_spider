@@ -3,8 +3,6 @@ import logging
 import time
 import traceback
 
-from playwright.sync_api import sync_playwright
-
 import constants as c
 from database import Database
 from utils.init_driver import init_driver
@@ -12,29 +10,22 @@ from utils.send_mail import send_notification_email_summer
 
 
 def main():
+    driver = init_driver()
+    logging.info("-------------- Start Fetching Task -------------- ")
+    logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
+    all_rooms = {}
+    for key in c.WEBSITES_TARGETS:
+        parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
+        fetch_class = getattr(
+            importlib.import_module(f"fetch.fetch{parent_class_name}"),
+            f"Fetch{parent_class_name}",
+        )
+        fetch_controller = fetch_class(web_key=key, driver=driver)
+        rooms = fetch_controller.fetch()
+        all_rooms[fetch_controller.website_name] = rooms
+    if driver:
+        driver.quit()
     database = Database()
-    with sync_playwright() as play:
-        driver, browser = init_driver(), None
-        if c.PLATFORM not in [c.Platform.PYTHONANYWHERE, c.Platform.PYTHONANYWHERE_2]:
-            browser = play.firefox.launch(headless=False)  # headless will be blocked
-        logging.info("-------------- Start Fetching Task -------------- ")
-        logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
-        all_rooms = {}
-        for key in c.WEBSITES_TARGETS:
-            parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
-            fetch_class = getattr(
-                importlib.import_module(f"fetch.fetch{parent_class_name}"),
-                f"Fetch{parent_class_name}",
-            )
-            fetch_controller = fetch_class(
-                web_key=key, driver=driver, browser=browser, database=database
-            )
-            rooms = fetch_controller.fetch()
-            all_rooms[fetch_controller.website_name] = rooms
-        if driver:
-            driver.quit()
-        if browser:
-            browser.close()
     new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
     if new_rooms or removed_rooms or updated_rooms:
         # send_notification_email(new_rooms, removed_rooms, updated_rooms)

@@ -1,4 +1,3 @@
-import configparser
 import logging
 import os
 from collections import defaultdict
@@ -14,21 +13,19 @@ import constants as c
 class Database:
     def __init__(self):
         logging.info("Init DB...")
-        config = configparser.ConfigParser()
-        config.read(os.path.join(c.ROOT_DIR, "secrets.cfg"))
         if c.IS_REMOTE:
             logging.info("Opening SSH tunnel...")
             tunnel = SSHTunnelForwarder(
                 c.SSH_HOST,
                 ssh_username=c.SSH_USERNAME,
-                ssh_password=config["ssh"]["password"],
+                ssh_password=c.CONFIG["ssh"]["password"],
                 remote_bind_address=(c.SSH_REMOTE_BIND_ADDRESS, c.SSH_REMOTE_BIND_PORT),
             )
             tunnel.start()
             self.tunnel = tunnel
             conn = MySQLdb.connect(
                 user=c.DATABASE_USER,
-                passwd=config["database"]["password"],
+                passwd=c.CONFIG["database"]["password"],
                 host="127.0.0.1",
                 port=tunnel.local_bind_port,
                 db=c.DATABASE_NAME,
@@ -37,7 +34,7 @@ class Database:
             conn = MySQLdb.connect(
                 host=c.DATABASE_HOST if os.environ.get("PYTHONANYWHERE_DOMAIN") else "127.0.0.1",
                 user=c.DATABASE_USER if os.environ.get("PYTHONANYWHERE_DOMAIN") else "root",
-                passwd=config["database"]["password"],
+                passwd=c.CONFIG["database"]["password"],
                 db=c.DATABASE_NAME,
             )
         self.conn = conn
@@ -348,19 +345,3 @@ class Database:
         except Exception:
             logging.error(f"Failed to execute {delete_sql}")
             raise
-
-    def save_cookie(self, cookie):
-        fetch_date_string = datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
-        update_sql = f"""INSERT INTO {c.COOKIE_TABLE_NAME} ({c.COOKIE_COLUMN_NAME}, {c.FETCH_DATE_COLUMN}) VALUES('{cookie}', '{fetch_date_string}')"""
-        try:
-            self.cursor.execute(update_sql)
-            self.conn.commit()
-        except Exception:
-            logging.error(f"Failed to execute {update_sql}")
-            raise
-
-    def get_cookie(self):
-        select_sql = f"""SELECT {c.COOKIE_COLUMN_NAME} FROM {c.COOKIE_TABLE_NAME} ORDER BY {c.FETCH_DATE_COLUMN} DESC LIMIT 1"""
-        self.cursor.execute(select_sql)
-        rows = self.cursor.fetchall()
-        return rows[0][0] if rows else None
