@@ -68,3 +68,8 @@ CREATE OR REPLACE VIEW v_website_sublease AS (
 	SELECT r.*, w.url, w.location, w.priority FROM sublease r
 	NATURAL JOIN website w
 );
+
+CREATE TABLE cookie (
+	cookie TEXT,
+	fetch_date DATETIME NOT NULL
+);

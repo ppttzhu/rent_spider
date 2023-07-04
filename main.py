@@ -12,6 +12,7 @@ from utils.send_mail import send_notification_email_summer
 
 
 def main():
+    database = Database()
     with sync_playwright() as play:
         driver, browser = init_driver(), None
         if c.PLATFORM not in [c.Platform.PYTHONANYWHERE, c.Platform.PYTHONANYWHERE_2]:
@@ -25,14 +26,15 @@ def main():
                 importlib.import_module(f"fetch.fetch{parent_class_name}"),
                 f"Fetch{parent_class_name}",
             )
-            fetch_controller = fetch_class(key, driver, browser)
+            fetch_controller = fetch_class(
+                web_key=key, driver=driver, browser=browser, database=database
+            )
             rooms = fetch_controller.fetch()
             all_rooms[fetch_controller.website_name] = rooms
         if driver:
             driver.quit()
         if browser:
             browser.close()
-    database = Database()
     new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
     if new_rooms or removed_rooms or updated_rooms:
         # send_notification_email(new_rooms, removed_rooms, updated_rooms)

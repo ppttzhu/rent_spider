@@ -348,3 +348,19 @@ class Database:
         except Exception:
             logging.error(f"Failed to execute {delete_sql}")
             raise
+
+    def save_cookie(self, cookie):
+        fetch_date_string = datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        update_sql = f"""INSERT INTO {c.COOKIE_TABLE_NAME} ({c.COOKIE_COLUMN_NAME}, {c.FETCH_DATE_COLUMN}) VALUES('{cookie}', '{fetch_date_string}')"""
+        try:
+            self.cursor.execute(update_sql)
+            self.conn.commit()
+        except Exception:
+            logging.error(f"Failed to execute {update_sql}")
+            raise
+
+    def get_cookie(self):
+        select_sql = f"""SELECT {c.COOKIE_COLUMN_NAME} FROM {c.COOKIE_TABLE_NAME} ORDER BY {c.FETCH_DATE_COLUMN} DESC LIMIT 1"""
+        self.cursor.execute(select_sql)
+        rows = self.cursor.fetchall()
+        return rows[0][0] if rows else None

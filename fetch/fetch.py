@@ -3,6 +3,7 @@ import re
 import traceback
 from time import sleep
 
+import requests
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,14 +14,15 @@ from utils.user_agent import get_random_user_agent
 
 
 class Fetch:
-    def __init__(self, web_key, driver, browser):
-        self.web_key = web_key
-        self.driver = driver
-        self.browser = browser
+    def __init__(self, **kwargs):
+        self.web_key = kwargs.get("web_key")
+        self.driver = kwargs.get("driver")
+        self.browser = kwargs.get("browser")
+        self.database = kwargs.get("database")
 
-        self.url = c.WEBSITES_DICT[web_key][c.WEBSITE_URL_COLUMN]
-        self.website_name = c.WEBSITES_DICT[web_key][c.WEBSITE_NAME_COLUMN]
-        self.priority = c.WEBSITES_DICT[web_key][c.WEBSITE_PRIORITY_COLUMN]
+        self.url = c.WEBSITES_DICT[self.web_key][c.WEBSITE_URL_COLUMN]
+        self.website_name = c.WEBSITES_DICT[self.web_key][c.WEBSITE_NAME_COLUMN]
+        self.priority = c.WEBSITES_DICT[self.web_key][c.WEBSITE_PRIORITY_COLUMN]
 
         self.room_type_map = None
         self.room_info = []
@@ -114,6 +116,29 @@ class Fetch:
         content = self.page.content()
         self.context.close()
         return content
+
+    def get_html_doc_with_cookie(self, url):
+        logging.info(f"Loading {url} with cookie...")
+        cookies = self.database.get_cookie()
+        headers = {
+            "authority": "streeteasy.com",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-language": "en-US,en;q=0.9",
+            "cache-control": "no-cache",
+            "pragma": "no-cache",
+            "sec-ch-ua": '"Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"macOS"',
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "none",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "user-agent": get_random_user_agent(),
+            "Cookie": cookies,
+        }
+        response = requests.get(url, headers=headers, timeout=c.WEB_DRIVER_TIMEOUT_SECOND)
+        return response.text
 
     # se
     def wait_until_xpath(self, xpath, driver=None):

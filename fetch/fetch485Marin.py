@@ -2,8 +2,8 @@ from fetch.fetch981Management import Fetch981Management
 
 
 class Fetch485Marin(Fetch981Management):
-    def __init__(self, web_key, driver, browser):
-        super().__init__(web_key, driver, browser)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.room_type_map = [
             ("^0 Bed-1 Bath$", "Studio"),
             ("^1 Bed-1Bath$", "1B1B"),

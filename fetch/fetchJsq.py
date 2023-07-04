@@ -7,8 +7,8 @@ from fetch.fetch import Fetch
 
 
 class FetchJsq(Fetch):
-    def __init__(self, web_key, driver, browser):
-        super().__init__(web_key, driver, browser)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.room_type_map = [
             ("^One Bed/ One Bath - .*$", "1B1B"),
             ("^One Bed/ One Bath/ Plus - .*$", "1B1BD"),

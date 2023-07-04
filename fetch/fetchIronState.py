@@ -6,8 +6,8 @@ from fetch.fetch import Fetch
 
 
 class FetchIronState(Fetch):
-    def __init__(self, web_key, driver, browser):
-        super().__init__(web_key, driver, browser)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.room_type_map = [
             ("^Studio, 1 Bathroom$", "Studio"),
             ("^1Bedroom, 1 Bathroom$", "1B1B"),

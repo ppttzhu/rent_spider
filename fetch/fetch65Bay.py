@@ -2,8 +2,8 @@ from fetch.fetch import Fetch
 
 
 class Fetch65Bay(Fetch):
-    def __init__(self, web_key, driver, browser):
-        super().__init__(web_key, driver, browser)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.room_detail_url_map = {}
         self.base_url = "https://www.65bay.com"
         self.room_type_map = [

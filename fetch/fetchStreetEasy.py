@@ -9,13 +9,13 @@ from fetch.fetch import Fetch
 
 
 class FetchStreetEasy(Fetch):
-    def __init__(self, web_key, driver, browser):
-        super().__init__(web_key, driver, browser)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.init_page()
         self.table_class = "nice_table building-pages BuildingUnit-table"
 
     def fetch_web(self):
-        html_doc = self.get_html_doc(self.url)
+        html_doc = self.get_html_doc_with_cookie(self.url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         table = soup.find_all("table", {"class": self.table_class})

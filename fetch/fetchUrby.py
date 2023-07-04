@@ -6,8 +6,8 @@ from fetch.fetch import Fetch
 
 
 class FetchUrby(Fetch):
-    def __init__(self, web_key, driver, browser):
-        super().__init__(web_key, driver, browser)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.room_type_map = [
             ("^0 Bed, 1 Bath$", "Studio"),
             ("^1 Bed, 1 Bath$", "1B1B"),
