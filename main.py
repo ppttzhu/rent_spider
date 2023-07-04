@@ -10,7 +10,9 @@ from utils.send_mail import send_notification_email_summer
 
 
 def main():
-    driver = init_driver()
+    driver = None
+    if c.PLATFORM != c.Platform.PYTHONANYWHERE_2:
+        driver = init_driver()
     logging.info("-------------- Start Fetching Task -------------- ")
     logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
     all_rooms = {}

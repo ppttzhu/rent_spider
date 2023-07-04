@@ -44,7 +44,7 @@ class Database:
         logging.info("Disconnecting DB...")
         self.cursor.close()
         self.conn.close()
-        if c.PLATFORM == c.Platform.AWS:
+        if c.IS_REMOTE:
             self.tunnel.stop()
 
     def update(self, all_rooms):

@@ -8,8 +8,6 @@ from utils.user_agent import get_random_user_agent
 
 
 def init_driver():
-    if c.PLATFORM == c.Platform.AWS:
-        return None
     logging.info("Init webdriver...")
 
     chrome_options = webdriver.ChromeOptions()
