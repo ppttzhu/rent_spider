@@ -6,10 +6,10 @@ class FetchTFC(Fetch):
         self.get_url_with_retry(self.url)
         rooms = self.wait_until_xpath('//a[@role="listitem"]')
         for room in rooms:
+            if room.get_attribute("target") == "_blank":
+                continue
             room_url = room.get_attribute("href")
-            building_name = room.find_element_by_xpath(
-                ".//h2[@class='heading-3 tile-title']"
-            ).text
+            building_name = room.find_element_by_xpath(".//h2[@class='heading-3 tile-title']").text
             building_location = room.find_element_by_xpath(".//span[@class='heading-4']").text
             room_type = (
                 room.find_element_by_xpath(".//span[@class='tile-title']")

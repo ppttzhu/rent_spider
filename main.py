@@ -11,10 +11,10 @@ from utils.send_mail import send_notification_email_summer
 
 def main():
     driver = None
-    if c.PLATFORM != c.Platform.PYTHONANYWHERE_2:
+    if c.PLATFORM != c.Platform.PYTHONANYWHERE_3:
         driver = init_driver()
     logging.info("-------------- Start Fetching Task -------------- ")
-    logging.info(f"Target websites: {', '.join(c.WEBSITES_TARGETS)}")
+    logging.info(f"Target websites ({len(c.WEBSITES_TARGETS)}): {', '.join(c.WEBSITES_TARGETS)}")
     all_rooms = {}
     for key in c.WEBSITES_TARGETS:
         parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
