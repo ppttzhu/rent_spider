@@ -7,14 +7,11 @@ from fetch.fetch import Fetch
 class Fetch351Marinjc(Fetch):
     def fetch_web(self):
         self.get_url_with_retry(self.url)
-        self.fetch_room_info("Studio", "Studio", 0)
-        self.fetch_room_info("1B1B", "1BR", 1)
-        self.fetch_room_info("2B2B", "2BR", 2)
+        self.fetch_room_info("Studio", "Studio")
+        self.fetch_room_info("1B1B", "1BR")
+        self.fetch_room_info("2B2B", "2BR")
 
-    def fetch_room_info(self, room_type, floor_plan_name, index):
-        self.web_wait.until(
-            EC.element_to_be_clickable((By.XPATH, f'//a[@id="uiTab{str(index)}"]'))
-        ).click()
+    def fetch_room_info(self, room_type, floor_plan_name):
         apply_button = self.web_wait.until(
             EC.element_to_be_clickable((By.XPATH, f'//a[@data-floorplan-name="{floor_plan_name}"]'))
         )
