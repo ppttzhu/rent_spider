@@ -904,11 +904,10 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/ava-fort-greene",
+        WEBSITE_URL_COLUMN: "https://www.avaloncommunities.com/new-york/brooklyn-apartments/ava-fort-greene",
         WEBSITE_NAME_COLUMN: "Ava Fort Greene",
-        "parent_class_name": "StreetEasy",
         "class_name": "AvaFortGreene",
-        "platform": Platform.PYTHONANYWHERE_3,
+        "platform": Platform.PYTHONANYWHERE,
         "location": "BK",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },

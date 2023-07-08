@@ -5,6 +5,9 @@
 secrets.cfg
 # Zyte certificate
 zyte-ca.crt 
+# Logs for debugging
+logs/
+
 
 # CDK Context & Staging files
 .cdk.staging/

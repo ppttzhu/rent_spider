@@ -28,6 +28,7 @@ class Fetch:
         self.room_info = []
         self.room_info_tuple_set = set()  # Avoid duplicate value
         self.web_wait = WebDriverWait(self.driver, c.WEB_DRIVER_TIMEOUT_SECOND)
+        self.html_text = ""
 
     def fetch(self):
         try:
@@ -45,6 +46,8 @@ class Fetch:
         logging.error(f"Fetch Rooms Error in {self.website_name}")
         logging.error(repr(error))
         traceback.print_exc()
+        with open(os.path.join(c.ROOT_DIR, f"logs/{self.website_name}.html"), "w") as html_file:
+            html_file.write(self.html_text)
 
     def add_room_info(self, room_number, room_type, move_in_date, room_price, room_url=None):
         if not room_number or not room_type or not move_in_date or not room_price:
@@ -128,7 +131,7 @@ class Fetch:
             verify=os.path.join(c.ROOT_DIR, "zyte-ca.crt"),
             timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
         )
-
+        self.html_text = response.text  # for debug
         return response.text
 
     # se

@@ -45,11 +45,13 @@ class FetchStreetEasy(Fetch):
         move_in_date = soup.find("div", {"class": "Vitals-data"})
         room_price = room["room_price"]
         if "netEffectivePrice" in html_doc:
-            info = re.findall(r"\{.*?netEffectivePrice.*?\}", html_doc)[0].replace( '{"rentalData":', "")
+            info = re.findall(r"\{.*?netEffectivePrice.*?\}", html_doc)[0].replace(
+                '{"rentalData":', ""
+            )
             info = json.loads(info)
-            net_price = info['netEffectivePrice']
-            free_month = round(info['freeMonths'])
-            total_month = round(info['leaseTerm'])
+            net_price = info["netEffectivePrice"]
+            free_month = round(info["freeMonths"])
+            total_month = round(info["leaseTerm"])
             room_price = f'N{net_price} G{room["room_price"]} {free_month}/{total_month}'
         self.add_room_info(
             room_number=room["room_number"],
