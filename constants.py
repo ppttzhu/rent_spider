@@ -821,6 +821,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://www.avaloncommunities.com/new-york/new-york-city-apartments/avalon-morningside-park",
+        WEBSITE_NAME_COLUMN: "Avalon MorningSide Park",
+        "parent_class_name": "Avalon",
+        "class_name": "AvalonMorningSidePark",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "CU",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/792-columbus-avenue-new_york",
         WEBSITE_NAME_COLUMN: "PWV",
         "parent_class_name": "StreetEasy",
@@ -949,6 +958,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://www.avaloncommunities.com/new-york/brooklyn-apartments/ava-fort-greene",
         WEBSITE_NAME_COLUMN: "Ava Fort Greene",
+        "parent_class_name": "Avalon",
         "class_name": "AvaFortGreene",
         "platform": Platform.PYTHONANYWHERE,
         "location": "BK",

@@ -6,7 +6,7 @@ from fetch.fetch import Fetch
 from utils.utils import find_closing_bracket
 
 
-class FetchAvaFortGreene(Fetch):
+class FetchAvalon(Fetch):
     def fetch_web(self):
         self.get_url_with_retry(self.url)
         scripts = self.driver.find_elements(by=By.XPATH, value='.//script[@id="fusion-metadata"]')
