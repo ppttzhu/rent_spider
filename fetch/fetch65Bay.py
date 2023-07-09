@@ -10,6 +10,7 @@ class Fetch65Bay(Fetch):
             ("Studio", "Studio"),
             ("^1 bedroom / 1 bathroom$", "1B1B"),
             ("^2 bedrooms / 1 bathroom$", "2B1B"),
+            ("^2 bedrooms / 1 bathrooms$", "2B1B"),
             ("^2 bedrooms / 2 bathrooms$", "2B2B"),
             ("^3 bedrooms / 2 bathrooms$", "3B2B"),
         ]

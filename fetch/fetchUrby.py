@@ -12,8 +12,8 @@ class FetchUrby(Fetch):
             ("^0 Bed, 1 Bath$", "Studio"),
             ("^1 Bed, 1 Bath$", "1B1B"),
             ("^2 Beds, 1 Bath$", "2B1B"),
-            ("^2 Beds, 2 Bath$", "2B2B"),
-            ("^3 Beds, 2 Bath$", "3B2B"),
+            ("^2 Beds, 2 Baths$", "2B2B"),
+            ("^3 Beds, 2 Baths$", "3B2B"),
         ]
 
     def close_popup(self):

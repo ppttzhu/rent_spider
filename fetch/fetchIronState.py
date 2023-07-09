@@ -10,9 +10,10 @@ class FetchIronState(Fetch):
         super().__init__(**kwargs)
         self.room_type_map = [
             ("^Studio, 1 Bathroom$", "Studio"),
-            ("^1Bedroom, 1 Bathroom$", "1B1B"),
-            ("^2Bedroom, 2 Bathroom$", "2B2B"),
-            ("^3Bedroom, 2 Bathroom$", "3B2B"),
+            ("^1 Bed, 1 Bath$", "1B1B"),
+            ("^2 Bed, 1 Bath$", "2B1B"),
+            ("^2 Bed, 2 Bath$", "2B2B"),
+            ("^3 Bed, 2 Bath$", "3B2B"),
         ]
 
     def fetch_web(self):
