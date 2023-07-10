@@ -122,15 +122,22 @@ class Fetch:
 
     def get_html_doc_with_zyte(self, url):
         logging.info(f"Loading {url} with zyte...")
-        response = requests.get(
-            url,
-            proxies={
-                "http": f"http://{c.CONFIG['zyte']['api_key']}:@proxy.crawlera.com:8011/",
-                "https": f"http://{c.CONFIG['zyte']['api_key']}:@proxy.crawlera.com:8011/",
-            },
-            verify=os.path.join(c.ROOT_DIR, "zyte-ca.crt"),
-            timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
-        )
+        count = 0
+        while count < c.GET_URL_MAX_RETRY:
+            response = requests.get(
+                url,
+                proxies={
+                    "http": f"http://{c.CONFIG['zyte']['api_key']}:@proxy.crawlera.com:8011/",
+                    "https": f"http://{c.CONFIG['zyte']['api_key']}:@proxy.crawlera.com:8011/",
+                },
+                verify=os.path.join(c.ROOT_DIR, "zyte-ca.crt"),
+                timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
+            )
+            if "All download attempts failed. Please retry." not in response.text:
+                break
+            logging.info(f"Got zyte internal error, retrying {count} time...")
+            sleep(1)
+            count += 1
         self.html_text = response.text  # for debug
         return response.text
 
