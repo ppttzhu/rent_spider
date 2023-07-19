@@ -528,6 +528,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/trio-27_19-thomson-avenue-long_island_city",
+        WEBSITE_NAME_COLUMN: "Trio",
+        "parent_class_name": "StreetEasy",
+        "class_name": "Trio",
+        "platform": Platform.PYTHONANYWHERE_3,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/skyline-tower",
         WEBSITE_NAME_COLUMN: "Skyline Tower",
         "parent_class_name": "StreetEasy",

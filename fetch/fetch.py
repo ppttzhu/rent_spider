@@ -139,6 +139,8 @@ class Fetch:
             sleep(1)
             count += 1
         self.html_text = response.text  # for debug
+        if "All download attempts failed. Please retry." in response.text:
+            raise Exception("Failed to load url by Zyte, exceeded max iteration.")
         return response.text
 
     # se
