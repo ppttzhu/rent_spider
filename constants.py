@@ -984,6 +984,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://www.avaloncommunities.com/new-york/brooklyn-apartments/ava-dobro",
+        WEBSITE_NAME_COLUMN: "Ava DoBro",
+        "parent_class_name": "Avalon",
+        "class_name": "AvaDoBro",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "BK",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/city-tower",
         WEBSITE_NAME_COLUMN: "City Tower",
         "parent_class_name": "StreetEasy",
