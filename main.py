@@ -58,8 +58,12 @@ def main_in_loop():
             traceback.print_exc()
         one_loop_duration = time.time() - last_iteration_start_time
         logging.info(f"Last iter takes {one_loop_duration//60} mins...")
-        if time.time() + one_loop_duration > start_time + c.TOTAL_DURATION_IN_MINUTES * 60:
+        if (
+            # Sev happened, maybe chrome crashed
+            one_loop_duration < 60
             # No time to finish a new iteration
+            or time.time() + one_loop_duration > start_time + c.TOTAL_DURATION_IN_MINUTES * 60
+        ):
             break
         else:
             time_sleep_in_mins = max(c.MINUTES_BETWEEN_FETCH - one_loop_duration // 60, 0)
