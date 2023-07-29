@@ -584,7 +584,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/gotham-point",
         WEBSITE_NAME_COLUMN: "Gotham Point",
-        "parent_class_name": "StreetEasy",
+        "parent_class_name": "JacksonParkAWS",
         "class_name": "GothamPoint",
         "platform": Platform.PYTHONANYWHERE_3,
         "location": "LIC",

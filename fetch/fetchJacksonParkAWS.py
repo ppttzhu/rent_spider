@@ -14,5 +14,10 @@ class FetchJacksonParkAWS(FetchStreetEasy):
             building_alias = "2JP"
         elif "28-10" in room_number:
             building_alias = "3JP"
+        # Gotham Point
+        elif "1-15 57th Avenue" in room_number:
+            building_alias = "North Tower"
+        elif "56-27 2nd Street" in room_number:
+            building_alias = "South Tower"
         room_number = room_number.split(" - ")[0].replace("#", "").replace("\n", "")
         return f"{room_number} - {building_alias}"
