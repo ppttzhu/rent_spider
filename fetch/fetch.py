@@ -88,7 +88,13 @@ class Fetch:
         return room_price.replace(",", "").replace(".00", "")
 
     def process_room_number(self, room_number):
-        return room_number.replace("Apartment:", "").replace("#", "").replace("\n", "")
+        return (
+            room_number.replace("Apartment:", "")
+            .replace("#", "")
+            .replace("\n", "")
+            .replace("1-15 57th Avenue", "North Tower")  # Gotham Point
+            .replace("56-27 2nd Street", "South Tower")  # Gotham Point
+        )
 
     def process_room_type(self, room_type):
         ret = room_type
