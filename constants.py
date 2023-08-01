@@ -424,7 +424,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/8-court-square-long_island_city",
         WEBSITE_NAME_COLUMN: "8 CourtSquare",
         "parent_class_name": "StreetEasy",
-        "class_name": "8CourtSquareuna",
+        "class_name": "8CourtSquare",
         "platform": Platform.PYTHONANYWHERE_3,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
