@@ -29,7 +29,7 @@ def main():
         driver.quit()
     database = Database()
     new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
-    if new_rooms or removed_rooms or updated_rooms:
+    if new_rooms or updated_rooms:
         # send_notification_email(new_rooms, removed_rooms, updated_rooms)
         send_notification_email_summer(new_rooms, removed_rooms, updated_rooms)
     else:
