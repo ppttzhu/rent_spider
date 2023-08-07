@@ -477,6 +477,7 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/22_22-jackson-avenue-long_island_city",
         WEBSITE_NAME_COLUMN: "22-22 Jackson Ave",
+        "parent_class_name": "StreetEasy",
         "class_name": "JacksonAve",
         "platform": Platform.PYTHONANYWHERE_3,
         "location": "LIC",
@@ -550,6 +551,15 @@ WEBSITES = [
         WEBSITE_NAME_COLUMN: "Skyline Tower",
         "parent_class_name": "StreetEasy",
         "class_name": "SkylineTower",
+        "platform": Platform.PYTHONANYWHERE_3,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/greene-condominium",
+        WEBSITE_NAME_COLUMN: "Greene Condominium",
+        "parent_class_name": "StreetEasy",
+        "class_name": "GreeneCondominium",
         "platform": Platform.PYTHONANYWHERE_3,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,

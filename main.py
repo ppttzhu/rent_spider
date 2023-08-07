@@ -3,6 +3,8 @@ import logging
 import time
 import traceback
 
+from playwright.sync_api import sync_playwright
+
 import constants as c
 from database import Database
 from utils.init_driver import init_driver
@@ -10,31 +12,36 @@ from utils.send_mail import send_notification_email_summer
 
 
 def main():
-    driver = None
+    driver, browser = None, None
     if c.PLATFORM != c.Platform.PYTHONANYWHERE_3:
         driver = init_driver()
-    logging.info("-------------- Start Fetching Task -------------- ")
-    logging.info(f"Target websites ({len(c.WEBSITES_TARGETS)}): {', '.join(c.WEBSITES_TARGETS)}")
-    all_rooms = {}
-    for key in c.WEBSITES_TARGETS:
-        parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
-        fetch_class = getattr(
-            importlib.import_module(f"fetch.fetch{parent_class_name}"),
-            f"Fetch{parent_class_name}",
+    with sync_playwright() as play:
+        if c.PLATFORM == c.Platform.DEV:
+            browser = play.firefox.launch(headless=False)
+        logging.info("-------------- Start Fetching Task -------------- ")
+        logging.info(
+            f"Target websites ({len(c.WEBSITES_TARGETS)}): {', '.join(c.WEBSITES_TARGETS)}"
         )
-        fetch_controller = fetch_class(web_key=key, driver=driver)
-        rooms = fetch_controller.fetch()
-        all_rooms[fetch_controller.website_name] = rooms
-    if driver:
-        driver.quit()
-    database = Database()
-    new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
-    if new_rooms or updated_rooms:
-        # send_notification_email(new_rooms, removed_rooms, updated_rooms)
-        send_notification_email_summer(new_rooms, removed_rooms, updated_rooms)
-    else:
-        logging.info("Nothing new to send")
-    database.quit()
+        all_rooms = {}
+        for key in c.WEBSITES_TARGETS:
+            parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
+            fetch_class = getattr(
+                importlib.import_module(f"fetch.fetch{parent_class_name}"),
+                f"Fetch{parent_class_name}",
+            )
+            fetch_controller = fetch_class(web_key=key, driver=driver, browser=browser)
+            rooms = fetch_controller.fetch()
+            all_rooms[fetch_controller.website_name] = rooms
+        if driver:
+            driver.quit()
+        database = Database()
+        new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
+        if new_rooms or updated_rooms:
+            # send_notification_email(new_rooms, removed_rooms, updated_rooms)
+            send_notification_email_summer(new_rooms, removed_rooms, updated_rooms)
+        else:
+            logging.info("Nothing new to send")
+        database.quit()
 
 
 logging.getLogger("WDM").setLevel(logging.ERROR)

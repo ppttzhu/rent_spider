@@ -111,8 +111,13 @@ class Fetch:
         self.page = self.context.new_page()
         return self.page
 
-    # pw
-    def get_html_doc(self, url, wait_until="domcontentloaded"):
+    def get_html_doc(self, url):
+        if c.PLATFORM == c.Platform.DEV:
+            return self.get_html_doc_with_pw(url)
+        else:
+            return self.get_html_doc_with_zyte(url)
+
+    def get_html_doc_with_pw(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
         self.init_page()
         self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 1000)
