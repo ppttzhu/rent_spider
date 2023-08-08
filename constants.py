@@ -6,9 +6,9 @@ from enum import Enum
 
 class Platform(Enum):
     DEV = 1
-    PYTHONANYWHERE = 2
-    PYTHONANYWHERE_2 = 3
-    PYTHONANYWHERE_3 = 4
+    PYTHONANYWHERE = 2  # every 1 hour
+    PYTHONANYWHERE_2 = 3  # every 10 mins
+    PYTHONANYWHERE_3 = 4  # SE with zyte
 
 
 class RentType(Enum):
@@ -38,7 +38,7 @@ TOTAL_DURATION_IN_MINUTES = 60
 WEB_DRIVER_TIMEOUT_SECOND = 30
 SE_SLEEP_MIN_SECOND = 20
 SE_SLEEP_MAX_SECOND = 25
-GET_URL_MAX_RETRY = 3
+ZYTE_GET_URL_MAX_RETRY = 5
 
 
 WEBSITE_TABLE_NAME = "website"

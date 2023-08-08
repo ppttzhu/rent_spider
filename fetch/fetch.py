@@ -128,7 +128,7 @@ class Fetch:
     def get_html_doc_with_zyte(self, url):
         logging.info(f"Loading {url} with zyte...")
         count = 0
-        while count < c.GET_URL_MAX_RETRY:
+        while count < c.ZYTE_GET_URL_MAX_RETRY:
             response = requests.get(
                 url,
                 proxies={
