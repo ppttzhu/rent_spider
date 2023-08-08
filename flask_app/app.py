@@ -110,10 +110,20 @@ def room_with_location_filter(location=None):
         summary[c.LATEST_FETCH_WARNING] = not summary[c.LATEST_FETCH_DATE_COLUMN] or summary[
             c.LATEST_FETCH_DATE_COLUMN
         ] < datetime.now() - timedelta(days=1)
+    webs_with_error = [
+        web_name for web_name, summary in summary_rooms.items() if summary[c.LATEST_FETCH_WARNING]
+    ]
+    error_message = (
+        ""
+        if not webs_with_error
+        else f"Found {len(webs_with_error)} failed fetch: {','.join(webs_with_error)}"
+    )
+
     return render_template(
         "rooms.html",
         id=f"{location or 'home'}",
         title=f"{location or '全部房源'}({len(rooms)})",
+        error_message=error_message,
         rooms=rooms,
         headers=c.ROOM_TABLE_COLUMNS_NAME
         + [c.FETCH_DATE_COLUMN_NAME, c.LATEST_FETCH_DATE_COLUMN_NAME],
