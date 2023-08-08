@@ -40,6 +40,7 @@ class FetchVeris(Fetch):
         while True:
             rooms = self.wait_until_xpath("//div[@class='omg-results-card bg-white']")
             for room in rooms:
+                self.move_to_center(room)
                 room_info = room.find_elements(
                     by=By.XPATH,
                     value='.//div[contains(@class, "omg-results-card-body-element px-4")]',
