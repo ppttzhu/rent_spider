@@ -12,21 +12,27 @@ class FetchHeatherwood(Fetch):
         if self.check_availability():
             logging.info(f"No room available in {self.website_name}, skipping...")
             return
+        apply_buttons = self.wait_until_xpath('//a[contains(@class, "btn-viewDetails")]')
 
-        room_info = []
-        rooms = self.wait_until_xpath('//div[@class="fp-card"]')
-        for room in rooms:
-            apply_button = room.find_element_by_xpath('.//div[@class="fp-button"]')
-            room_url = self.find_href_in_inner_html(apply_button.get_attribute("innerHTML"))
-            if room_url:
-                room_type = room.find_element_by_xpath('//span[@class="fp-type"]').text
-                room_info.append({"room_type": room_type, "url": room_url})
-        for room in room_info:
-            self.fetch_room(room)
+        for index in range(len(apply_buttons)):
+            self.fetch_room_info(index)
 
-    def fetch_room(self, room):
-        self.get_url_with_retry(room["url"])
+    def fetch_room_info(self, index):
+        apply_button = self.wait_until_xpath(f'//a[@data-selenium-id="FPButton_{index}"]')[0]
+        if "contact us" in apply_button.text.lower():
+            return
+        self.move_to_center(apply_button)
+        apply_button.click()
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        self.fetch_room()
+        self.get_url_with_retry(self.url)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+
+    def fetch_room(self):
         self.web_wait.until(EC.presence_of_element_located((By.XPATH, "//table/tbody/tr")))
+        room_type = self.driver.find_elements(
+            by=By.XPATH, value='//div[contains(@id,"other-floorplans")]'
+        )[0].text.split("-")[-1]
         room_list = self.driver.find_elements(by=By.XPATH, value="//table/tbody/tr")
         for room_idx in range(len(room_list)):
             room_number = self.web_wait.until(
@@ -48,7 +54,7 @@ class FetchHeatherwood(Fetch):
             room_price = self.wait_until_xpath('//div[@id="divPricingInfo"]/div/div/label')[-1].text
             self.add_room_info(
                 room_number=room_number,
-                room_type=room["room_type"],
+                room_type=room_type,
                 move_in_date=move_in_date,
                 room_price=room_price,
             )
@@ -65,20 +71,10 @@ class FetchHeatherwood(Fetch):
         if "studio" in room_type.lower():
             return "0Studio"
         return (
-            room_type.replace("Beds", "B")
-            .replace("Baths", "B")
-            .replace("Bed", "B")
-            .replace("Bath", "B")
-            .replace("-", "")
+            room_type.replace("Bedrooms", "B")
+            .replace("Bathrooms", "B")
+            .replace("Bedroom", "B")
+            .replace("Bathroom", "B")
+            .replace(",", "")
             .replace(" ", "")
         )
-
-    def find_href_in_inner_html(self, inner_html):
-        try:
-            start_index = inner_html.index("href") + 6
-            end_index = start_index
-            while inner_html[end_index] != '"':
-                end_index += 1
-            return inner_html[start_index:end_index]
-        except Exception:
-            return None
