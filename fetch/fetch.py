@@ -128,7 +128,7 @@ class Fetch:
     def get_html_doc_with_zyte(self, url):
         logging.info(f"Loading {url} with zyte...")
         count = 0
-        sleep_time = 2
+        sleep_time = 1
         while count < c.ZYTE_GET_URL_MAX_RETRY:
             response = requests.get(
                 url,
@@ -139,10 +139,10 @@ class Fetch:
                 verify=os.path.join(c.ROOT_DIR, "zyte-ca.crt"),
                 timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
             )
+            sleep(sleep_time)
             if "All download attempts failed. Please retry." not in response.text:
                 break
             logging.info(f"Got zyte internal error, retrying {count} time...")
-            sleep(sleep_time)
             sleep_time += 2
             count += 1
         self.html_text = response.text  # for debug
