@@ -19,11 +19,10 @@ def init_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     if c.PLATFORM == c.Platform.DEV:
-        # if version not available, have to download manually, unzip
-        # https://chromedriver.storage.googleapis.com/110.0.5481.30/chromedriver_mac_arm64.zip
-        # If not trusted, run this command in terminal
-        # xattr -d com.apple.quarantine /Users/haley/Documents/git/chromedriver
-        return webdriver.Chrome("/Users/haley/Documents/git/chromedriver", options=chrome_options)
+        import chromedriver_autoinstaller
+
+        chromedriver_autoinstaller.install()
+        return webdriver.Chrome(options=chrome_options)
     else:
         return webdriver.Chrome(
             ChromeDriverManager(version="90.0.4430.24").install(), options=chrome_options

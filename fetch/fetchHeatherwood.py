@@ -44,7 +44,7 @@ class FetchHeatherwood(Fetch):
             current_url = self.driver.current_url
             self.web_wait.until(
                 EC.presence_of_element_located(
-                    (By.XPATH, '//input[contains(@class, "UnitSelect")]')
+                    (By.XPATH, f'//input[@data-selenium-id="btnUnitSelect{str(room_idx + 1)}"]')
                 )
             ).click()
             self.driver.switch_to.window(self.driver.window_handles[0])
