@@ -12,8 +12,12 @@ class FetchHeatherwood(Fetch):
         if self.check_availability():
             logging.info(f"No room available in {self.website_name}, skipping...")
             return
-        apply_buttons = self.wait_until_xpath('//a[contains(@class, "btn-viewDetails")]')
-
+        # TODO: change to //a|//button
+        try:
+            apply_buttons = self.wait_until_xpath('//a[contains(@class, "btn-viewDetails")]')
+        except Exception as err:
+            logging.info(f"No room available in {self.website_name}, skipping...{err}")
+            return
         for index in range(len(apply_buttons)):
             self.fetch_room_info(index)
 
