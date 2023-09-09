@@ -143,7 +143,7 @@ class Fetch:
             if "All download attempts failed. Please retry." not in response.text:
                 break
             logging.info(f"Got zyte internal error, retrying {count} time...")
-            sleep_time += 2
+            sleep_time += 5
             count += 1
         self.html_text = response.text  # for debug
         if "All download attempts failed. Please retry." in response.text:
