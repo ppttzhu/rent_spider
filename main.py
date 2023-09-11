@@ -8,7 +8,6 @@ from playwright.sync_api import sync_playwright
 import constants as c
 from database import Database
 from utils.init_driver import init_driver
-from utils.send_mail import send_notification_email_summer
 
 
 def main():
@@ -36,11 +35,10 @@ def main():
             driver.quit()
         database = Database()
         new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
-        if new_rooms or updated_rooms:
-            # send_notification_email(new_rooms, removed_rooms, updated_rooms)
-            send_notification_email_summer(new_rooms, removed_rooms, updated_rooms)
-        else:
-            logging.info("Nothing new to send")
+        # if new_rooms or updated_rooms:
+        #     send_notification_email(new_rooms, removed_rooms, updated_rooms)
+        # else:
+        #     logging.info("Nothing new to send")
         database.quit()
 
 
