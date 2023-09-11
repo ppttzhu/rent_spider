@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import constants as c
 from database import Database
-from utils.send_mail import send_notification_email_summer
+from utils.send_mail import send_notification_email_summary
 
 
 def send_daily_email():
@@ -20,7 +20,7 @@ def send_daily_email():
 
     for location in location_set:
         filtered_room = [room for room in rooms if room["location"] == location]
-        send_notification_email_summer(filtered_room, [], [], True, location)
+        send_notification_email_summary(filtered_room, [], [], location)
 
 
 send_daily_email()

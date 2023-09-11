@@ -1291,17 +1291,13 @@ WEBSITES_DICT = {
 
 NOTIFICATION_EMAIL_SUBJECT = "【房源通知】"
 NOTIFICATION_EMAIL_SUBJECT_SUMMER = "【8月房源通知】"
-NOTIFICATION_EMAIL_SUBJECT_SUMMER_SUMMARY = "【8月今日房源通知汇总】"
+NOTIFICATION_EMAIL_SUBJECT_SUMMER_SUMMARY = "【24小时内新房源通知汇总】"
 SNAPSHOT_EMAIL_SUBJECT = "【房源每日快照】"
 ERROR_EMAIL_SUBJECT = "【房源抓取出错了】"
 EMAIL_SENDER = "rent.spider.notification@gmail.com"
 EMAIL_RECEIVERS_DEV = ["ppttzhu@gmail.com"]
-EMAIL_RECEIVERS = [
-    "atongmu0577@163.com",
-    "tyler.acreny@gmail.com",
-    "zoe.acreny@gmail.com",
-]
-SNAPSHOT_EMAIL_RECEIVERS = ["atongmu0577@163.com", "tyler.acreny@gmail.com", "zoe.acreny@gmail.com"]
+EMAIL_RECEIVERS = ["atongmu0577@163.com"]
+SNAPSHOT_EMAIL_RECEIVERS = ["atongmu0577@163.com"]
 
 
 DATABASE_HOST = "ppttzhu.mysql.pythonanywhere-services.com"

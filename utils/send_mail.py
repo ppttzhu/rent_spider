@@ -116,8 +116,8 @@ def filter_summer_room(rooms):
     return summer_rooms
 
 
-def send_notification_email_summer(
-    new_rooms, removed_rooms, updated_rooms, is_summary=False, location=""
+def send_notification_email_summary(
+    new_rooms, removed_rooms, updated_rooms, location=""
 ):
     new_rooms = filter_summer_room(new_rooms)
     removed_rooms = filter_summer_room(removed_rooms)
@@ -138,8 +138,6 @@ def send_notification_email_summer(
     send_email(
         c.EMAIL_RECEIVERS_DEV if c.PLATFORM == c.Platform.DEV else c.EMAIL_RECEIVERS,
         c.EMAIL_RECEIVERS_DEV,
-        c.NOTIFICATION_EMAIL_SUBJECT_SUMMER_SUMMARY + location
-        if is_summary
-        else c.NOTIFICATION_EMAIL_SUBJECT_SUMMER,
+        c.NOTIFICATION_EMAIL_SUBJECT_SUMMER_SUMMARY + location,
         content,
     )
