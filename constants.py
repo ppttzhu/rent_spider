@@ -774,6 +774,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://ironstate.com/property/le-leo",
+        WEBSITE_NAME_COLUMN: "Le Leo",
+        "parent_class_name": "IronState",
+        "class_name": "LeLeo",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://thelivelyapartments.com/floor-plans/#/unit",
         WEBSITE_NAME_COLUMN: "The Lively",
         "class_name": "TheLively",
