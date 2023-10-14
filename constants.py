@@ -1185,7 +1185,6 @@ WEBSITES = [
     {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/complex/myrtle-steuben",
         WEBSITE_NAME_COLUMN: "Myrtle Steuben",
-        "parent_class_name": "StreetEasy",
         "class_name": "MyrtleSteuben",
         "platform": Platform.PYTHONANYWHERE_3,
         "location": "BK",

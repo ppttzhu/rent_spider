@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+from datetime import datetime
 
 from bs4 import BeautifulSoup
 
@@ -16,7 +17,52 @@ class FetchStreetEasy(Fetch):
         html_doc = self.get_html_doc(self.url)
         self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
+        script = soup.find("script", {"id": "__NEXT_DATA__"})
+        if script:
+            self.fetch_new_ui(script)
         table = soup.find_all("table", {"class": self.table_class})
+        self.fetch_old_ui(table)
+
+    def fetch_new_ui(self, script):
+        data = json.loads(script.string)
+        all_rooms = data["props"]["pageProps"]["building"]["rentalInventorySummary"][
+            "availableListingDigests"
+        ]
+        filtered_rooms = [room for room in all_rooms if room["noFee"] and room["status"] == "OPEN"]
+        for room in filtered_rooms:
+            self.add_room_info(
+                room_number=room["unit"],
+                room_type=self.get_room_type(room),
+                move_in_date=self.get_move_in_date(room),
+                room_price=self.get_room_price(room),
+                room_url=room["quickUrl"],
+            )
+
+    def get_room_type(self, room):
+        bed_count = room["bedroomCount"]
+        if bed_count == 0:
+            return "0Studio"
+        bath_count = str(room["fullBathroomCount"])
+        if room["halfBathroomCount"] > 0:  # not likely to be larger than 1
+            bath_count += ".5"
+        return f"{bed_count}B{bath_count}B"
+
+    def get_room_price(self, room):
+        price = room["price"]
+        months_free = room["monthsFree"]
+        if months_free:
+            lease_term = room["leaseTerm"]
+            net_price = int(price * (lease_term - months_free) / lease_term)
+            return f"N${net_price} G${price} {months_free}/{lease_term}"
+        return str(price)
+
+    def get_move_in_date(self, room):
+        move_in_date = room["availableAt"]
+        date_format = "%Y-%m-%d"
+        move_in_date_obj = datetime.strptime(move_in_date, date_format)
+        return move_in_date if move_in_date_obj > datetime.now() else "Available Now"
+
+    def fetch_old_ui(self, table):
         if not table:
             logging.info(f"No room available in {self.website_name}, skipping...")
             return
