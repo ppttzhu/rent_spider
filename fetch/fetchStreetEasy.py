@@ -12,6 +12,7 @@ class FetchStreetEasy(Fetch):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.table_class = "nice_table building-pages BuildingUnit-table"
+        self.new_ui = False
 
     def fetch_web(self):
         html_doc = self.get_html_doc(self.url)
@@ -19,6 +20,7 @@ class FetchStreetEasy(Fetch):
         soup = BeautifulSoup(html_doc, "html.parser")
         script = soup.find("script", {"id": "__NEXT_DATA__"})
         if script:
+            self.new_ui = True
             self.fetch_new_ui(script)
         table = soup.find_all("table", {"class": self.table_class})
         self.fetch_old_ui(table)
@@ -52,7 +54,7 @@ class FetchStreetEasy(Fetch):
         months_free = room["monthsFree"]
         if months_free:
             lease_term = room["leaseTerm"]
-            net_price = int(price * (lease_term - months_free) / lease_term)
+            net_price = round(price * (lease_term - months_free) / lease_term)
             return f"N${net_price} G${price} {months_free}/{lease_term}"
         return str(price)
 
@@ -60,7 +62,11 @@ class FetchStreetEasy(Fetch):
         move_in_date = room["availableAt"]
         date_format = "%Y-%m-%d"
         move_in_date_obj = datetime.strptime(move_in_date, date_format)
-        return move_in_date if move_in_date_obj > datetime.now() else "Available Now"
+        return (
+            move_in_date_obj.strftime("%m/%d/%Y")
+            if move_in_date_obj > datetime.now()
+            else "Available Now"
+        )
 
     def fetch_old_ui(self, table):
         if not table:
@@ -111,6 +117,8 @@ class FetchStreetEasy(Fetch):
         return room_number.split(" - ")[0].replace("#", "").replace("\n", "").replace("-", "")
 
     def process_room_type(self, room_type):
+        if self.new_ui:
+            return room_type
         if "studio" in room_type:
             return "0Studio"
         bed_index = room_type.find("bed")
