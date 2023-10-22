@@ -180,6 +180,9 @@ class Fetch:
         while True:
             try:
                 self.driver.get(url)
+                self.html_text = self.driver.find_element_by_xpath("/html/body").get_attribute(
+                    "innerHTML"
+                )
                 return
             except Exception as error:
                 count += 1
