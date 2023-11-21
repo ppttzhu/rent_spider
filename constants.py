@@ -105,7 +105,9 @@ WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS = [
     WEBSITE_PRIORITY_COLUMN,
 ]
 WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
-WEBSITE_SUBLEASE_VIEW_COLUMNS = SUBLEASE_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
+WEBSITE_SUBLEASE_VIEW_COLUMNS = (
+    SUBLEASE_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
+)
 
 WEBSITES = [
     {
@@ -435,6 +437,15 @@ WEBSITES = [
         WEBSITE_NAME_COLUMN: "1 QPS",
         "parent_class_name": "StreetEasy",
         "class_name": "1QPS",
+        "platform": Platform.PYTHONANYWHERE_3,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/5pointz-lic",
+        WEBSITE_NAME_COLUMN: "5Pointz",
+        "parent_class_name": "StreetEasy",
+        "class_name": "5Pointz",
         "platform": Platform.PYTHONANYWHERE_3,
         "location": "LIC",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -1427,9 +1438,15 @@ try:
     parser.add_argument("-i", "--include", nargs="+", help="Websites to include")
     parser.add_argument("-e", "--exclude", nargs="+", help="Websites to exclude")
     parser.add_argument("-p", "--platform", help="Platform to select")
-    parser.add_argument("-s", "--sublease", action="store_true", help="Sublease websites only")
-    parser.add_argument("-r", "--remote", action="store_true", help="SSH to remote database")
-    parser.add_argument("-u", "--update", action="store_true", help="Update website table")
+    parser.add_argument(
+        "-s", "--sublease", action="store_true", help="Sublease websites only"
+    )
+    parser.add_argument(
+        "-r", "--remote", action="store_true", help="SSH to remote database"
+    )
+    parser.add_argument(
+        "-u", "--update", action="store_true", help="Update website table"
+    )
     args = parser.parse_args()
 
     PLATFORM = Platform[args.platform] if args.platform else Platform.DEV
@@ -1441,7 +1458,9 @@ try:
     if args.include:
         WEBSITES_TARGETS = args.include
     elif args.exclude:
-        WEBSITES_TARGETS = list(filter(lambda x: x not in args.exclude, WEBSITES_DICT.keys()))
+        WEBSITES_TARGETS = list(
+            filter(lambda x: x not in args.exclude, WEBSITES_DICT.keys())
+        )
     elif args.sublease:
         website_for_sublease = list(
             filter(lambda x: x[WEBSITE_RENT_TYPE] == RentType.SUBLEASE, WEBSITES)
@@ -1450,7 +1469,8 @@ try:
     elif PLATFORM != Platform.DEV:
         website_for_platform = list(
             filter(
-                lambda x: x["platform"] == PLATFORM and x[WEBSITE_RENT_TYPE] != RentType.SUBLEASE,
+                lambda x: x["platform"] == PLATFORM
+                and x[WEBSITE_RENT_TYPE] != RentType.SUBLEASE,
                 WEBSITES,
             )
         )
