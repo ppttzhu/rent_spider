@@ -26,6 +26,8 @@ class FetchDvora(Fetch):
                 .replace("-", "")
                 .replace(" ", "")
             )
+            if room_type == '0B1B':
+                room_type = '0Studio'
             move_in_date = room.find_element_by_xpath(
                 ".//td[contains(@class, 'cdk-column-availability')]"
             ).text
