@@ -32,8 +32,12 @@ class Database:
             )
         else:
             conn = MySQLdb.connect(
-                host=c.DATABASE_HOST if os.environ.get("PYTHONANYWHERE_DOMAIN") else "127.0.0.1",
-                user=c.DATABASE_USER if os.environ.get("PYTHONANYWHERE_DOMAIN") else "root",
+                host=c.DATABASE_HOST
+                if os.environ.get("PYTHONANYWHERE_DOMAIN")
+                else "127.0.0.1",
+                user=c.DATABASE_USER
+                if os.environ.get("PYTHONANYWHERE_DOMAIN")
+                else "root",
                 passwd=c.CONFIG["database"]["password"],
                 db=c.DATABASE_NAME,
             )
@@ -52,7 +56,12 @@ class Database:
             self.update_website()
             self.delete_old_history()
         website_room_counts = {}
-        failed_websites, succeeded_websites, rental_rooms, sublease_rooms = [], [], [], []
+        failed_websites, succeeded_websites, rental_rooms, sublease_rooms = (
+            [],
+            [],
+            [],
+            [],
+        )
         for website_name, rooms in all_rooms.items():
             if rooms is None:
                 failed_websites.append(website_name)
@@ -65,7 +74,9 @@ class Database:
                         sublease_rooms += rooms
                     else:
                         rental_rooms += rooms
-        logging.info(f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}")
+        logging.info(
+            f"Succeeded websites ({len(succeeded_websites)}): {succeeded_websites}"
+        )
         logging.info(f"Failed websites ({len(failed_websites)}): {failed_websites}")
         self.update_fetch_status(website_room_counts)
         if not succeeded_websites:
@@ -74,7 +85,9 @@ class Database:
         if sublease_rooms:
             self.update_sublease_room(sublease_rooms, succeeded_websites)
         prev_rooms = self.get_rooms(websites=succeeded_websites)
-        new_rooms, removed_rooms, updated_rooms = self.compare_rooms_diff(prev_rooms, rental_rooms)
+        new_rooms, removed_rooms, updated_rooms = self.compare_rooms_diff(
+            prev_rooms, rental_rooms
+        )
         for room in new_rooms:
             self.create_room(room)
             self.create_room_history(room)
@@ -99,11 +112,14 @@ class Database:
             logging.error(f"Failed to execute {delete_sql}")
             raise
 
-        fetch_date_string = datetime.now(timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        fetch_date_string = datetime.now(timezone("US/Eastern")).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
         multi_rows = [
             "'"
             + "','".join(
-                [room[column] for column in c.SUBLEASE_TABLE_COLUMNS] + [fetch_date_string]
+                [room[column] for column in c.SUBLEASE_TABLE_COLUMNS]
+                + [fetch_date_string]
             )
             + "'"
             for room in sublease_rooms
@@ -162,7 +178,9 @@ class Database:
             elif info not in prev_rooms_info_set:
                 updated_rooms[key]["cur_room"] = room
 
-        updated_rooms = [(room["prev_room"], room["cur_room"]) for room in updated_rooms.values()]
+        updated_rooms = [
+            (room["prev_room"], room["cur_room"]) for room in updated_rooms.values()
+        ]
         return new_rooms, removed_rooms, updated_rooms
 
     def get_rooms(self, columns=None, websites=None):
@@ -176,35 +194,11 @@ class Database:
         ]
         condition = ""
         if websites:
-            condition = f"""WHERE {c.WEBSITE_NAME_COLUMN} in ('{("','").join(websites)}')"""
+            condition = (
+                f"""WHERE {c.WEBSITE_NAME_COLUMN} in ('{("','").join(websites)}')"""
+            )
         select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_VIEW_NAME} {condition} ORDER BY {",".join(order_by)}"""
-        self.cursor.execute(select_sql)
-        rows = self.cursor.fetchall()
-        rooms = []
-        for row in rows:
-            room = {}
-            for idx, column in enumerate(columns):
-                room[column] = row[idx]
-            rooms.append(room)
-        return rooms
-
-    def get_sublease(self):
-        columns = c.WEBSITE_SUBLEASE_VIEW_COLUMNS + [c.FETCH_DATE_COLUMN]
-        order_by = [
-            c.WEBSITE_PRIORITY_COLUMN,
-            c.ROOM_TYPE_COLUMN,
-            c.ROOM_PRICE_COLUMN,
-        ]
-        select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_SUBLEASE_VIEW_NAME} ORDER BY {",".join(order_by)}"""
-        self.cursor.execute(select_sql)
-        rows = self.cursor.fetchall()
-        rooms = []
-        for row in rows:
-            room = {}
-            for idx, column in enumerate(columns):
-                room[column] = row[idx]
-            rooms.append(room)
-        return rooms
+        return self.run_query(select_sql, columns)
 
     def get_room_history(self, limit=1000):
         columns = c.ROOM_TABLE_COLUMNS + [
@@ -214,41 +208,17 @@ class Database:
         ]
         order_by = [c.WEBSITE_PRIORITY_COLUMN, c.ROOM_TYPE_COLUMN]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.WEBSITE_ROOM_HISTORY_VIEW_NAME} ORDER BY {c.FETCH_DATE_COLUMN} DESC, {",".join(order_by)} limit {limit}"""
-        self.cursor.execute(select_sql)
-        rows = self.cursor.fetchall()
-        rooms = []
-        for row in rows:
-            room = {}
-            for idx, column in enumerate(columns):
-                room[column] = row[idx]
-            rooms.append(room)
-        return rooms
+        return self.run_query(select_sql, columns)
 
     def get_fetch_status(self):
         columns = c.FETCH_STATUS_COLUMNS + [c.WEBSITE_PRIORITY_COLUMN]
         order_by = [c.FETCH_DATE_COLUMN]
         select_sql = f"""SELECT {",".join(columns)} FROM {c.FETCH_STATUS_VIEW_NAME} ORDER BY {",".join(order_by)} DESC"""
-        self.cursor.execute(select_sql)
-        rows = self.cursor.fetchall()
-        rooms = []
-        for row in rows:
-            room = {}
-            for idx, column in enumerate(columns):
-                room[column] = row[idx]
-            rooms.append(room)
-        return rooms
+        return self.run_query(select_sql, columns)
 
     def get_latest_fetch_status(self):
         select_sql = f"""SELECT {c.WEBSITE_NAME_COLUMN}, max({c.FETCH_DATE_COLUMN}) AS {c.FETCH_DATE_COLUMN} FROM {c.FETCH_STATUS_VIEW_NAME} WHERE {c.ROOM_COUNT_COLUMN} > -1 GROUP BY {c.WEBSITE_NAME_COLUMN}"""
-        self.cursor.execute(select_sql)
-        rows = self.cursor.fetchall()
-        rooms = []
-        for row in rows:
-            room = {}
-            for idx, column in enumerate([c.WEBSITE_NAME_COLUMN, c.FETCH_DATE_COLUMN]):
-                room[column] = row[idx]
-            rooms.append(room)
-        return rooms
+        return self.run_query(select_sql, [c.WEBSITE_NAME_COLUMN, c.FETCH_DATE_COLUMN])
 
     def create_room(self, room):
         columns = c.ROOM_TABLE_COLUMNS + [c.FETCH_DATE_COLUMN]
@@ -296,7 +266,9 @@ class Database:
             [f"{column} = '{prev_room[column]}'" for column in c.ROOM_TABLE_PRIMARY_KEY]
         )
         non_primary_key = [
-            column for column in c.ROOM_TABLE_COLUMNS if column not in c.ROOM_TABLE_PRIMARY_KEY
+            column
+            for column in c.ROOM_TABLE_COLUMNS
+            if column not in c.ROOM_TABLE_PRIMARY_KEY
         ]
         cur_values = []
         for column in non_primary_key:
@@ -327,7 +299,10 @@ class Database:
                 raise
         # Update or insert if it is new
         for idx, website in enumerate(c.WEBSITES):
-            url, location = website[c.WEBSITE_URL_COLUMN], website[c.WEBSITE_LOCATION_COLUMN]
+            url, location = (
+                website[c.WEBSITE_URL_COLUMN],
+                website[c.WEBSITE_LOCATION_COLUMN],
+            )
             update_sql = f"""INSERT INTO {c.WEBSITE_TABLE_NAME} ({c.WEBSITE_NAME_COLUMN}, {c.WEBSITE_URL_COLUMN}, {c.WEBSITE_LOCATION_COLUMN}, {c.WEBSITE_PRIORITY_COLUMN}) VALUES('{website[c.WEBSITE_NAME_COLUMN]}', '{url}', '{location}', {idx}) ON DUPLICATE KEY UPDATE {c.WEBSITE_URL_COLUMN}='{url}', {c.WEBSITE_LOCATION_COLUMN}='{location}', {c.WEBSITE_PRIORITY_COLUMN}={idx}"""
             try:
                 self.cursor.execute(update_sql)
@@ -345,3 +320,14 @@ class Database:
         except Exception:
             logging.error(f"Failed to execute {delete_sql}")
             raise
+
+    def run_query(self, query, columns):
+        self.cursor.execute(query)
+        rows = self.cursor.fetchall()
+        items = []
+        for row in rows:
+            item = {}
+            for idx, column in enumerate(columns):
+                item[column] = row[idx]
+            items.append(item)
+        return items
