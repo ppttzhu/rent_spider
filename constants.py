@@ -738,6 +738,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/47_05-center-blvd-long_island_city",
+        WEBSITE_NAME_COLUMN: "RockRose 47-05",
+        "parent_class_name": "StreetEasy",
+        "class_name": "RockRose4705",
+        "platform": Platform.PYTHONANYWHERE_3,
+        "location": "LIC",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/haus25",
         WEBSITE_NAME_COLUMN: "Haus 25",
         "parent_class_name": "Veris",
