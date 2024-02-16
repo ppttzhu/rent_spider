@@ -37,7 +37,7 @@ class FetchStreetEasy(Fetch):
                 room_type=self.get_room_type(room),
                 move_in_date=self.get_move_in_date(room),
                 room_price=self.get_room_price(room),
-                room_url=room["quickUrl"],
+                room_url=room.get("quickUrl") or room.get("url"),
             )
 
     def get_room_type(self, room):
