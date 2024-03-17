@@ -15,7 +15,7 @@ class Fetch981Management(Fetch):
         if self.soup_check_contain(soup, "p", "not available"):
             return
      
-        apply_buttons = self.find_all_contains(soup, "a", 'apply-btn')
+        apply_buttons = soup.find_all('a', {"href": re.compile(f'.*/floorplans.*'), "name": "applynow"})
         base_url = '/'.join(self.url.split('/')[:3])
         room_urls = [base_url + button.attrs['href'] for button in apply_buttons]
         for url in list(set(room_urls)):
