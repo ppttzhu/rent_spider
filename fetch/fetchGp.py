@@ -25,7 +25,7 @@ class FetchGp(Fetch981Management):
             match = re.search("href='.*'", onclick)
             html = match.group(0).replace('href=', '').replace("'", '')
 
-            move_in_date = self.parse_move_in_date(html)
+            move_in_date = self.parse_move_in_date_from_html(html)
 
             self.add_room_info(
                 room_number=room_number,
