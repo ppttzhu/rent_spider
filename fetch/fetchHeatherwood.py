@@ -1,5 +1,6 @@
 import re
 
+import chompjs
 from bs4 import BeautifulSoup
 
 from fetch.fetch981Management import Fetch981Management
@@ -10,6 +11,23 @@ class FetchHeatherwood(Fetch981Management):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.apply_button_filter = {"data-selenium-id": re.compile(".*FPButton_.*")}
+
+    def fetch_web(self):
+        html_doc = self.get_html_doc(self.url)
+        soup = BeautifulSoup(html_doc, "html.parser")
+        script = soup.find("script", text=re.compile(r".*var pageData.*"))
+        page_data = chompjs.parse_js_object(
+            script.text.replace(";", "").replace("var pageData =", "").replace("\n", "")
+        )
+        room_urls = []
+        for floor in page_data["floorplans"]:
+            if floor["isFullyOccupied"] == 1:
+                continue
+            room_urls.append(
+                floor["availableUnitsURL"].replace("location.href=", "").replace("'", "")
+            )
+        for url in list(set(room_urls)):
+            self.fetch_room_info(url)
 
     def fetch_room_info(self, room_url):
         html_doc = self.get_html_doc(room_url)
