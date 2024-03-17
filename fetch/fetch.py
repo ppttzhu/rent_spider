@@ -204,3 +204,12 @@ class Fetch:
         if match:
             return match.group(1)
         return None
+
+    def check_blocked(self, doc):
+        for text in ["Pardon Our Interruption", "Why have I been blocked", "Access denied"]:
+            if text in doc:
+                raise Exception("We are blocked")
+
+    def soup_check_contain(self, soup, tag, text):
+        component = soup.find_all(tag, text = re.compile(f'.*{text}.*'))
+        return len(component) > 0

@@ -1,71 +1,83 @@
-import logging
+import re
+from datetime import date, timedelta
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+from dateutil import parser
 
 from fetch.fetch import Fetch
 
 
 class Fetch981Management(Fetch):
     def fetch_web(self):
-        self.get_url_with_retry(self.url)
-        if self.check_availability():
-            logging.info(f"No room available in {self.website_name}, skipping...")
+        html_doc = self.get_html_doc(self.url)
+        self.check_blocked(html_doc)
+        soup = BeautifulSoup(html_doc, "html.parser")
+        if self.soup_check_contain(soup, "p", "not available"):
             return
-        room_types_elements = self.wait_until_xpath("//a[contains(@id, 'uiTab')]")
+     
+        apply_buttons = self.find_all_contains(soup, "a", 'apply-btn')
+        base_url = '/'.join(self.url.split('/')[:3])
+        room_urls = [base_url + button.attrs['href'] for button in apply_buttons]
+        for url in list(set(room_urls)):
+            self.fetch_room_info(url)
 
-        room_types = [
-            (index, element.accessible_name) for index, element in enumerate(room_types_elements)
-        ]
-        for index, room_type in room_types:
-            self.fetch_room_info(room_type, index)
+    def fetch_room_info(self, room_url):
+        html_doc = self.get_html_doc(room_url)
+        self.check_blocked(html_doc)
+        soup = BeautifulSoup(html_doc, "html.parser")
+        room_type = self.parse_room_type(soup)
+        rows = self.find_all_contains(soup,'tr', 'urow')
+        for row in rows: 
+            apartment = self.find_all_contains(row,'td', 'Apt')[0]
+            room_number = apartment.text.replace('\n','').replace(' ','').replace('Apartment:#','')
 
-    def fetch_room_info(self, room_type, index):
-        self.driver.find_element_by_id(f"uiTab{index}").click()
-        apply_button = self.web_wait.until(
-            EC.element_to_be_clickable(
-                (By.XPATH, f'//div[@id="collapse-tab{str(index)}"]/div/div[3]/a')
-            )
-        )
-        if "contact us" in apply_button.text.lower():
-            return
-        apply_button.click()
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        self.web_wait.until(EC.presence_of_element_located((By.XPATH, "//table/tbody/tr")))
-        room_list = self.driver.find_elements(by=By.XPATH, value="//table/tbody/tr")
-        for room_idx in range(len(room_list)):
-            room_number = self.web_wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, f'//td[@data-selenium-id="Apt{str(room_idx + 1)}"]')
-                )
-            ).text
-            # Go to Order Page
-            current_url = self.driver.current_url
-            self.web_wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, f'//button[@data-selenium-id="Select_{str(room_idx + 1)}"]')
-                )
-            ).click()
-            self.driver.switch_to.window(self.driver.window_handles[0])
-            move_in_date = self.web_wait.until(
-                EC.presence_of_element_located((By.ID, "CSMoveInDate"))
-            ).get_attribute("value")
-            room_price = self.web_wait.until(
-                EC.presence_of_element_located((By.XPATH, '//div[@data-selenium-id="CVRent"]/div'))
-            ).text.replace("/month", "")
+            rent = self.find_all_contains(row,'td', 'Rent')[0]
+            room_price = rent.text.split(' ')[0].replace('Rent:','')
+
+            button = self.find_all_contains(row,'button', 'Select_')[0]
+            onclick = button.attrs['onclick']
+            match = re.search("href='.*'", onclick)
+            html = match.group(0).replace('href=', '').replace("'", '')
+
+            move_in_date = self.parse_move_in_date(html)
+
             self.add_room_info(
                 room_number=room_number,
                 room_type=room_type,
                 move_in_date=move_in_date,
                 room_price=room_price,
+                room_url=html
             )
-            self.get_url_with_retry(current_url)
-            self.driver.switch_to.window(self.driver.window_handles[0])
-        self.get_url_with_retry(self.url)
-        self.driver.switch_to.window(self.driver.window_handles[0])
 
-    def check_availability(self):
-        unavailable_text = self.driver.find_elements(
-            by=By.XPATH, value='//p[contains(text(),"not available")]'
-        )
-        return len(unavailable_text) > 0
+    def find_all_contains(self, soup, tag, text):
+        return soup.find_all(tag, {"data-selenium-id": re.compile(f'.*{text}.*')})
+    
+    def parse_move_in_date(self, html):
+        move_in_date = ''
+        move_in_date_index = html.find('MoveInDate')
+        if move_in_date_index:
+            for i in range(move_in_date_index + len('MoveInDate') + 1, len(html)):
+                if html[i] == "&":
+                    break
+                move_in_date += html[i]
+        tomorrow = date.today() + timedelta(days=1)
+        move_in_datetime = parser.parse(move_in_date).date()
+        if move_in_datetime <= tomorrow:
+            return 'Available Now'
+        return move_in_date
+
+    def parse_room_type(self, soup):
+        room_header = soup.find('div', {"id": 'available-units-container'}).text.lower()
+        if 'studio' in room_header:
+            return 'Studio'
+        bedroom, bathroom = 0, 0
+        for i in range(1, 5):
+            if f'{i} bedroom' in room_header:
+                bedroom = i
+        for i in range(1, 5):
+            if f'{i} bathroom' in room_header:
+                bathroom = i
+        return f'{bedroom}B{bathroom}B'
+        
+
+
