@@ -36,7 +36,6 @@ class FetchVYV(Fetch):
 
     def fetch_room(self):
         rooms = self.wait_until_xpath('//div[@class="floorplan-item"]')
-        print(rooms)
         for room in rooms:
             room_number = room.find_element_by_xpath(
                 './/div[contains(@class, "floorplan-name")]'
