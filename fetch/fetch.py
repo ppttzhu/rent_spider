@@ -112,10 +112,13 @@ class Fetch:
         return self.page
 
     def get_html_doc(self, url):
-        if c.PLATFORM == c.Platform.DEV:
-            return self.get_html_doc_with_pw(url)
-        else:
-            return self.get_html_doc_with_zyte(url)
+        html_doc = (
+            self.get_html_doc_with_pw(url)
+            if c.PLATFORM == c.Platform.DEV
+            else self.get_html_doc_with_zyte(url)
+        )
+        self.check_blocked(html_doc)
+        return html_doc
 
     def get_html_doc_with_pw(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
@@ -206,10 +209,10 @@ class Fetch:
         return None
 
     def check_blocked(self, doc):
-        for text in ["Pardon Our Interruption", "Why have I been blocked", "Access denied"]:
+        for text in ["Pardon Our Interruption", "blocked", "Access denied"]:
             if text in doc:
                 raise Exception("We are blocked")
 
     def soup_check_contain(self, soup, tag, text):
-        component = soup.find_all(tag, text = re.compile(f'.*{text}.*'))
+        component = soup.find_all(tag, text=re.compile(f".*{text}.*"))
         return len(component) > 0

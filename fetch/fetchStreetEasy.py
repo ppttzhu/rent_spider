@@ -16,7 +16,6 @@ class FetchStreetEasy(Fetch):
 
     def fetch_web(self):
         html_doc = self.get_html_doc(self.url)
-        self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         script = soup.find("script", {"id": "__NEXT_DATA__"})
         if script:
@@ -92,7 +91,6 @@ class FetchStreetEasy(Fetch):
     def fetch_room_info(self, room):
         room_url = room["room_href"]
         html_doc = self.get_html_doc(room_url)
-        self.check_blocked(html_doc)
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
         room_price = room["room_price"]
