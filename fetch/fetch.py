@@ -21,6 +21,7 @@ class Fetch:
         self.browser = kwargs.get("browser")
 
         self.url = c.WEBSITES_DICT[self.web_key][c.WEBSITE_URL_COLUMN]
+        self.base_url = "/".join(self.url.split("/")[:3])
         self.website_name = c.WEBSITES_DICT[self.web_key][c.WEBSITE_NAME_COLUMN]
         self.priority = c.WEBSITES_DICT[self.web_key][c.WEBSITE_PRIORITY_COLUMN]
 

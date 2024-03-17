@@ -9,7 +9,6 @@ from fetch.fetch import Fetch
 class FetchNewportRental(Fetch):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.base_url = "https://www.newportrentals.com"
         self.max_iteration = 60
         self.building_name_priority_map = {
             "Ellipse": 1,

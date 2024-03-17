@@ -881,7 +881,7 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://www.urby.com/jersey-city",
+        WEBSITE_URL_COLUMN: "https://www.urby.com/location/jersey-city/availability",
         WEBSITE_NAME_COLUMN: "JC Urby",
         "parent_class_name": "Urby",
         "class_name": "JCUrby",
@@ -1011,7 +1011,7 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://www.urby.com/harrison",
+        WEBSITE_URL_COLUMN: "https://www.urby.com/location/harrison/availability",
         WEBSITE_NAME_COLUMN: "Harrison Urby",
         "parent_class_name": "Urby",
         "class_name": "HarrisonUrby",

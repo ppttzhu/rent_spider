@@ -6,15 +6,6 @@ from fetch.fetch import Fetch
 
 
 class FetchUrby(Fetch):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.room_type_map = [
-            ("^0 Bed, 1 Bath$", "Studio"),
-            ("^1 Bed, 1 Bath$", "1B1B"),
-            ("^2 Beds, 1 Bath$", "2B1B"),
-            ("^2 Beds, 2 Baths$", "2B2B"),
-            ("^3 Beds, 2 Baths$", "3B2B"),
-        ]
 
     def close_popup(self):
         try:
@@ -28,50 +19,42 @@ class FetchUrby(Fetch):
 
     def fetch_web(self):
         self.get_url_with_retry(self.url)
-        self.close_popup()
-        while True:
-            try:
-                self.fetch_rooms_info()
-            except Exception:
-                self.close_popup()
-                self.fetch_rooms_info()
-            pagination = self.driver.find_element_by_xpath('//div[@class="pagination"]')
-            next_page_button = pagination.find_element_by_xpath(".//button[2]")
-            if not next_page_button.is_enabled():
-                break
-            try:
-                next_page_button.click()
-            except Exception:
-                self.close_popup()
-                next_page_button.click()
+        try:
+            self.fetch_rooms_info()
+        except Exception:
+            self.close_popup()
+            self.fetch_rooms_info()
 
     def fetch_rooms_info(self):
-        rooms = self.wait_until_xpath("//article[@class='card']")
+        rooms = self.wait_until_xpath("//a[@class='floorplan-card-link']")
         for room in rooms:
             self.move_to_center(room)
-            room_number = room.find_element_by_xpath(
-                ".//p[contains(@class, 'unit')]"
-            ).get_attribute("textContent")
-            room_type = room.find_element_by_xpath(
-                ".//p[contains(@class, 'beds-baths')]"
+            unit_details = room.find_element_by_xpath(".//div[@class='unit-details']").text.replace(
+                "\n", ""
+            )
+            room_number = self.get_substring_by_regex(unit_details, r"Apt. (\d+)")
+            bedroom = self.get_substring_by_regex(unit_details, r"(\d) Bed")
+            bathroom = self.get_substring_by_regex(unit_details, r"(\d) Bath")
+            room_type = f"{bedroom}B{bathroom}B" if int(bedroom) > 0 else "Studio"
+
+            move_in_date = room.find_element_by_xpath(
+                ".//div[contains(@class, 'availab')]"
             ).get_attribute("textContent")
             move_in_date = (
-                room.find_element_by_xpath(".//p[contains(@class, 'ribbon')]")
-                .get_attribute("textContent")
-                .replace("Available ", "")
+                move_in_date
+                if move_in_date == "Available Now"
+                else move_in_date.replace("Available ", "")
             )
+
             room_price = (
-                room.find_element_by_xpath(".//p[contains(@class, 'price')]")
+                room.find_element_by_xpath(".//div[@class='price']")
                 .get_attribute("textContent")
-                .replace("/MO", "")
-            )
-            room_url = room.find_element_by_xpath(".//a[contains(@class, 'image')]").get_attribute(
-                "href"
+                .split(" ")[0]
             )
             self.add_room_info(
                 room_number,
                 room_type,
                 move_in_date,
                 room_price,
-                room_url,
+                room.get_attribute("href"),
             )

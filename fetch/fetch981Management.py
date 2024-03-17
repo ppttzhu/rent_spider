@@ -19,10 +19,9 @@ class Fetch981Management(Fetch):
             return
 
         apply_buttons = soup.find_all("a", self.apply_button_filter)
-        base_url = "/".join(self.url.split("/")[:3])
         room_urls = [
             (
-                base_url + button.attrs["href"]
+                self.base_url + button.attrs["href"]
                 if "http" not in button.attrs["href"]
                 else button.attrs["href"]
             )
@@ -42,9 +41,8 @@ class Fetch981Management(Fetch):
 
             button = self.find_all_contains(row, "button", "Select_")[0]
             onclick = button.attrs["onclick"]
-            match = re.search("href='.*'", onclick)
-            html = match.group(0).replace("href=", "").replace("'", "")
-
+            
+            html = self.get_substring_by_regex(onclick, "href='(.*)'")
             move_in_date = self.parse_move_in_date_from_html(html)
 
             self.add_room_info(

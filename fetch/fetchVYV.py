@@ -27,12 +27,10 @@ class FetchVYV(Fetch):
         list_view_button.click()
         self.fetch_room()
 
-        # fetch north tower
-        north_tower_button = self.driver.find_element_by_xpath(
-            '//button[@class="floorplan-tower-button" and @data-id="North"]'
-        )
-        self.move_to_center(north_tower_button)
-        north_tower_button.click()
+        # fetch south tower
+        south_tower_button = self.driver.find_element_by_xpath('//button[@data-id="South"]')
+        self.move_to_center(south_tower_button)
+        south_tower_button.click()
         sleep(1)
         self.fetch_room()
 
