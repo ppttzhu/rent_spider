@@ -41,11 +41,11 @@ def generate_table(rooms):
             if column_name == c.WEBSITE_NAME_COLUMN:
                 cell_content = f"""<a href="{room[c.WEBSITE_URL_COLUMN]}">[{room[c.WEBSITE_PRIORITY_COLUMN]}] {room[c.WEBSITE_NAME_COLUMN]}</a>"""
             elif column_name == c.ROOM_NUMBER_COLUMN and room[c.ROOM_URL_COLUMN]:
-                cell_content = f"""<a href="{room[c.ROOM_URL_COLUMN]}">{room[c.ROOM_NUMBER_COLUMN]}</a>"""
-            elif is_room_updated and room[column_name] != prev_room[column_name]:
                 cell_content = (
-                    f"<del>{prev_room[column_name]}</del> {room[column_name]}"
+                    f"""<a href="{room[c.ROOM_URL_COLUMN]}">{room[c.ROOM_NUMBER_COLUMN]}</a>"""
                 )
+            elif is_room_updated and room[column_name] != prev_room[column_name]:
+                cell_content = f"<del>{prev_room[column_name]}</del> {room[column_name]}"
             room_content += f"""<td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{cell_content}</td>"""
         content += "<tr>" + room_content + "</tr>"
     return """<table style="border-collapse: collapse;">""" + content + "</table>"
@@ -86,9 +86,7 @@ def send_notification_email(new_rooms, removed_rooms, updated_rooms):
         content += "<h3>下架房源:</h3>" + generate_table(removed_rooms)
     if updated_rooms:
         content += "<h3>房源信息更新:</h3>" + generate_table(updated_rooms)
-    content += (
-        f"""<h3>全部房源:<div><a href="{c.WEB_APP_LINK}">{c.WEB_APP_LINK}</a></div></h3>"""
-    )
+    content += f"""<h3>全部房源:<div><a href="{c.WEB_APP_LINK}">{c.WEB_APP_LINK}</a></div></h3>"""
     content = "<html><body>" + content + "</body></html>"
 
     send_email(
@@ -103,7 +101,7 @@ def filter_summer_room(rooms):
     summer_rooms = []
     for room in rooms:
         room_to_check = room[1] if isinstance(room, tuple) else room
-        start_with_texts = ["08/", "8/", "Aug"]
+        start_with_texts = ["07/", "7/", "Jul", "08/", "8/", "Aug"]
         building_to_escape = ["River Bridge Tower"]
         should_append = room_to_check[c.WEBSITE_NAME_COLUMN] in building_to_escape
         for start_with_text in start_with_texts:
@@ -136,9 +134,7 @@ def send_notification_email_summary(
         content += "<h3>房源信息更新:</h3>" + generate_table(updated_rooms)
     if top_rooms:
         content += "<h3>Top 5房源:</h3>" + generate_table(top_rooms)
-    content += (
-        f"""<h3>全部房源:<div><a href="{c.WEB_APP_LINK}">{c.WEB_APP_LINK}</a></div></h3>"""
-    )
+    content += f"""<h3>全部房源:<div><a href="{c.WEB_APP_LINK}">{c.WEB_APP_LINK}</a></div></h3>"""
     content = "<html><body>" + content + "</body></html>"
 
     send_email(
