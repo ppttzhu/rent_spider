@@ -107,10 +107,10 @@ def filter_summer_room(rooms):
         for start_with_text in start_with_texts:
             if room_to_check[c.MOVE_IN_DATE_COLUMN].startswith(start_with_text):
                 should_append = True
-        contain_texts = ["available", "now", "immediate"]
-        for contain_text in contain_texts:
-            if contain_text in room_to_check[c.MOVE_IN_DATE_COLUMN].lower():
-                should_append = True
+        # contain_texts = ["available", "now", "immediate"]
+        # for contain_text in contain_texts:
+        #     if contain_text in room_to_check[c.MOVE_IN_DATE_COLUMN].lower():
+        #         should_append = True
         if should_append:
             summer_rooms.append(room)
     return summer_rooms
