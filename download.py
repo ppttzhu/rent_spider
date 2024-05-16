@@ -8,8 +8,8 @@ from playwright.sync_api import sync_playwright
 
 from fetch.fetchVYV import FetchVYV
 
-web_url = "https://streeteasy.com/building/hayden-43_25-hunter-street-long_island_city/floorplans"
-web_name = "hayden"  # for downloaded file name and folder name
+web_url = "https://streeteasy.com/building/30-morningside-drive-new_york/floorplans"
+web_name = "morningside"  # for downloaded file name and folder name
 download_path = f"/Users/{getpass.getuser()}/Downloads/{web_name}"  # for macos
 
 # create folder if not exist
@@ -27,17 +27,15 @@ def download_floorplan(room_id, url):
 
 with sync_playwright() as play:
     browser = play.firefox.launch(headless=False)
-    # TODO: update me
-    fetcher = FetchVYV("VYV", None, browser)
+    fetcher = FetchVYV(web_key="VYV", browser=browser)
     html_doc = fetcher.get_html_doc(web_url)
     soup = BeautifulSoup(html_doc, "html.parser")
-    a_elements = soup.find_all("a", text=re.compile("^click to view .* floorplan$"))
+    div_elements = soup.find_all("div", {"class": "fp"})
     links = {}
-    for element in a_elements:
-        room_id = fetcher.get_substring_by_regex(
-            element.get_text(), r"^click to view (.+?) floorplan$"
-        ).replace("#", "")
-        links[room_id] = element.get("href")
+    for element in div_elements:
+        a_elements = element.find_all("a")
+        room_id = a_elements[0].text
+        links[room_id] = a_elements[1].get("href")
     print(f"Removed duplicates and found {len(links)} links to download")
     count = 0
     failed_links = []
