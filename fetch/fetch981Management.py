@@ -39,10 +39,8 @@ class Fetch981Management(Fetch):
             room_number = self.parse_room_number(row)
             room_price = self.parse_room_price(row)
 
-            button = self.find_all_contains(row, "button", "Select_")[0]
-            onclick = button.attrs["onclick"]
-            
-            html = self.get_substring_by_regex(onclick, "href='(.*)'")
+            button = self.find_all_contains(row, "a", "Select_")[0]
+            html = button.attrs['href']
             move_in_date = self.parse_move_in_date_from_html(html)
 
             self.add_room_info(

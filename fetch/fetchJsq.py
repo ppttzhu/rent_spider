@@ -1,5 +1,3 @@
-from time import sleep
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -7,35 +5,30 @@ from fetch.fetch import Fetch
 
 
 class FetchJsq(Fetch):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.room_type_map = [
-            ("^One Bed/ One Bath - .*$", "1B1B"),
-            ("^One Bed/ One Bath/ Plus - .*$", "1B1BD"),
-            ("^Studio - .*$", "Studio"),
-            ("^Two Bed/ Two Bath - .*$", "2B2B"),
-            ("^Three Bed/ Two Bath - .*$", "3B2B"),
-        ]
-
     def fetch_web(self):
         self.get_url_with_retry(self.url)
-        sleep(3)  # sleep because table might not fully loaded
         self.web_wait.until(
-            EC.presence_of_element_located((By.XPATH, '//table[@id="table"]/tbody/tr'))
+            EC.presence_of_element_located((By.XPATH, '//div[@class="property-grid"]'))
         )
-        for building_idx in range(1, 3):
-            room_list = self.driver.find_elements(
-                by=By.XPATH,
-                value=f'//table[@id="table"]/tbody/tr[contains(@class,"tower-{building_idx}")]',
+        room_list = self.driver.find_elements(
+            by=By.XPATH,
+            value='//div[@class="property-grid"]/article',
+        )
+        room_type_map = {
+            "1 Bed | 1 Bath": "1B1B",
+            "1 Bed + | 1 Bath": "1B1BD",
+            "2 Bed | 2 Bath": "2B2B",
+            "3 Bed | 2 Bath": "3B2B",
+        }
+        for row in room_list:
+            tower = row.get_attribute("data-tower")
+            room_number = row.get_attribute("data-name")
+            link = row.find_element_by_xpath(".//a")
+            room_type = room_type_map.get(row.get_attribute("data-floorplan"), "Studio")
+            self.add_room_info(
+                room_number=f"{room_number} - JD{tower[-1]}",
+                room_type=room_type,
+                move_in_date=row.get_attribute("data-date"),
+                room_price=row.get_attribute("data-rent"),
+                room_url=link.get_attribute("href"),
             )
-            for row in room_list:
-                if not row.text:
-                    # FIXME: more room will show after click GO, this might not be stable
-                    continue
-                room = row.find_elements(by=By.XPATH, value=".//td")
-                self.add_room_info(
-                    room_number=f"{room[1].text} - JD{building_idx}",
-                    room_type=room[2].text,
-                    move_in_date=room[5].text,
-                    room_price=room[3].text,
-                )

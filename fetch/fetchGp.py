@@ -20,9 +20,8 @@ class FetchGp(Fetch981Management):
             rent = card.find('p', {"class": "card-subtitle"})
             room_price = rent.text.replace('Starting at:','').replace(' ','').replace('\n','')
 
-            button = self.find_all_contains(card,'button', 'Select_')[0]
-            onclick = button.attrs['onclick']
-            html = self.get_substring_by_regex(onclick, "href='(.*)'")
+            button = self.find_all_contains(card, 'a', 'Select_')[0]
+            html = button.attrs['href']
             move_in_date = self.parse_move_in_date_from_html(html)
 
             self.add_room_info(
