@@ -44,6 +44,7 @@ class FetchHeatherwood(Fetch981Management):
                 room_type=room_type,
                 move_in_date=move_in_date,
                 room_price=room_price,
+                room_url=room_url,
             )
 
     def get_room_header(self, soup):

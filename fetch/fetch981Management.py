@@ -48,7 +48,7 @@ class Fetch981Management(Fetch):
                 room_type=room_type,
                 move_in_date=move_in_date,
                 room_price=room_price,
-                room_url=html,
+                room_url=room_url,
             )
 
     def find_all_contains(self, soup, tag, text):
