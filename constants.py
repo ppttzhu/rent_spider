@@ -87,7 +87,14 @@ FETCH_STATUS_COLUMNS = [
     FETCH_DATE_COLUMN,
 ]
 ROOM_TABLE_COLUMNS_NAME = ["房源网站", "户型", "房号", "入住时间", "房价"]
-SUBLEASE_TABLE_COLUMNS_NAME = ["房源网站", "转租信息", "户型", "入住时间", "房价", "发布时间"]
+SUBLEASE_TABLE_COLUMNS_NAME = [
+    "房源网站",
+    "转租信息",
+    "户型",
+    "入住时间",
+    "房价",
+    "发布时间",
+]
 FETCH_DATE_COLUMN_NAME = "抓取时间"
 FETCH_FREQUENCY_COLUMN_NAME = "抓取频率"
 LATEST_FETCH_DATE_COLUMN_NAME = "更新时间"
@@ -105,7 +112,9 @@ WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS = [
     WEBSITE_PRIORITY_COLUMN,
 ]
 WEBSITE_ROOM_VIEW_COLUMNS = ROOM_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
-WEBSITE_SUBLEASE_VIEW_COLUMNS = SUBLEASE_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
+WEBSITE_SUBLEASE_VIEW_COLUMNS = (
+    SUBLEASE_TABLE_COLUMNS + WEBSITE_ROOM_VIEW_ADDITIONAL_COLUMNS
+)
 
 WEBSITES = [
     {
@@ -825,64 +834,19 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/88-regent-street-jersey_city",
-        WEBSITE_NAME_COLUMN: "88 Regent",
-        "parent_class_name": "StreetEasy",
-        "class_name": "88Regent",
-        "platform": Platform.PYTHONANYWHERE_3,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-bridget",
-        WEBSITE_NAME_COLUMN: "The Bridget",
-        "parent_class_name": "StreetEasy",
-        "class_name": "TheBridget",
-        "platform": Platform.PYTHONANYWHERE_3,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://www.485marin.com/floorplans",
-        WEBSITE_NAME_COLUMN: "485 Marin",
-        "class_name": "485Marin",
-        "parent_class_name": "981Management",
+        WEBSITE_URL_COLUMN: "https://ironstate.com/property/50-columbus",
+        WEBSITE_NAME_COLUMN: "50 Columbus",
+        "parent_class_name": "IronState",
+        "class_name": "50Columbus",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/quinn-197-van-vorst-street-jersey_city",
-        WEBSITE_NAME_COLUMN: "Quinn",
-        "parent_class_name": "StreetEasy",
-        "class_name": "Quinn",
-        "platform": Platform.PYTHONANYWHERE_3,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/the-blvd-collection",
-        WEBSITE_NAME_COLUMN: "The Blvd",
-        "parent_class_name": "Veris",
-        "class_name": "TheBlvd",
-        "platform": Platform.PYTHONANYWHERE,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/vantage-33-park-view-avenue-jersey_city",
-        WEBSITE_NAME_COLUMN: "Vantage",
-        "parent_class_name": "StreetEasy",
-        "class_name": "Vantage",
-        "platform": Platform.PYTHONANYWHERE_3,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
-        WEBSITE_URL_COLUMN: "https://www.urby.com/location/jersey-city/availability",
-        WEBSITE_NAME_COLUMN: "JC Urby",
-        "parent_class_name": "Urby",
-        "class_name": "JCUrby",
+        WEBSITE_URL_COLUMN: "https://ironstate.com/property/the-gotham",
+        WEBSITE_NAME_COLUMN: "The Gotham",
+        "parent_class_name": "IronState",
+        "class_name": "TheGotham",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -906,19 +870,55 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://www.journalsquared.com/availabilities",
-        WEBSITE_NAME_COLUMN: "Journal Squared",
-        "class_name": "Jsq",
+        WEBSITE_URL_COLUMN: "https://ironstate.com/property/340-third",
+        WEBSITE_NAME_COLUMN: "340 Third",
+        "parent_class_name": "IronState",
+        "class_name": "340Third",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://ironstate.com/property/le-leo",
-        WEBSITE_NAME_COLUMN: "Le Leo",
-        "parent_class_name": "IronState",
-        "class_name": "LeLeo",
+        WEBSITE_URL_COLUMN: "https://www.485marin.com/floorplans",
+        WEBSITE_NAME_COLUMN: "485 Marin",
+        "class_name": "485Marin",
+        "parent_class_name": "981Management",
         "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://www.livethemorgan.com/floor-plans",
+        WEBSITE_NAME_COLUMN: "Live The Morgan",
+        "class_name": "LiveTheMorgan",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://www.urby.com/location/jersey-city/availability",
+        WEBSITE_NAME_COLUMN: "JC Urby",
+        "parent_class_name": "Urby",
+        "class_name": "JCUrby",
+        "platform": Platform.PYTHONANYWHERE,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/88-regent-street-jersey_city",
+        WEBSITE_NAME_COLUMN: "88 Regent",
+        "parent_class_name": "StreetEasy",
+        "class_name": "88Regent",
+        "platform": Platform.PYTHONANYWHERE_3,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/the-bridget",
+        WEBSITE_NAME_COLUMN: "The Bridget",
+        "parent_class_name": "StreetEasy",
+        "class_name": "TheBridget",
+        "platform": Platform.PYTHONANYWHERE_3,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -931,10 +931,11 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://www.livethemorgan.com/floor-plans",
-        WEBSITE_NAME_COLUMN: "Live The Morgan",
-        "class_name": "LiveTheMorgan",
-        "platform": Platform.PYTHONANYWHERE,
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/quinn-197-van-vorst-street-jersey_city",
+        WEBSITE_NAME_COLUMN: "Quinn",
+        "parent_class_name": "StreetEasy",
+        "class_name": "Quinn",
+        "platform": Platform.PYTHONANYWHERE_3,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -966,19 +967,28 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://ironstate.com/property/50-columbus",
-        WEBSITE_NAME_COLUMN: "50 Columbus",
-        "parent_class_name": "IronState",
-        "class_name": "50Columbus",
+        WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/the-blvd-collection",
+        WEBSITE_NAME_COLUMN: "The Blvd",
+        "parent_class_name": "Veris",
+        "class_name": "TheBlvd",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://ironstate.com/property/the-gotham",
-        WEBSITE_NAME_COLUMN: "The Gotham",
+        WEBSITE_URL_COLUMN: "https://streeteasy.com/building/vantage-33-park-view-avenue-jersey_city",
+        WEBSITE_NAME_COLUMN: "Vantage",
+        "parent_class_name": "StreetEasy",
+        "class_name": "Vantage",
+        "platform": Platform.PYTHONANYWHERE_3,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://ironstate.com/property/le-leo",
+        WEBSITE_NAME_COLUMN: "Le Leo",
         "parent_class_name": "IronState",
-        "class_name": "TheGotham",
+        "class_name": "LeLeo",
         "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
@@ -989,6 +999,14 @@ WEBSITES = [
         "parent_class_name": "StreetEasy",
         "class_name": "55Jordan",
         "platform": Platform.PYTHONANYWHERE_3,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://www.journalsquared.com/availabilities",
+        WEBSITE_NAME_COLUMN: "Journal Squared",
+        "class_name": "Jsq",
+        "platform": Platform.PYTHONANYWHERE,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
@@ -1481,9 +1499,15 @@ try:
     parser.add_argument("-i", "--include", nargs="+", help="Websites to include")
     parser.add_argument("-e", "--exclude", nargs="+", help="Websites to exclude")
     parser.add_argument("-p", "--platform", help="Platform to select")
-    parser.add_argument("-s", "--sublease", action="store_true", help="Sublease websites only")
-    parser.add_argument("-r", "--remote", action="store_true", help="SSH to remote database")
-    parser.add_argument("-u", "--update", action="store_true", help="Update website table")
+    parser.add_argument(
+        "-s", "--sublease", action="store_true", help="Sublease websites only"
+    )
+    parser.add_argument(
+        "-r", "--remote", action="store_true", help="SSH to remote database"
+    )
+    parser.add_argument(
+        "-u", "--update", action="store_true", help="Update website table"
+    )
     args = parser.parse_args()
 
     PLATFORM = Platform[args.platform] if args.platform else Platform.DEV
@@ -1495,7 +1519,9 @@ try:
     if args.include:
         WEBSITES_TARGETS = args.include
     elif args.exclude:
-        WEBSITES_TARGETS = list(filter(lambda x: x not in args.exclude, WEBSITES_DICT.keys()))
+        WEBSITES_TARGETS = list(
+            filter(lambda x: x not in args.exclude, WEBSITES_DICT.keys())
+        )
     elif args.sublease:
         website_for_sublease = list(
             filter(lambda x: x[WEBSITE_RENT_TYPE] == RentType.SUBLEASE, WEBSITES)
@@ -1504,7 +1530,8 @@ try:
     elif PLATFORM != Platform.DEV:
         website_for_platform = list(
             filter(
-                lambda x: x["platform"] == PLATFORM and x[WEBSITE_RENT_TYPE] != RentType.SUBLEASE,
+                lambda x: x["platform"] == PLATFORM
+                and x[WEBSITE_RENT_TYPE] != RentType.SUBLEASE,
                 WEBSITES,
             )
         )
