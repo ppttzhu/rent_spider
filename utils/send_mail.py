@@ -41,11 +41,11 @@ def generate_table(rooms):
             if column_name == c.WEBSITE_NAME_COLUMN:
                 cell_content = f"""<a href="{room[c.WEBSITE_URL_COLUMN]}">[{room[c.WEBSITE_PRIORITY_COLUMN]}] {room[c.WEBSITE_NAME_COLUMN]}</a>"""
             elif column_name == c.ROOM_NUMBER_COLUMN and room[c.ROOM_URL_COLUMN]:
-                cell_content = (
-                    f"""<a href="{room[c.ROOM_URL_COLUMN]}">{room[c.ROOM_NUMBER_COLUMN]}</a>"""
-                )
+                cell_content = f"""<a href="{room[c.ROOM_URL_COLUMN]}">{room[c.ROOM_NUMBER_COLUMN]}</a>"""
             elif is_room_updated and room[column_name] != prev_room[column_name]:
-                cell_content = f"<del>{prev_room[column_name]}</del> {room[column_name]}"
+                cell_content = (
+                    f"<del>{prev_room[column_name]}</del> {room[column_name]}"
+                )
             room_content += f"""<td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{cell_content}</td>"""
         content += "<tr>" + room_content + "</tr>"
     return """<table style="border-collapse: collapse;">""" + content + "</table>"
@@ -114,6 +114,25 @@ def filter_summer_room(rooms):
         if should_append:
             summer_rooms.append(room)
     return summer_rooms
+
+
+def filter_popular_rooms(rooms):
+    popular_webs = [
+        "Grove Pointe",
+        "235 Grand Street",
+        "90 Columbus",
+        "70 Columbus",
+        "50 Columbus",
+        "The Gotham",
+        "225 Grand Street",
+        "18 Park",
+    ]
+    popular_rooms = []
+    for room in rooms:
+        room_to_check = room[1] if isinstance(room, tuple) else room
+        if room_to_check[c.WEBSITE_NAME_COLUMN] in popular_webs:
+            popular_rooms.append(room)
+    return popular_rooms
 
 
 def send_notification_email_summary(

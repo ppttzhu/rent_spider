@@ -8,6 +8,7 @@ from playwright.sync_api import sync_playwright
 import constants as c
 from database import Database
 from utils.init_driver import init_driver
+from utils.send_mail import filter_popular_rooms, send_notification_email
 
 
 def main():
@@ -35,10 +36,13 @@ def main():
             driver.quit()
         database = Database()
         new_rooms, removed_rooms, updated_rooms = database.update(all_rooms)
-        # if new_rooms or updated_rooms:
-        #     send_notification_email(new_rooms, removed_rooms, updated_rooms)
-        # else:
-        #     logging.info("Nothing new to send")
+        new_rooms = filter_popular_rooms(new_rooms)
+        removed_rooms = filter_popular_rooms(removed_rooms)
+        updated_rooms = filter_popular_rooms(updated_rooms)
+        if new_rooms or updated_rooms:
+            send_notification_email(new_rooms, removed_rooms, updated_rooms)
+        else:
+            logging.info("Nothing new to send")
         database.quit()
 
 
@@ -67,11 +71,14 @@ def main_in_loop():
             # Sev happened, maybe chrome crashed
             one_loop_duration < 60
             # No time to finish a new iteration
-            or time.time() + one_loop_duration > start_time + c.TOTAL_DURATION_IN_MINUTES * 60
+            or time.time() + one_loop_duration
+            > start_time + c.TOTAL_DURATION_IN_MINUTES * 60
         ):
             break
         else:
-            time_sleep_in_mins = max(c.MINUTES_BETWEEN_FETCH - one_loop_duration // 60, 0)
+            time_sleep_in_mins = max(
+                c.MINUTES_BETWEEN_FETCH - one_loop_duration // 60, 0
+            )
             logging.info(f"Sleep for {time_sleep_in_mins} mins...")
             time.sleep(time_sleep_in_mins * 60)
 
