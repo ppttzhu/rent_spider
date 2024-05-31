@@ -13,7 +13,7 @@ from utils.send_mail import filter_popular_rooms, send_notification_email
 
 def main():
     driver, browser = None, None
-    if c.PLATFORM != c.Platform.PYTHONANYWHERE_3:
+    if c.PLATFORM != c.Platform.PAW_TWICE_DAILY:
         driver = init_driver()
     with sync_playwright() as play:
         if c.PLATFORM == c.Platform.DEV:
@@ -83,7 +83,7 @@ def main_in_loop():
             time.sleep(time_sleep_in_mins * 60)
 
 
-if c.PLATFORM == c.Platform.PYTHONANYWHERE_2 or c.RENT_TYPE == c.RentType.SUBLEASE:
+if c.PLATFORM == c.Platform.PAW_HALF_HOURLY or c.RENT_TYPE == c.RentType.SUBLEASE:
     main_in_loop()
 else:
     main()
