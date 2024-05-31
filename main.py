@@ -83,7 +83,4 @@ def main_in_loop():
             time.sleep(time_sleep_in_mins * 60)
 
 
-if c.PLATFORM == c.Platform.PAW_HALF_HOURLY or c.RENT_TYPE == c.RentType.SUBLEASE:
-    main_in_loop()
-else:
-    main()
+main()
