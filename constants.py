@@ -994,6 +994,15 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
+        WEBSITE_URL_COLUMN: "https://www.urby.com/location/journal-square/availability",
+        WEBSITE_NAME_COLUMN: "Journal Square Urby",
+        "parent_class_name": "Urby",
+        "class_name": "JournalSquareUrby",
+        "platform": Platform.PAW_HOURLY,
+        "location": "NJ",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/55-jordan-avenue-jersey_city",
         WEBSITE_NAME_COLUMN: "55 Jordan",
         "parent_class_name": "StreetEasy",
