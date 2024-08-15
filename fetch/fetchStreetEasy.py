@@ -12,32 +12,52 @@ class FetchStreetEasy(Fetch):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.table_class = "nice_table building-pages BuildingUnit-table"
-        self.new_ui = False
+        self.panel_id = "available-units-simple-tabpanel-0"
 
     def fetch_web(self):
         html_doc = self.get_html_doc(self.url)
         soup = BeautifulSoup(html_doc, "html.parser")
-        script = soup.find("script", {"id": "__NEXT_DATA__"})
-        if script:
-            self.new_ui = True
-            self.fetch_new_ui(script)
+        panel = soup.find_all("div", {"id": self.panel_id})
+        self.fetch_new_ui(panel)
         table = soup.find_all("table", {"class": self.table_class})
         self.fetch_old_ui(table)
 
-    def fetch_new_ui(self, script):
-        data = json.loads(script.string)
-        all_rooms = data["props"]["pageProps"]["building"]["rentalInventorySummary"][
-            "availableListingDigests"
-        ]
-        filtered_rooms = [room for room in all_rooms if room["noFee"] and room["status"] == "OPEN"]
-        for room in filtered_rooms:
-            self.add_room_info(
-                room_number=room["unit"],
-                room_type=self.get_room_type(room),
-                move_in_date=self.get_move_in_date(room),
-                room_price=self.get_room_price(room),
-                room_url=room.get("quickUrl") or room.get("url"),
+    def fetch_new_ui(self, panel):
+        if not panel:
+            logging.info(f"No room available in new {self.website_name}, skipping...")
+            return
+        rows = panel[-1].find_all("div", {"data-testid": "inventory-card-component"})
+        rooms = []
+        for row in rows:
+            if "no fee" not in row.text.lower():
+                continue
+            room_href = row.find("a", href=True)
+            room_types = row.find(
+                "div", {"data-testid": "listing-description-icons"}
+            ).find_all("p", {"class": "Caption_base_GEtMu"})
+            bed_count = (
+                room_types[0]
+                .text.replace("beds", "B")
+                .replace("bed", "B")
+                .replace(" ", "")
             )
+            bath_count = (
+                room_types[1]
+                .text.replace("baths", "B")
+                .replace("bath", "B")
+                .replace(" ", "")
+            )
+            room_price = row.find("p", {"class": re.compile(f".*ikBOAQ.*")})
+            rooms.append(
+                {
+                    "room_href": room_href["href"],
+                    "room_number": room_href.text,
+                    "room_type": bed_count + bath_count,
+                    "room_price": room_price.text,
+                }
+            )
+        for room in rooms:
+            self.fetch_room_info(room)
 
     def get_room_type(self, room):
         bed_count = room["bedroomCount"]
@@ -69,7 +89,7 @@ class FetchStreetEasy(Fetch):
 
     def fetch_old_ui(self, table):
         if not table:
-            logging.info(f"No room available in {self.website_name}, skipping...")
+            logging.info(f"No room available in old {self.website_name}, skipping...")
             return
         rows = table[-1].find("tbody").find_all("tr")
         rooms = []
@@ -102,7 +122,9 @@ class FetchStreetEasy(Fetch):
             net_price = info["netEffectivePrice"]
             free_month = round(info["freeMonths"])
             total_month = round(info["leaseTerm"])
-            room_price = f'N{net_price} G{room["room_price"]} {free_month}/{total_month}'
+            room_price = (
+                f'N{net_price} G{room["room_price"]} {free_month}/{total_month}'
+            )
         self.add_room_info(
             room_number=room["room_number"],
             room_type=room["room_type"],
@@ -112,11 +134,14 @@ class FetchStreetEasy(Fetch):
         )
 
     def process_room_number(self, room_number):
-        return room_number.split(" - ")[0].replace("#", "").replace("\n", "").replace("-", "")
+        return (
+            room_number.split(" - ")[0]
+            .replace("#", "")
+            .replace("\n", "")
+            .replace("-", "")
+        )
 
     def process_room_type(self, room_type):
-        if self.new_ui:
-            return room_type
         if "studio" in room_type:
             return "0Studio"
         bed_index = room_type.find("bed")
