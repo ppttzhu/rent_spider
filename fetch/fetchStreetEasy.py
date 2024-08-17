@@ -141,17 +141,6 @@ class FetchStreetEasy(Fetch):
             .replace("-", "")
         )
 
-    def process_room_type(self, room_type):
-        if "studio" in room_type:
-            return "0Studio"
-        bed_index = room_type.find("bed")
-        if bed_index == -1:
-            return "0Studio"
-        bed_count = int(room_type[bed_index - 2])
-        bath_index = room_type.find("bath")
-        bath_count = int(room_type[bath_index - 2])
-        return f"{bed_count}B{bath_count}B"
-
     def check_blocked(self, doc):
         if "Pardon Our Interruption" in doc:
             raise Exception("We are blocked")
