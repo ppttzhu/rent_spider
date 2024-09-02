@@ -71,7 +71,7 @@ class Fetch981Management(Fetch):
     def parse_move_in_date(self, soup):
         move_in_date = self.find_all_contains(soup, "td", "AvailDate")
         if not move_in_date:
-            return None
+            return '?'
         return move_in_date[0].text
 
     def parse_move_in_date_from_html(self, html):
