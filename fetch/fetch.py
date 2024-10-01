@@ -47,8 +47,7 @@ class Fetch:
         logging.error(f"Fetch Rooms Error in {self.website_name}")
         logging.error(repr(error))
         traceback.print_exc()
-        with open(os.path.join(c.ROOT_DIR, f"logs/{self.website_name}.html"), "w") as html_file:
-            html_file.write(self.html_text)
+        self.save_html_doc(self.html_text)
 
     def add_room_info(self, room_number, room_type, move_in_date, room_price, room_url=None):
         if not room_number or not room_type or not move_in_date or not room_price:
@@ -82,8 +81,8 @@ class Fetch:
         )
 
     def save_html_doc(self, html_doc):
-        with open("./tmp.html", "w", encoding="utf-8") as file:
-            file.write(html_doc)
+        with open(os.path.join(c.ROOT_DIR, f"logs/{self.website_name}.html"), "w") as html_file:
+            html_file.write(html_doc)
 
     def process_room_price(self, room_price):
         return room_price.replace(",", "").replace(".00", "")
@@ -126,7 +125,7 @@ class Fetch:
             return
         api_response = requests.post(
             "https://api.zyte.com/v1/extract",
-            auth=(c.CONFIG['zyte']['api_key'], ""),
+            auth=(c.CONFIG['zyte']['api_post_key'], ""),
             timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
             json={
                 "url": url,

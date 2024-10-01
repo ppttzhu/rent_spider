@@ -17,7 +17,8 @@ class FetchStreetEasy(Fetch):
     def fetch_web(self):
         html_doc = self.get_html_doc(self.url)
         soup = BeautifulSoup(html_doc, "html.parser")
-        # see if show more
+
+        # see if show more button exist
         show_more_button_class = "eevXss"
         if soup.find_all("button", {"class": re.compile(f".*{show_more_button_class}.*")}):
             # click show more button
@@ -26,12 +27,13 @@ class FetchStreetEasy(Fetch):
                     "action": "click",
                     "selector": {
                         "type": "xpath",
-                        "value": ".//button[contains(@class, show_more_button_class)]"
+                        "value": f".//button[contains(@class, {show_more_button_class})]"
                     }
                 },
             ])
             if updated_html:
                 soup = BeautifulSoup(updated_html, "html.parser")
+
         panel = soup.find_all("div", {"id": self.panel_id})
         self.fetch_new_ui(panel)
         table = soup.find_all("table", {"class": self.table_class})
