@@ -27,7 +27,7 @@ class FetchStreetEasy(Fetch):
                     "action": "click",
                     "selector": {
                         "type": "xpath",
-                        "value": f".//button[contains(@class, {show_more_button_class})]"
+                        "value": f".//button[contains(@class, '{show_more_button_class}')]"
                     }
                 },
             ])
