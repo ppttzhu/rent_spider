@@ -923,14 +923,6 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://www.thelivelyapartments.com/floorplans",
-        WEBSITE_NAME_COLUMN: "The Lively",
-        "class_name": "TheLively",
-        "platform": Platform.PAW_HOURLY,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/quinn-197-van-vorst-street-jersey_city",
         WEBSITE_NAME_COLUMN: "Quinn",
         "parent_class_name": "StreetEasy",
