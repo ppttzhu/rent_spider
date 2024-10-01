@@ -126,7 +126,7 @@ class Fetch:
         api_response = requests.post(
             "https://api.zyte.com/v1/extract",
             auth=(c.CONFIG['zyte']['api_post_key'], ""),
-            timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
+            timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 2,
             json={
                 "url": url,
                 "actions": actions,
