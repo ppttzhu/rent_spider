@@ -120,6 +120,21 @@ class Fetch:
         )
         self.check_blocked(html_doc)
         return html_doc
+    
+    def get_html_doc_with_actions(self, url, actions):
+        if c.PLATFORM == c.Platform.DEV: 
+            return
+        api_response = requests.post(
+            "https://api.zyte.com/v1/extract",
+            auth=(c.CONFIG['zyte']['api_key'], ""),
+            timeout=c.WEB_DRIVER_TIMEOUT_SECOND,
+            json={
+                "url": url,
+                "actions": actions,
+                "browserHtml": True,
+            },
+        )
+        return api_response.json()["browserHtml"]
 
     def get_html_doc_with_pw(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
