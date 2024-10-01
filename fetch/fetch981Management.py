@@ -97,9 +97,9 @@ class Fetch981Management(Fetch):
             return "Studio"
         bedroom, bathroom = 0, 0
         for i in range(1, 5):
-            if f"{i} bedroom" in room_header:
+            if f"{i} bed" in room_header:
                 bedroom = i
         for i in range(1, 5):
-            if f"{i} bathroom" in room_header:
+            if f"{i} bath" in room_header:
                 bathroom = i
         return f"{bedroom}B{bathroom}B"
