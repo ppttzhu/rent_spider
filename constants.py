@@ -923,7 +923,7 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://thelivelyapartments.com/floor-plans/#/unit",
+        WEBSITE_URL_COLUMN: "https://www.thelivelyapartments.com/floorplans",
         WEBSITE_NAME_COLUMN: "The Lively",
         "class_name": "TheLively",
         "platform": Platform.PAW_HOURLY,
