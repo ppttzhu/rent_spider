@@ -178,7 +178,6 @@ class Database:
             elif info not in prev_rooms_info_set:
                 updated_rooms[key]["cur_room"] = room
 
-        print("updated_rooms is", updated_rooms)
         flattened_updated_rooms = []
         for room in updated_rooms.values():
             if room.get('prev_room') and room.get('cur_room'):
