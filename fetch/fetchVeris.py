@@ -6,27 +6,14 @@ from fetch.fetch import Fetch
 
 
 class FetchVeris(Fetch):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.room_type_map = [
-            ("^Studio / 1 Bath$", "Studio"),
-            ("^1 Bed / 1 Bath$", "1B1B"),
-            ("^2 Beds / 1 Bath$", "2B1B"),
-            ("^2 Bed / 1 Bath$", "2B1B"),
-            ("^2 Beds / 2 Bath$", "2B2B"),
-            ("^2 Bed / 2 Bath$", "2B2B"),
-            ("^2 Beds / 2.5 Bath$", "2B2.5B"),
-            ("^2 Bed / 2.5 Bath$", "2B2.5B"),
-            ("^3 Beds / 2 Bath$", "3B2B"),
-            ("^3 Bed / 2 Bath$", "3B2B"),
-        ]
-
     def fetch_web(self):
         self.get_url_with_retry(self.url)
+        self.close_popup()
         view_more_button = self.wait_until_xpath(
             "//div[@class='prop-details-view-more-btn']"
         )[0]
         self.move_to_center(view_more_button)
+        sleep(0.5)
         view_more_button.click()
 
         rooms = self.wait_until_xpath('//div[@class="omg-results-card "]')
@@ -74,3 +61,14 @@ class FetchVeris(Fetch):
                 by=By.XPATH, value='.//a[contains(@class, "paoc-pro-close-popup")]'
             )
             close_button.click()
+
+    def close_popup(self):
+        popup = self.wait_until_xpath(
+            '//div[contains(@class, "paoc-cb-popup-body") and contains(@style, "display: block")]'
+        )
+        if not popup: return
+        close_button = popup[0].find_element(
+            by=By.XPATH, value='.//a[contains(@class, "paoc-pro-close-popup")]'
+        )
+        close_button.click()
+        
