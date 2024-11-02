@@ -16,9 +16,10 @@ class FetchVeris(Fetch):
         sleep(0.5)
         view_more_button.click()
 
+        sleep(1)
         rooms = self.wait_until_xpath('//div[@class="omg-results-card "]')
         for room in rooms:
-            sleep(1)
+            sleep(0.5)
             room_info = room.find_elements(
                 by=By.XPATH,
                 value='.//div[contains(@class, "omg-results-card-body-element") and contains(@class, "display-floorplan-details")]',
@@ -49,13 +50,20 @@ class FetchVeris(Fetch):
                 .replace("bath", "")
                 .replace(" ", "")
             )
-
-            self.add_room_info(
-                room_number=room_number,
-                room_type=f"{bed_count}B{bath_count}B",
-                move_in_date=move_in_date,
-                room_price=room_price,
-            )
+            units = popup.find_elements(by=By.XPATH, value=".//div[@class='basis-1/2']")
+            for unit in units:
+                info = unit.find_elements(
+                    by=By.XPATH, value=".//div[contains(@class, 'text-sm')]"
+                )
+                room_number = info[0].text
+                room_price = info[1].text.replace("From", "").replace(" ", "")
+                move_in_date = info[2].text
+                self.add_room_info(
+                    room_number=room_number,
+                    room_type=f"{bed_count}B{bath_count}B",
+                    move_in_date=move_in_date,
+                    room_price=room_price,
+                )
 
             close_button = popup.find_element(
                 by=By.XPATH, value='.//a[contains(@class, "paoc-pro-close-popup")]'
