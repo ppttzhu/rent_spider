@@ -8,10 +8,10 @@ from fetch.fetch import Fetch
 class FetchVeris(Fetch):
     def fetch_web(self):
         self.get_url_with_retry(self.url)
-        self.close_popup()
         view_more_button = self.wait_until_xpath(
             "//div[@class='prop-details-view-more-btn']"
         )[0]
+        self.close_popup()
         self.move_to_center(view_more_button)
         sleep(0.5)
         view_more_button.click()
@@ -63,12 +63,13 @@ class FetchVeris(Fetch):
             close_button.click()
 
     def close_popup(self):
-        popup = self.wait_until_xpath(
-            '//div[contains(@class, "paoc-cb-popup-body") and contains(@style, "display: block")]'
+        popup = self.driver.find_elements(
+            by=By.XPATH,
+            value='//div[contains(@class, "paoc-cb-popup-body") and contains(@style, "display: block")]',
         )
-        if not popup: return
+        if not popup:
+            return
         close_button = popup[0].find_element(
             by=By.XPATH, value='.//a[contains(@class, "paoc-pro-close-popup")]'
         )
         close_button.click()
-        
