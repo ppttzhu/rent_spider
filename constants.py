@@ -1019,14 +1019,14 @@ WEBSITES = [
         "location": "NJ2",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
-    {
-        WEBSITE_URL_COLUMN: "https://www.vyvapts.com/availability",
-        WEBSITE_NAME_COLUMN: "VYV",
-        "class_name": "VYV",
-        "platform": Platform.PAW_HOURLY,
-        "location": "NJ2",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
+    # {
+    #     WEBSITE_URL_COLUMN: "https://www.vyvapts.com/availability",
+    #     WEBSITE_NAME_COLUMN: "VYV",
+    #     "class_name": "VYV",
+    #     "platform": Platform.PAW_HOURLY,
+    #     "location": "NJ2",
+    #     WEBSITE_RENT_TYPE: RentType.RENTAL,
+    # },
     {
         WEBSITE_URL_COLUMN: "https://www.urby.com/location/harrison/availability",
         WEBSITE_NAME_COLUMN: "Harrison Urby",

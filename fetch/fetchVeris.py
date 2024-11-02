@@ -1,4 +1,3 @@
-from collections import defaultdict
 from time import sleep
 
 from selenium.webdriver.common.by import By
@@ -22,50 +21,56 @@ class FetchVeris(Fetch):
             ("^3 Bed / 2 Bath$", "3B2B"),
         ]
 
-    def slow_button_click(self, button):
-        try:
-            self.move_to_center(button)
-            sleep(3)
-            button.click()
-        except Exception:
-            self.driver.switch_to.frame("webchat-iframe")
-            webchat_close = self.driver.find_elements(
-                by=By.XPATH,
-                value='//webchat[@class="ng-star-inserted"]/header/nav',
-            )
-            webchat_close[0].click()
-            self.driver.switch_to.default_content()
-            button.click()
-
     def fetch_web(self):
         self.get_url_with_retry(self.url)
-        rooms_dict = defaultdict(dict)
-        cur_page = 1
-        while True:
-            rooms = self.wait_until_xpath("//div[@class='omg-results-card bg-white']")
-            for room in rooms:
-                self.move_to_center(room)
-                room_info = room.find_elements(
-                    by=By.XPATH,
-                    value='.//div[contains(@class, "omg-results-card-body-element px-4")]',
+        view_more_button = self.wait_until_xpath(
+            "//div[@class='prop-details-view-more-btn']"
+        )[0]
+        self.move_to_center(view_more_button)
+        view_more_button.click()
+
+        rooms = self.wait_until_xpath('//div[@class="omg-results-card "]')
+        for room in rooms:
+            sleep(1)
+            room_info = room.find_elements(
+                by=By.XPATH,
+                value='.//div[contains(@class, "omg-results-card-body-element") and contains(@class, "display-floorplan-details")]',
+            )
+            room_number = room_info[0].text
+            move_in_date = room_info[2].text
+            room_price = room_info[3].text
+
+            self.move_to_center(room_info[0])
+            room_info[0].click()
+            sleep(1)
+            popup = self.wait_until_xpath(
+                '//div[contains(@class, "paoc-cb-popup-body") and contains(@style, "display: block")]'
+            )[0]
+            bed_count = (
+                popup.find_element(by=By.XPATH, value=".//span[@class='takeover-beds']")
+                .text.lower()
+                .replace("beds", "")
+                .replace("bed", "")
+                .replace(" ", "")
+            )
+            bath_count = (
+                popup.find_element(
+                    by=By.XPATH, value=".//span[@class='takeover-baths']"
                 )
-                self.add_room_info(
-                    room_number=room_info[1].text,
-                    room_type=room_info[2].text,
-                    room_price=room_info[3].text.replace("From ", ""),
-                    move_in_date=room_info[4].text.split("\n")[0],
-                )
-            cur_page += 1
-            try:
-                next_page_button = self.driver.find_element(
-                    by=By.XPATH,
-                    value=f'//span[@data-page="{cur_page-1}" and text()="{cur_page}"]',
-                )
-            except Exception:
-                break
-            self.slow_button_click(next_page_button)
-            sleep(3)
-        for room in rooms_dict.values():
-            if room.get("room_number") is None:
-                continue  # some room does not exist in floor plan view, skip them
-            self.add_room_info(**room)
+                .text.lower()
+                .replace("baths", "")
+                .replace("bath", "")
+                .replace(" ", "")
+            )
+
+            self.add_room_info(
+                room_number=room_number,
+                room_type=f"{bed_count}B{bath_count}B",
+                move_in_date=move_in_date,
+                room_price=room_price,
+            )
+
+            close_button = popup.find_element(
+                by=By.XPATH, value='.//a[contains(@class, "paoc-pro-close-popup")]'
+            )
+            close_button.click()
