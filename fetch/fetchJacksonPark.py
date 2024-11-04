@@ -24,8 +24,14 @@ class FetchJacksonPark(Fetch):
             building_name = room_soup.find("div", {"class": "tower-title ng-binding"})
             building_name = building_name.text.replace(" Jackson Park", "JP")
             room_number = room_soup.find("div", {"class": "box-title ng-binding"})
-            room_number = room_number.text.replace("Residence", "").replace("\n", "")
-            property_detail = room_soup.find_all("div", {"class": "property-details ng-binding"})
+            room_number = (
+                room_number.text.replace("Residence", "")
+                .replace("\n", "")
+                .replace(" ", "")
+            )
+            property_detail = room_soup.find_all(
+                "div", {"class": "property-details ng-binding"}
+            )
             self.add_room_info(
                 room_number=f"{room_number} - {building_name}",
                 room_type=property_detail[0].text,
