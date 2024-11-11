@@ -1,4 +1,3 @@
-import json
 import logging
 import re
 from datetime import datetime
@@ -131,14 +130,11 @@ class FetchStreetEasy(Fetch):
         soup = BeautifulSoup(html_doc, "html.parser")
         move_in_date = soup.find("div", {"class": "Vitals-data"})
         room_price = room["room_price"]
-        if "netEffectivePrice" in html_doc:
-            info = re.findall(r"\{.*?netEffectivePrice.*?\}", html_doc)[0].replace(
-                '{"rentalData":', ""
-            )
-            info = json.loads(info)
-            net_price = info["netEffectivePrice"]
-            free_month = round(info["freeMonths"])
-            total_month = round(info["leaseTerm"])
+        if "Effective Rent" in html_doc:
+            price_details = soup.find("div", {"data-se-component": "rentalPricesAndTerms"}).find_all("li")
+            net_price = price_details[0].text.split(" ")[0]
+            free_month = round(float(price_details[1].text.split(" ")[0]))
+            total_month = round(float(price_details[2].text.split("-")[0]))
             room_price = (
                 f'N{net_price} G{room["room_price"]} {free_month}/{total_month}'
             )
