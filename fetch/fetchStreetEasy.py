@@ -46,6 +46,9 @@ class FetchStreetEasy(Fetch):
         for row in rows:
             if "no fee" not in row.text.lower():
                 continue
+            move_in_date = row.find("div", {"data-testid": "listingLabel-availability"})
+            if not move_in_date:
+                continue
             room_href = row.find("a", href=True)
             room_types = row.find(
                 "div", {"data-testid": "listing-description-icons"}
@@ -72,12 +75,11 @@ class FetchStreetEasy(Fetch):
                 room_price = (
                     f'N{net_price} G{gross_price} {free_month}/{total_month}'
                 )
-            move_in_date = row.find("div", {"data-testid": "listingLabel-availability"}).find("span")
 
             self.add_room_info(
                 room_number=room_href.text,
                 room_type=bed_count + bath_count,
-                move_in_date=move_in_date.text,
+                move_in_date=move_in_date.find("span").text,
                 room_price=room_price,
                 room_url=room_href["href"],
             )
