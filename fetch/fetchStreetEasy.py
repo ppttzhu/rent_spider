@@ -43,7 +43,6 @@ class FetchStreetEasy(Fetch):
             logging.info(f"No room available in new {self.website_name}, skipping...")
             return
         rows = panel[-1].find_all("div", {"data-testid": "inventory-card-component"})
-        rooms = []
         for row in rows:
             if "no fee" not in row.text.lower():
                 continue
@@ -63,17 +62,25 @@ class FetchStreetEasy(Fetch):
                 .replace("bath", "B")
                 .replace(" ", "")
             )
-            room_price = row.find("p", {"class": re.compile(f".*ikBOAQ.*")})
-            rooms.append(
-                {
-                    "room_href": room_href["href"],
-                    "room_number": room_href.text,
-                    "room_type": bed_count + bath_count,
-                    "room_price": room_price.text,
-                }
+            room_price = row.find("p", {"class": re.compile(f".*ikBOAQ.*")}).text
+            if "month lease" in row.text.lower():
+                gross_price = round(float(room_price.replace("$", "").replace(",","")))
+                months = row.find_all("p", {"class": re.compile(f".*hvszxm.*")})
+                free_month = float(months[0].text.split(" ")[0])
+                total_month = float(months[1].text.split("-")[0])
+                net_price = round(gross_price/total_month*(total_month-free_month))
+                room_price = (
+                    f'N{net_price} G{gross_price} {free_month}/{total_month}'
+                )
+            move_in_date = row.find("div", {"data-testid": "listingLabel-availability"}).find("span")
+
+            self.add_room_info(
+                room_number=room_href.text,
+                room_type=bed_count + bath_count,
+                move_in_date=move_in_date.text,
+                room_price=room_price,
+                room_url=room_href["href"],
             )
-        for room in rooms:
-            self.fetch_room_info(room)
 
     def get_room_type(self, room):
         bed_count = room["bedroomCount"]
