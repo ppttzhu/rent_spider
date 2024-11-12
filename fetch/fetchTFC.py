@@ -8,6 +8,9 @@ class FetchTFC(Fetch):
         for room in rooms:
             if room.get_attribute("target") == "_blank":
                 continue
+            room_text = room.text
+            if "View" not in room_text or "$" not in room_text:
+                continue
             room_url = room.get_attribute("href")
             building_name = room.find_element_by_xpath(".//h2[@class='heading-3 tile-title']").text
             building_location = room.find_element_by_xpath(".//span[@class='heading-4']").text

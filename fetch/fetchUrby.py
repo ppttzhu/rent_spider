@@ -46,11 +46,7 @@ class FetchUrby(Fetch):
                 else move_in_date.replace("Available ", "")
             )
 
-            room_price = (
-                room.find_element_by_xpath(".//div[@class='price']")
-                .get_attribute("textContent")
-                .split(" ")[0]
-            )
+            room_price = room.find_element_by_xpath(".//span[@class='price-number']").text
             self.add_room_info(
                 room_number,
                 room_type,
