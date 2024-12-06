@@ -802,6 +802,7 @@ WEBSITES = [
         WEBSITE_URL_COLUMN: "https://www.grovepointe.com/floorplans",
         WEBSITE_NAME_COLUMN: "Grove Pointe",
         "class_name": "Gp",
+        "parent_class_name": "981Management",
         "platform": Platform.PAW_HALF_HOURLY,
         "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
