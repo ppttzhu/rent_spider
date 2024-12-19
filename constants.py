@@ -933,15 +933,6 @@ WEBSITES = [
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
     {
-        WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/the-blvd-collection",
-        WEBSITE_NAME_COLUMN: "The Blvd",
-        "parent_class_name": "Veris",
-        "class_name": "TheBlvd",
-        "platform": Platform.PAW_HOURLY,
-        "location": "NJ",
-        WEBSITE_RENT_TYPE: RentType.RENTAL,
-    },
-    {
         WEBSITE_URL_COLUMN: "https://streeteasy.com/building/vantage-33-park-view-avenue-jersey_city",
         WEBSITE_NAME_COLUMN: "Vantage",
         "parent_class_name": "StreetEasy",
@@ -1447,6 +1438,15 @@ WEBSITES = [
         "class_name": "685FirstAvenue",
         "platform": Platform.PAW_TWICE_DAILY,
         "location": "Manhattan",
+        WEBSITE_RENT_TYPE: RentType.RENTAL,
+    },
+    {
+        WEBSITE_URL_COLUMN: "https://verisresidential.com/jersey-city-nj-apartments/the-blvd-collection",
+        WEBSITE_NAME_COLUMN: "The Blvd",
+        "parent_class_name": "Veris",
+        "class_name": "TheBlvd",
+        "platform": Platform.PAW_HOURLY,
+        "location": "NJ",
         WEBSITE_RENT_TYPE: RentType.RENTAL,
     },
 ]
