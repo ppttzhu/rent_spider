@@ -137,6 +137,10 @@ class Fetch:
 
     def get_html_doc_with_pw(self, url, wait_until="domcontentloaded"):
         logging.info(f"Loading {url}...")
+        if False:
+            file_path = 'local.html'
+            with open(file_path, 'r') as file:
+                return file.read()
         self.init_page()
         self.page.goto(url, wait_until=wait_until, timeout=c.WEB_DRIVER_TIMEOUT_SECOND * 1000)
         content = self.page.content()

@@ -7,7 +7,7 @@ secrets.cfg
 zyte-ca.crt 
 # Logs for debugging
 logs/
-
+local.html
 
 # CDK Context & Staging files
 .cdk.staging/
