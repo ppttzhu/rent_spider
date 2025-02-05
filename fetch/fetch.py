@@ -224,7 +224,7 @@ class Fetch:
         return None
 
     def check_blocked(self, doc):
-        for text in ["Pardon Our Interruption", "blocked", "Access denied"]:
+        for text in ["Pardon Our Interruption", "blocked", "Access denied", "not a bot", "Press & Hold"]:
             if text in doc:
                 raise Exception("We are blocked")
 
