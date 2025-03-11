@@ -39,10 +39,11 @@ def main():
         new_rooms = filter_popular_rooms(new_rooms)
         removed_rooms = filter_popular_rooms(removed_rooms)
         updated_rooms = filter_popular_rooms(updated_rooms)
-        if new_rooms or updated_rooms:
-            send_notification_email(new_rooms, removed_rooms, updated_rooms)
-        else:
-            logging.info("Nothing new to send")
+        # pause email
+        # if new_rooms or updated_rooms:
+        #     send_notification_email(new_rooms, removed_rooms, updated_rooms)
+        # else:
+        #     logging.info("Nothing new to send")
         database.quit()
 
 
