@@ -112,11 +112,7 @@ class Fetch:
         return self.page
 
     def get_html_doc(self, url):
-        html_doc = (
-            self.get_html_doc_with_pw(url)
-            if c.PLATFORM == c.Platform.DEV
-            else self.get_html_doc_with_zyte(url)
-        )
+        html_doc = self.get_html_doc_with_pw(url)
         self.check_blocked(html_doc)
         return html_doc
     

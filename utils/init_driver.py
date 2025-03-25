@@ -22,6 +22,10 @@ def init_driver():
         import chromedriver_autoinstaller
 
         chromedriver_autoinstaller.install()
+        # https://chromedriver.storage.googleapis.com/114.0.5735.16/chromedriver_mac_arm64.zip
+        # sudo xattr -d com.apple.quarantine /usr/local/bin/chromedriver
+        # sudo rm -rf /Library/Google/GoogleSoftwareUpdate/
+        # defaults write com.google.Keystone.Agent checkInterval 0
         return webdriver.Chrome(options=chrome_options)
     else:
         return webdriver.Chrome(

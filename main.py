@@ -23,7 +23,7 @@ def main():
             f"Target websites ({len(c.WEBSITES_TARGETS)}): {', '.join(c.WEBSITES_TARGETS)}"
         )
         all_rooms = {}
-        for key in c.WEBSITES_TARGETS:
+        for key in ["351Marinjc"]:
             parent_class_name = c.WEBSITES_DICT[key].get("parent_class_name", key)
             fetch_class = getattr(
                 importlib.import_module(f"fetch.fetch{parent_class_name}"),
