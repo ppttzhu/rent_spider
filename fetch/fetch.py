@@ -115,7 +115,7 @@ class Fetch:
         html_doc = (
             self.get_html_doc_with_pw(url)
             if c.PLATFORM == c.Platform.DEV
-            else self.get_html_doc_with_zyte(url)
+            else self.get_html_doc_with_scraperapi(url)
         )
         self.check_blocked(html_doc)
         return html_doc
@@ -147,11 +147,29 @@ class Fetch:
         self.context.close()
         return content
 
+    def get_html_doc_with_scraperapi(self, url):
+        logging.info(f"Loading {url} with scraperapi...")
+        count = 0
+        sleep_time = 1
+        while count < c.PROXY_GET_URL_MAX_RETRY:
+            payload = { 'api_key': c.CONFIG['scraperapi']['api_key'], 'url': url}
+            response = requests.get('https://api.scraperapi.com/', params=payload)
+            sleep(sleep_time)
+            if "All download attempts failed. Please retry." not in response.text:
+                break
+            logging.info(f"Got zyte internal error, retrying {count} time...")
+            sleep_time += 5
+            count += 1
+        self.html_text = response.text  # for debug
+        if "All download attempts failed. Please retry." in response.text:
+            raise Exception("Failed to load url by scraperapi, exceeded max iteration.")
+        return response.text
+
     def get_html_doc_with_zyte(self, url):
         logging.info(f"Loading {url} with zyte...")
         count = 0
         sleep_time = 1
-        while count < c.ZYTE_GET_URL_MAX_RETRY:
+        while count < c.PROXY_GET_URL_MAX_RETRY:
             response = requests.get(
                 url,
                 proxies={
