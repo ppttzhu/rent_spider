@@ -151,6 +151,8 @@ class Fetch:
         logging.info(f"Loading {url} with scraperapi...")
         payload = { 'api_key': c.CONFIG['scraperapi']['api_key'], 'url': url}
         response = requests.get('https://api.scraperapi.com/', params=payload)
+        if "https://www.scraperapi.com/support" in response.text:
+            raise Exception(f"scraperapi get html failed: {response.text}")
         self.html_text = response.text  # for debug
         return response.text
 

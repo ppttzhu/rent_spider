@@ -113,6 +113,7 @@ Then go to: http://127.0.0.1:3000/
 ## Test Download
 
 ```
+pip install -r requirements-download.txt
 python3 download.py
 ```
 

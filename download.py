@@ -1,14 +1,12 @@
 import getpass
 import os
-import re
 
 import requests
 from bs4 import BeautifulSoup
-from playwright.sync_api import sync_playwright
 
-from fetch.fetchVYV import FetchVYV
+import constants as c
 
-web_url = "https://streeteasy.com/building/30-morningside-drive-new_york/floorplans"
+web_url = "https://streeteasy.com/building/windermere-666-west-end-avenue-new_york/floorplans"
 web_name = "morningside"  # for downloaded file name and folder name
 download_path = f"/Users/{getpass.getuser()}/Downloads/{web_name}"  # for macos
 
@@ -24,28 +22,34 @@ def download_floorplan(room_id, url):
     if not os.path.exists(download_full_path):
         open(download_full_path, "wb").write(r.content)
 
+def get_html_doc_with_scraperapi(url):
+    print(f"Loading {url} with scraperapi...")
+    payload = { 'api_key': c.CONFIG['scraperapi']['api_key'], 'url': url}
+    response = requests.get('https://api.scraperapi.com/', params=payload)
+    if "https://www.scraperapi.com/support" in response.text:
+        raise Exception(f"scraperapi get html failed: {response.text}")
+    return response.text
 
-with sync_playwright() as play:
-    browser = play.firefox.launch(headless=False)
-    fetcher = FetchVYV(web_key="VYV", browser=browser)
-    html_doc = fetcher.get_html_doc(web_url)
-    soup = BeautifulSoup(html_doc, "html.parser")
-    div_elements = soup.find_all("div", {"class": "fp"})
-    links = {}
-    for element in div_elements:
-        a_elements = element.find_all("a")
-        room_id = a_elements[0].text
-        links[room_id] = a_elements[1].get("href")
-    print(f"Removed duplicates and found {len(links)} links to download")
-    count = 0
-    failed_links = []
-    for room_id, url in links.items():
-        count += 1
-        print(f"Downloading {count}/{len(links)} from {url}", end="")
-        try:
-            download_floorplan(room_id, url)
-            print(" - Done")
-        except Exception as e:
-            print(" - Failed" + str(e))
-            failed_links.append(url)
-    print(f"{len(failed_links)} failed links: {failed_links}")
+
+html_doc = get_html_doc_with_scraperapi(web_url)
+soup = BeautifulSoup(html_doc, "html.parser")
+div_elements = soup.find_all("div", {"class": "fp"})
+links = {}
+for element in div_elements:
+    a_elements = element.find_all("a")
+    room_id = a_elements[0].text
+    links[room_id] = a_elements[1].get("href")
+print(f"Removed duplicates and found {len(links)} links to download")
+count = 0
+failed_links = []
+for room_id, url in links.items():
+    count += 1
+    print(f"Downloading {count}/{len(links)} from {url}", end="")
+    try:
+        download_floorplan(room_id, url)
+        print(" - Done")
+    except Exception as e:
+        print(" - Failed" + str(e))
+        failed_links.append(url)
+print(f"Finished download to {download_path}")
+print(f"{len(failed_links)} failed links: {failed_links}")
