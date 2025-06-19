@@ -42,8 +42,6 @@ class FetchStreetEasy(Fetch):
             return
         rows = panel[-1].find_all("div", {"data-testid": "inventory-card-component"})
         for row in rows:
-            if "no fee" not in row.text.lower():
-                continue
             move_in_date = row.find("div", {"data-testid": "listingLabel-availability"})
             if not move_in_date:
                 continue
@@ -117,8 +115,6 @@ class FetchStreetEasy(Fetch):
         rows = table[-1].find("tbody").find_all("tr")
         rooms = []
         for row in rows:
-            if "no fee" not in row.text.lower():
-                continue
             room = row.find_all("td")
             rooms.append(
                 {

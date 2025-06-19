@@ -15,8 +15,6 @@ class FetchSteelHaus(FetchStreetEasy):
             return
         rows = table[-1].find("tbody").find_all("tr")
         for row in rows:
-            if "no fee" not in row.text.lower():
-                continue
             room = row.find_all("td")
             self.add_room_info(
                 room_number=room[0].text,
