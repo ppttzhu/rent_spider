@@ -61,7 +61,7 @@ class FetchStreetEasy(Fetch):
                 .replace("bath", "B")
                 .replace(" ", "")
             )
-            room_price = row.find("p", {"class": re.compile(f".*sc-ae388164-5.*")}).text
+            room_price = row.find("p", {"class": re.compile(f".*sc-7920656d-5.*")}).text
             if "month lease" in row.text.lower():
                 gross_price = round(float(room_price.replace("$", "").replace(",","")))
                 months = row.find_all("p", {"class": re.compile(f".*hvszxm.*")})
